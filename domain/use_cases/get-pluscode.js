@@ -15,7 +15,11 @@ async function save(key, value) {
   await SecureStore.setItemAsync(key, value);
 }
 export async function getPluscode() {
+<<<<<<< HEAD
   save("google-api-key", "AIzaSyDzhpXiUMV7uf8Kf1IKsVyDPxHwGT3RDpo");
+=======
+  save("google-api-key", "...");
+>>>>>>> 1924d1c4fc751090eb6daef63d5349f2f0a3c2d0
 
   const apiKey = await getValueFor("google-api-key");
   const response = await fetch(
