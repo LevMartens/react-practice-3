@@ -29,6 +29,7 @@ import {
   setOneMeterApart,
 } from "../../Core/Calculations";
 import { getGeolocation } from "../../domain/use_cases/getGeolocation";
+import { getPluscode } from "../../domain/use_cases/get-pluscode";
 import { getHeading } from "../../domain/use_cases/getHeading";
 import { watchPositionForeground } from "../../domain/use_cases/watch-position-foreground";
 import { getPositionOnce } from "../../domain/use_cases/get-position-once";
@@ -39,6 +40,7 @@ export class MapViewHome extends Component {
     getPositionOnce();
     watchPositionForeground();
     getHeading();
+    getPluscode();
   }
 
   render() {
