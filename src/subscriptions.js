@@ -232,3 +232,531 @@ export const onDeleteComment = /* GraphQL */ `
     }
   }
 `;
+export const onCreatePlusCodeLevel1 = /* GraphQL */ `
+  subscription OnCreatePlusCodeLevel1 {
+    onCreatePlusCodeLevel1 {
+      id
+      digits
+      middleCoord {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      level2List {
+        items {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      numberOfLines
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePlusCodeLevel1 = /* GraphQL */ `
+  subscription OnUpdatePlusCodeLevel1 {
+    onUpdatePlusCodeLevel1 {
+      id
+      digits
+      middleCoord {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      level2List {
+        items {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      numberOfLines
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePlusCodeLevel1 = /* GraphQL */ `
+  subscription OnDeletePlusCodeLevel1 {
+    onDeletePlusCodeLevel1 {
+      id
+      digits
+      middleCoord {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      level2List {
+        items {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      numberOfLines
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreatePlusCodeLevel2 = /* GraphQL */ `
+  subscription OnCreatePlusCodeLevel2 {
+    onCreatePlusCodeLevel2 {
+      id
+      pluscodeParent {
+        id
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        level2List {
+          nextToken
+        }
+        numberOfLines
+        createdAt
+        updatedAt
+      }
+      digits
+      middleCoord {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      level3List {
+        items {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      numberOfLines
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePlusCodeLevel2 = /* GraphQL */ `
+  subscription OnUpdatePlusCodeLevel2 {
+    onUpdatePlusCodeLevel2 {
+      id
+      pluscodeParent {
+        id
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        level2List {
+          nextToken
+        }
+        numberOfLines
+        createdAt
+        updatedAt
+      }
+      digits
+      middleCoord {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      level3List {
+        items {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      numberOfLines
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePlusCodeLevel2 = /* GraphQL */ `
+  subscription OnDeletePlusCodeLevel2 {
+    onDeletePlusCodeLevel2 {
+      id
+      pluscodeParent {
+        id
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        level2List {
+          nextToken
+        }
+        numberOfLines
+        createdAt
+        updatedAt
+      }
+      digits
+      middleCoord {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      level3List {
+        items {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      numberOfLines
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreatePlusCodeLevel3 = /* GraphQL */ `
+  subscription OnCreatePlusCodeLevel3 {
+    onCreatePlusCodeLevel3 {
+      id
+      pluscodeParent {
+        id
+        pluscodeParent {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        level3List {
+          nextToken
+        }
+        numberOfLines
+        createdAt
+        updatedAt
+      }
+      digits
+      middleCoord {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      numberOfLines
+      listOfLines {
+        items {
+          id
+          complete3LevelPluscode
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePlusCodeLevel3 = /* GraphQL */ `
+  subscription OnUpdatePlusCodeLevel3 {
+    onUpdatePlusCodeLevel3 {
+      id
+      pluscodeParent {
+        id
+        pluscodeParent {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        level3List {
+          nextToken
+        }
+        numberOfLines
+        createdAt
+        updatedAt
+      }
+      digits
+      middleCoord {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      numberOfLines
+      listOfLines {
+        items {
+          id
+          complete3LevelPluscode
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePlusCodeLevel3 = /* GraphQL */ `
+  subscription OnDeletePlusCodeLevel3 {
+    onDeletePlusCodeLevel3 {
+      id
+      pluscodeParent {
+        id
+        pluscodeParent {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        level3List {
+          nextToken
+        }
+        numberOfLines
+        createdAt
+        updatedAt
+      }
+      digits
+      middleCoord {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      numberOfLines
+      listOfLines {
+        items {
+          id
+          complete3LevelPluscode
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateLines = /* GraphQL */ `
+  subscription OnCreateLines {
+    onCreateLines {
+      id
+      pluscodeParent {
+        id
+        pluscodeParent {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        numberOfLines
+        listOfLines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      complete3LevelPluscode
+      coordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateLines = /* GraphQL */ `
+  subscription OnUpdateLines {
+    onUpdateLines {
+      id
+      pluscodeParent {
+        id
+        pluscodeParent {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        numberOfLines
+        listOfLines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      complete3LevelPluscode
+      coordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteLines = /* GraphQL */ `
+  subscription OnDeleteLines {
+    onDeleteLines {
+      id
+      pluscodeParent {
+        id
+        pluscodeParent {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        numberOfLines
+        listOfLines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      complete3LevelPluscode
+      coordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateCoordinates = /* GraphQL */ `
+  subscription OnCreateCoordinates {
+    onCreateCoordinates {
+      id
+      lat
+      lng
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateCoordinates = /* GraphQL */ `
+  subscription OnUpdateCoordinates {
+    onUpdateCoordinates {
+      id
+      lat
+      lng
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteCoordinates = /* GraphQL */ `
+  subscription OnDeleteCoordinates {
+    onDeleteCoordinates {
+      id
+      lat
+      lng
+      createdAt
+      updatedAt
+    }
+  }
+`;

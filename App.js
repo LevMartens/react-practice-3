@@ -11,6 +11,10 @@ import { ActivityIndicator, Colors } from "react-native-paper";
 import { Provider as PaperProvider } from "react-native-paper";
 import { useFonts } from "expo-font";
 import * as Application from "expo-application";
+import Amplify, { API, graphqlOperation } from "aws-amplify";
+import awsconfig from "./aws-exports";
+import { createLines } from "../first-project/src/mutations";
+Amplify.configure(awsconfig);
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -34,5 +38,17 @@ export default function App() {
         </PaperProvider>
       </Provider>
     );
+  }
+}
+
+async function createLine() {
+  try {
+    await API.graphql(
+      graphqlOperation(createLines, {
+        input: { pluscodeParent: , description: "test" },
+      })
+    );
+  } catch (err) {
+    console.log("error creating line:", err);
   }
 }

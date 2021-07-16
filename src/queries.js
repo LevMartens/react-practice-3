@@ -150,3 +150,326 @@ export const listComments = /* GraphQL */ `
     }
   }
 `;
+export const getPlusCodeLevel1 = /* GraphQL */ `
+  query GetPlusCodeLevel1($id: ID!) {
+    getPlusCodeLevel1(id: $id) {
+      id
+      digits
+      middleCoord {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      level2List {
+        items {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      numberOfLines
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPlusCodeLevel1s = /* GraphQL */ `
+  query ListPlusCodeLevel1s(
+    $filter: ModelPlusCodeLevel1FilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPlusCodeLevel1s(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        level2List {
+          nextToken
+        }
+        numberOfLines
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getPlusCodeLevel2 = /* GraphQL */ `
+  query GetPlusCodeLevel2($id: ID!) {
+    getPlusCodeLevel2(id: $id) {
+      id
+      pluscodeParent {
+        id
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        level2List {
+          nextToken
+        }
+        numberOfLines
+        createdAt
+        updatedAt
+      }
+      digits
+      middleCoord {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      level3List {
+        items {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      numberOfLines
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPlusCodeLevel2s = /* GraphQL */ `
+  query ListPlusCodeLevel2s(
+    $filter: ModelPlusCodeLevel2FilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPlusCodeLevel2s(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        pluscodeParent {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        level3List {
+          nextToken
+        }
+        numberOfLines
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getPlusCodeLevel3 = /* GraphQL */ `
+  query GetPlusCodeLevel3($id: ID!) {
+    getPlusCodeLevel3(id: $id) {
+      id
+      pluscodeParent {
+        id
+        pluscodeParent {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        level3List {
+          nextToken
+        }
+        numberOfLines
+        createdAt
+        updatedAt
+      }
+      digits
+      middleCoord {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      numberOfLines
+      listOfLines {
+        items {
+          id
+          complete3LevelPluscode
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPlusCodeLevel3s = /* GraphQL */ `
+  query ListPlusCodeLevel3s(
+    $filter: ModelPlusCodeLevel3FilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPlusCodeLevel3s(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        pluscodeParent {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        numberOfLines
+        listOfLines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getLines = /* GraphQL */ `
+  query GetLines($id: ID!) {
+    getLines(id: $id) {
+      id
+      pluscodeParent {
+        id
+        pluscodeParent {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        numberOfLines
+        listOfLines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      complete3LevelPluscode
+      coordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listLines = /* GraphQL */ `
+  query ListLines(
+    $filter: ModelLinesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listLines(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        pluscodeParent {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        complete3LevelPluscode
+        coordinates {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getCoordinates = /* GraphQL */ `
+  query GetCoordinates($id: ID!) {
+    getCoordinates(id: $id) {
+      id
+      lat
+      lng
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listCoordinates = /* GraphQL */ `
+  query ListCoordinates(
+    $filter: ModelCoordinatesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCoordinates(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

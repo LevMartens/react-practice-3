@@ -18,3 +18,43 @@ type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
   post: Post @connection(fields: ["postID"])
   content: String!
 }
+
+type PlusCodeLevel1 @model {
+  id: ID!
+  digits: String
+  middleCoord: Coordinates @connection
+  level2List: [PlusCodeLevel2] @connection(name: "level1Tolevel2")
+  numberOfLines: Int
+}
+
+type PlusCodeLevel2 @model {
+  id: ID!
+  pluscodeParent: PlusCodeLevel1 @connection(name: "level1Tolevel2")
+  digits: String
+  middleCoord: Coordinates @connection
+  level3List: [PlusCodeLevel3] @connection(name: "level2Tolevel3")
+  numberOfLines: Int
+}
+
+type PlusCodeLevel3 @model {
+  id: ID!
+  pluscodeParent: PlusCodeLevel2 @connection(name: "level2Tolevel3")
+  digits: String
+  middleCoord: Coordinates
+  numberOfLines: Int
+  listOfLines: [Lines] @connection(name: "level3ToLine")
+}
+
+type Lines @model {
+  id: ID!
+  pluscodeParent: PlusCodeLevel3 @connection(name: "level3ToLine")
+  complete3LevelPluscode: String
+  startingCoordinates: Coordinates @connection
+  finishCoordinates: Coordinates @connection
+}
+
+type Coordinates @model {
+  id: ID!
+  lat: String
+  lng: String
+}
