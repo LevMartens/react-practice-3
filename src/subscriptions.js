@@ -247,6 +247,7 @@ export const onCreatePlusCodeLevel1 = /* GraphQL */ `
       level2List {
         items {
           id
+          parentId
           digits
           numberOfLines
           createdAt
@@ -275,6 +276,7 @@ export const onUpdatePlusCodeLevel1 = /* GraphQL */ `
       level2List {
         items {
           id
+          parentId
           digits
           numberOfLines
           createdAt
@@ -303,6 +305,7 @@ export const onDeletePlusCodeLevel1 = /* GraphQL */ `
       level2List {
         items {
           id
+          parentId
           digits
           numberOfLines
           createdAt
@@ -320,6 +323,7 @@ export const onCreatePlusCodeLevel2 = /* GraphQL */ `
   subscription OnCreatePlusCodeLevel2 {
     onCreatePlusCodeLevel2 {
       id
+      parentId
       pluscodeParent {
         id
         digits
@@ -348,6 +352,7 @@ export const onCreatePlusCodeLevel2 = /* GraphQL */ `
       level3List {
         items {
           id
+          parentId
           digits
           numberOfLines
           createdAt
@@ -365,6 +370,7 @@ export const onUpdatePlusCodeLevel2 = /* GraphQL */ `
   subscription OnUpdatePlusCodeLevel2 {
     onUpdatePlusCodeLevel2 {
       id
+      parentId
       pluscodeParent {
         id
         digits
@@ -393,6 +399,7 @@ export const onUpdatePlusCodeLevel2 = /* GraphQL */ `
       level3List {
         items {
           id
+          parentId
           digits
           numberOfLines
           createdAt
@@ -410,6 +417,7 @@ export const onDeletePlusCodeLevel2 = /* GraphQL */ `
   subscription OnDeletePlusCodeLevel2 {
     onDeletePlusCodeLevel2 {
       id
+      parentId
       pluscodeParent {
         id
         digits
@@ -438,6 +446,7 @@ export const onDeletePlusCodeLevel2 = /* GraphQL */ `
       level3List {
         items {
           id
+          parentId
           digits
           numberOfLines
           createdAt
@@ -455,8 +464,10 @@ export const onCreatePlusCodeLevel3 = /* GraphQL */ `
   subscription OnCreatePlusCodeLevel3 {
     onCreatePlusCodeLevel3 {
       id
+      parentId
       pluscodeParent {
         id
+        parentId
         pluscodeParent {
           id
           digits
@@ -491,6 +502,7 @@ export const onCreatePlusCodeLevel3 = /* GraphQL */ `
       listOfLines {
         items {
           id
+          parentId
           complete3LevelPluscode
           createdAt
           updatedAt
@@ -506,8 +518,10 @@ export const onUpdatePlusCodeLevel3 = /* GraphQL */ `
   subscription OnUpdatePlusCodeLevel3 {
     onUpdatePlusCodeLevel3 {
       id
+      parentId
       pluscodeParent {
         id
+        parentId
         pluscodeParent {
           id
           digits
@@ -542,6 +556,7 @@ export const onUpdatePlusCodeLevel3 = /* GraphQL */ `
       listOfLines {
         items {
           id
+          parentId
           complete3LevelPluscode
           createdAt
           updatedAt
@@ -557,8 +572,10 @@ export const onDeletePlusCodeLevel3 = /* GraphQL */ `
   subscription OnDeletePlusCodeLevel3 {
     onDeletePlusCodeLevel3 {
       id
+      parentId
       pluscodeParent {
         id
+        parentId
         pluscodeParent {
           id
           digits
@@ -593,6 +610,7 @@ export const onDeletePlusCodeLevel3 = /* GraphQL */ `
       listOfLines {
         items {
           id
+          parentId
           complete3LevelPluscode
           createdAt
           updatedAt
@@ -608,10 +626,13 @@ export const onCreateLines = /* GraphQL */ `
   subscription OnCreateLines {
     onCreateLines {
       id
+      parentId
       pluscodeParent {
         id
+        parentId
         pluscodeParent {
           id
+          parentId
           digits
           numberOfLines
           createdAt
@@ -656,10 +677,13 @@ export const onUpdateLines = /* GraphQL */ `
   subscription OnUpdateLines {
     onUpdateLines {
       id
+      parentId
       pluscodeParent {
         id
+        parentId
         pluscodeParent {
           id
+          parentId
           digits
           numberOfLines
           createdAt
@@ -704,10 +728,13 @@ export const onDeleteLines = /* GraphQL */ `
   subscription OnDeleteLines {
     onDeleteLines {
       id
+      parentId
       pluscodeParent {
         id
+        parentId
         pluscodeParent {
           id
+          parentId
           digits
           numberOfLines
           createdAt

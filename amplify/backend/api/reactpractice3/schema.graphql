@@ -33,8 +33,15 @@ type PlusCodeLevel1
   numberOfLines: Int
 }
 
-type PlusCodeLevel2 @model {
+type PlusCodeLevel2
+  @model
+  @key(
+    name: "pluscode2ByDigitsAndParent"
+    fields: ["parentId","digits"]
+    queryField: "pluscode2ByDigitsAndParent"
+  ) {
   id: ID!
+  parentId: String
   pluscodeParent: PlusCodeLevel1 @connection(name: "level1Tolevel2")
   digits: String
   middleCoord: Coordinates @connection
@@ -42,8 +49,13 @@ type PlusCodeLevel2 @model {
   numberOfLines: Int
 }
 
-type PlusCodeLevel3 @model {
+type PlusCodeLevel3 @model @key(
+    name: "pluscode3ByDigitsAndParent"
+    fields: ["parentId","digits"]
+    queryField: "pluscode3ByDigitsAndParent"
+  ) {
   id: ID!
+  parentId: String
   pluscodeParent: PlusCodeLevel2 @connection(name: "level2Tolevel3")
   digits: String
   middleCoord: Coordinates @connection
@@ -53,6 +65,7 @@ type PlusCodeLevel3 @model {
 
 type Lines @model {
   id: ID!
+  parentId: String
   pluscodeParent: PlusCodeLevel3 @connection(name: "level3ToLine")
   complete3LevelPluscode: String
   startingCoordinates: Coordinates @connection
