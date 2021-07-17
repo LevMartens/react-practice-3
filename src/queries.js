@@ -401,7 +401,14 @@ export const getLines = /* GraphQL */ `
         updatedAt
       }
       complete3LevelPluscode
-      coordinates {
+      startingCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      finishCoordinates {
         id
         lat
         lng
@@ -430,7 +437,14 @@ export const listLines = /* GraphQL */ `
           updatedAt
         }
         complete3LevelPluscode
-        coordinates {
+        startingCoordinates {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        finishCoordinates {
           id
           lat
           lng
@@ -466,6 +480,42 @@ export const listCoordinates = /* GraphQL */ `
         id
         lat
         lng
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const pluscodeByDigits = /* GraphQL */ `
+  query PluscodeByDigits(
+    $digits: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelPlusCodeLevel1FilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    pluscodeByDigits(
+      digits: $digits
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        level2List {
+          nextToken
+        }
+        numberOfLines
         createdAt
         updatedAt
       }

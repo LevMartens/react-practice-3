@@ -40,7 +40,7 @@ export class MapViewHome extends Component {
     getPositionOnce();
     watchPositionForeground();
     getHeading();
-    getPluscode();
+    //getPluscode();
   }
 
   render() {

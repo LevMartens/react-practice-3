@@ -14,13 +14,15 @@ async function getValueFor(key) {
 async function save(key, value) {
   await SecureStore.setItemAsync(key, value);
 }
-export async function getPluscode() {
+export async function getPluscode(pluscode) {
   const apiKey = await getValueFor("google-API-key");
   const response = await fetch(
     // Make this YOUR URL
-    `https://plus.codes/api?address=4QFFFFFF%2BFF&ekey=${apiKey}&email=lmartens_43@hotmail.com`,
+    `https://plus.codes/api?address=${pluscode}&ekey=${apiKey}&email=lmartens_43@hotmail.com`,
     {}
   );
   const json = await response.json();
-  console.log("PLUS CODE COORD  " + JSON.stringify(json));
+  //const obj = JSON.parse(json);
+  console.log("PLUS CODE COORD  " + json.plus_code.geometry.location.lng);
+  return json.plus_code.geometry.location;
 }

@@ -690,7 +690,14 @@ export const createLines = /* GraphQL */ `
         updatedAt
       }
       complete3LevelPluscode
-      coordinates {
+      startingCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      finishCoordinates {
         id
         lat
         lng
@@ -734,7 +741,14 @@ export const updateLines = /* GraphQL */ `
         updatedAt
       }
       complete3LevelPluscode
-      coordinates {
+      startingCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      finishCoordinates {
         id
         lat
         lng
@@ -778,7 +792,14 @@ export const deleteLines = /* GraphQL */ `
         updatedAt
       }
       complete3LevelPluscode
-      coordinates {
+      startingCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      finishCoordinates {
         id
         lat
         lng

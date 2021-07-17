@@ -19,7 +19,13 @@ type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
   content: String!
 }
 
-type PlusCodeLevel1 @model {
+type PlusCodeLevel1
+  @model
+  @key(
+    name: "pluscodeByDigits"
+    fields: ["digits"]
+    queryField: "pluscodeByDigits"
+  ) {
   id: ID!
   digits: String
   middleCoord: Coordinates @connection
@@ -40,7 +46,7 @@ type PlusCodeLevel3 @model {
   id: ID!
   pluscodeParent: PlusCodeLevel2 @connection(name: "level2Tolevel3")
   digits: String
-  middleCoord: Coordinates
+  middleCoord: Coordinates @connection
   numberOfLines: Int
   listOfLines: [Lines] @connection(name: "level3ToLine")
 }
