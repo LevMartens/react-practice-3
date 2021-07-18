@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import {
   currentPositionUpdate,
   updatePath,
-} from "../../presentation/state-management/actions/actions";
+} from "../../../presentation/state-management/actions/actions";
 import * as Location from "expo-location";
-import store from "../../presentation/state-management/store/store";
+import store from "../../../presentation/state-management/store/store";
 import {
   getCoordinatesBetween,
   getDistanceBetween,
   setOneMeterApart,
-} from "../../Core/Calculations";
+} from "../../generators/Calculations";
 import { measure } from "react-native-reanimated";
 import { Polyline } from "react-native-maps";
 

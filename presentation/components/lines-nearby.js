@@ -32,17 +32,17 @@ import { getHeading } from "../../domain/use_cases/getHeading";
 import { watchPositionForeground } from "../../domain/use_cases/watch-position-foreground";
 import { getPositionOnce } from "../../domain/use_cases/get-position-once";
 //import { mdiNavigation } from "@mdi/js";
-import { getLines } from "../../domain/use_cases/get-lines";
+//import { getLines } from "../../domain/use_cases/get-lines"; //! create get lines in domain/use_cases/graphql
 
-export class LinesNearby extends Component {
-  componentDidMount() {
-    getLines();
-  }
+// export class LinesNearby extends Component {
+//   componentDidMount() {
+//     getLines();
+//   }
 
-  render() {
-    return <>{"Array of lines (2x marker + 1 polyline)"}</>;
-  }
-}
+//   render() {
+//     return <>{"Array of lines (2x marker + 1 polyline)"}</>;
+//   }
+// }
 
 // export class Line extends Component {
 

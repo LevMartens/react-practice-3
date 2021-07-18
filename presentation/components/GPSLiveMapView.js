@@ -24,9 +24,9 @@ import {
   getCoordinatesBetween,
   getDistanceBetween,
   setOneMeterApart,
-} from "../../Core/Calculations";
-import { getGeolocation } from "../../domain/use_cases/getGeolocation";
-import { getHeading } from "../../domain/use_cases/getHeading";
+} from "../../domain/generators/Calculations";
+import { getGeolocation } from "../../domain/use_cases/environment/getGeolocation";
+import { getHeading } from "../../domain/use_cases/environment/getHeading";
 //import { mdiNavigation } from "@mdi/js";
 
 export class GPSLiveMapView extends Component {

@@ -1,7 +1,7 @@
 import React from "react";
 import * as Location from "expo-location";
-import store from "../../presentation/state-management/store/store";
-import { updateCurrentPositionOnce } from "../../presentation/state-management/actions/actions";
+import store from "../../../presentation/state-management/store/store";
+import { updateCurrentPositionOnce } from "../../../presentation/state-management/actions/actions";
 
 export const getPositionOnce = async () => {
   let { status } = await Location.requestForegroundPermissionsAsync();

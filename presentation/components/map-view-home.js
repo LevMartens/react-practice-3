@@ -27,12 +27,12 @@ import {
   getCoordinatesBetween,
   getDistanceBetween,
   setOneMeterApart,
-} from "../../Core/Calculations";
-import { getGeolocation } from "../../domain/use_cases/getGeolocation";
-import { getPluscode } from "../../domain/use_cases/get-pluscode";
-import { getHeading } from "../../domain/use_cases/getHeading";
-import { watchPositionForeground } from "../../domain/use_cases/watch-position-foreground";
-import { getPositionOnce } from "../../domain/use_cases/get-position-once";
+} from "../../domain/generators/Calculations";
+import { getGeolocation } from "../../domain/use_cases/environment/getGeolocation";
+import { getPluscode } from "../../domain/use_cases/api/get-pluscode";
+import { getHeading } from "../../domain/use_cases/environment/getHeading";
+import { watchPositionForeground } from "../../domain/use_cases/environment/watch-position-foreground";
+import { getPositionOnce } from "../../domain/use_cases/environment/get-position-once";
 //import { mdiNavigation } from "@mdi/js";
 
 export class MapViewHome extends Component {

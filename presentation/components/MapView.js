@@ -16,7 +16,7 @@ import {
 } from "../state-management/actions/actions";
 import { connect } from "react-redux";
 import * as Font from "expo-font";
-import { getCoordinatesBetween } from "../../Core/Calculations";
+import { getCoordinatesBetween } from "../../domain/generators/Calculations";
 
 export class MapViewComponent extends Component {
   render() {

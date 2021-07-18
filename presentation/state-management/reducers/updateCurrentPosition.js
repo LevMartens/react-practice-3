@@ -2,7 +2,7 @@ import {
   getCoordinatesBetween,
   getDistanceBetween,
   setOneMeterApart,
-} from "../../../Core/Calculations";
+} from "../../../domain/generators/Calculations";
 
 const Melbourne = {
   latitude: -37.840935,
