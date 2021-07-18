@@ -165,7 +165,7 @@ export const getPlusCodeLevel1 = /* GraphQL */ `
       level2List {
         items {
           id
-          parentId
+          parentIdWithDigits
           digits
           numberOfLines
           createdAt
@@ -211,7 +211,7 @@ export const getPlusCodeLevel2 = /* GraphQL */ `
   query GetPlusCodeLevel2($id: ID!) {
     getPlusCodeLevel2(id: $id) {
       id
-      parentId
+      parentIdWithDigits
       pluscodeParent {
         id
         digits
@@ -240,7 +240,7 @@ export const getPlusCodeLevel2 = /* GraphQL */ `
       level3List {
         items {
           id
-          parentId
+          parentIdWithDigits
           digits
           numberOfLines
           createdAt
@@ -263,7 +263,7 @@ export const listPlusCodeLevel2s = /* GraphQL */ `
     listPlusCodeLevel2s(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        parentId
+        parentIdWithDigits
         pluscodeParent {
           id
           digits
@@ -294,10 +294,10 @@ export const getPlusCodeLevel3 = /* GraphQL */ `
   query GetPlusCodeLevel3($id: ID!) {
     getPlusCodeLevel3(id: $id) {
       id
-      parentId
+      parentIdWithDigits
       pluscodeParent {
         id
-        parentId
+        parentIdWithDigits
         pluscodeParent {
           id
           digits
@@ -353,10 +353,10 @@ export const listPlusCodeLevel3s = /* GraphQL */ `
     listPlusCodeLevel3s(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        parentId
+        parentIdWithDigits
         pluscodeParent {
           id
-          parentId
+          parentIdWithDigits
           digits
           numberOfLines
           createdAt
@@ -388,10 +388,10 @@ export const getLines = /* GraphQL */ `
       parentId
       pluscodeParent {
         id
-        parentId
+        parentIdWithDigits
         pluscodeParent {
           id
-          parentId
+          parentIdWithDigits
           digits
           numberOfLines
           createdAt
@@ -444,7 +444,7 @@ export const listLines = /* GraphQL */ `
         parentId
         pluscodeParent {
           id
-          parentId
+          parentIdWithDigits
           digits
           numberOfLines
           createdAt
@@ -539,16 +539,14 @@ export const pluscodeByDigits = /* GraphQL */ `
 `;
 export const pluscode2ByDigitsAndParent = /* GraphQL */ `
   query Pluscode2ByDigitsAndParent(
-    $parentId: String
-    $digits: ModelStringKeyConditionInput
+    $parentIdWithDigits: String
     $sortDirection: ModelSortDirection
     $filter: ModelPlusCodeLevel2FilterInput
     $limit: Int
     $nextToken: String
   ) {
     pluscode2ByDigitsAndParent(
-      parentId: $parentId
-      digits: $digits
+      parentIdWithDigits: $parentIdWithDigits
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -556,7 +554,7 @@ export const pluscode2ByDigitsAndParent = /* GraphQL */ `
     ) {
       items {
         id
-        parentId
+        parentIdWithDigits
         pluscodeParent {
           id
           digits
@@ -585,16 +583,14 @@ export const pluscode2ByDigitsAndParent = /* GraphQL */ `
 `;
 export const pluscode3ByDigitsAndParent = /* GraphQL */ `
   query Pluscode3ByDigitsAndParent(
-    $parentId: String
-    $digits: ModelStringKeyConditionInput
+    $parentIdWithDigits: String
     $sortDirection: ModelSortDirection
     $filter: ModelPlusCodeLevel3FilterInput
     $limit: Int
     $nextToken: String
   ) {
     pluscode3ByDigitsAndParent(
-      parentId: $parentId
-      digits: $digits
+      parentIdWithDigits: $parentIdWithDigits
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -602,10 +598,10 @@ export const pluscode3ByDigitsAndParent = /* GraphQL */ `
     ) {
       items {
         id
-        parentId
+        parentIdWithDigits
         pluscodeParent {
           id
-          parentId
+          parentIdWithDigits
           digits
           numberOfLines
           createdAt

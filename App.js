@@ -13,8 +13,8 @@ import { useFonts } from "expo-font";
 import * as Application from "expo-application";
 import Amplify, { API, graphqlOperation } from "aws-amplify";
 import awsconfig from "./src/aws-exports";
-import { createCoordinates, createLines, createPlusCodeLevel1, createPlusCodeLevel2, createPlusCodeLevel3, updatePlusCodeLevel1 } from "./src/mutations";
-import { pluscodeByDigits, pluscode2ByDigitsAndParent } from "./src/queries";
+import { createCoordinates, createLines, createPlusCodeLevel1, createPlusCodeLevel2, createPlusCodeLevel3, updatePlusCodeLevel1, updatePlusCodeLevel2, updatePlusCodeLevel3 } from "./src/mutations";
+import { pluscodeByDigits, pluscode2ByDigitsAndParent, pluscode3ByDigitsAndParent } from "./src/queries";
 import { getPluscode } from "./domain/use_cases/get-pluscode";
 Amplify.configure(awsconfig);
 
@@ -51,17 +51,20 @@ async function createPLuscode1() {}
 
 async function createCompleteLine() { 
 
-  var completePluscode = "4QQW3H"; //! TEST DATA: real variable will be passed into function
+  var completePluscode = "4QJ77X"; //! TEST DATA: real variable will be passed into function
   var pluscodeLevel1Digits = "4Q"; //! TEST DATA: real variable will be passed into function
-  var pluscodeLevel2Digits = "QW"; //! TEST DATA: real variable will be passed into function
-  var pluscodeLevel3Digits = "3H"; //! TEST DATA: real variable will be passed into function
+  var pluscodeLevel2Digits = "J7"; //! TEST DATA: real variable will be passed into function
+  var pluscodeLevel3Digits = "7X"; //! TEST DATA: real variable will be passed into function
   var startingPoint = {lat: "-40", lng: "40"}; //! TEST DATA: real variable will be passed into function
   var endPoint = {lat: "-30", lng: "30"}; //! TEST DATA: real variable will be passed into function
 
   // Check if level 1 pluscode exists 
-  const pluscodeLevel1Exists = checkIfLevel1Exists(pluscodeLevel1Digits); //returns object with id if true
+  const pluscodeLevel1Exists = await checkIfLevel1Exists(pluscodeLevel1Digits); //returns object with id if true
 
-  if (pluscodeLevel1Exists == "False") {
+  
+
+  if (pluscodeLevel1Exists.id == null) {
+    
     // Pluscode doesn't exist yet, we create everything new:
 
     // Creating pluscode level 1
@@ -87,10 +90,10 @@ async function createCompleteLine() {
   } else {
    
     // Check if pluscode lvl 2 exists under pluscode lvl 1
-    const pluscodeLevel2ExistsUnderLvl1 = checkIfLevel2ExistsUnderlvl1(pluscodeLevel1Exists.id, pluscodeLevel2Digits); //returns id if true
+    const pluscodeLevel2ExistsUnderLvl1 = await checkIfLevel2ExistsUnderlvl1(pluscodeLevel1Exists.id, pluscodeLevel2Digits); //returns id if true
 
-    if (pluscodeLevel2ExistsUnderLvl1 == "False") {
-    // Pluscode exists under lvl 1, we create a new branch under this pluscode lvl 1
+    if (pluscodeLevel2ExistsUnderLvl1.id == null) {
+    // Pluscode does not exists under lvl 1, we create a new branch under this pluscode lvl 1
 
     // Update pluscode lvl 1 numberOfLines
     increaseNumberOfLinesInPluscodeLvl1By(1, pluscodeLevel1Exists.id, pluscodeLevel1Exists.numberOfLines);
@@ -113,8 +116,47 @@ async function createCompleteLine() {
 
     } else {
 
+    // Check if pluscode lvl 3 exists under pluscode lvl 2
+    const pluscodeLevel3ExistsUnderLvl2 = await checkIfLevel3ExistsUnderlvl2(pluscodeLevel2ExistsUnderLvl1.id, pluscodeLevel3Digits);
+
+    if (pluscodeLevel3ExistsUnderLvl2.id == null) {
+    // Pluscode does not exists under lvl 2, we create a new branch under this pluscode lvl 2
+
+    // Update pluscode lvl 1 numberOfLines
+    increaseNumberOfLinesInPluscodeLvl1By(1, pluscodeLevel1Exists.id, pluscodeLevel1Exists.numberOfLines);
+
+    // Update pluscode lvl 2 numberOfLines
+    increaseNumberOfLinesInPluscodeLvl2By(1, pluscodeLevel2ExistsUnderLvl1.id, pluscodeLevel2ExistsUnderLvl1.numberOfLines);
+
+    // Creating pluscode level 3
+    const xxMiddleCoordinatesL3 = await getPluscode(`${pluscodeLevel1Digits}${pluscodeLevel2Digits}${pluscodeLevel3Digits}FF%2BFF`); 
+    const xxMiddleCoordinatesTypeL3ID = await createGraphQLCoordinateType(xxMiddleCoordinatesL3.lat, xxMiddleCoordinatesL3.lng);
+    const xxPluscodeLevel3ID = await createGraphQLPluscodeLevel3(pluscodeLevel3Digits, xxMiddleCoordinatesTypeL3ID, 1, pluscodeLevel2ExistsUnderLvl1.id);
+
+    // Creating new line
+    const xxStartingPointCoordinatesTypeID = await createGraphQLCoordinateType(startingPoint.lat, startingPoint.lng);
+    const xxEndPointCoordinatesTypeID = await createGraphQLCoordinateType(endPoint.lat, endPoint.lng);
+    const xxLineID = await createGraphQLLine(xxStartingPointCoordinatesTypeID, xxEndPointCoordinatesTypeID, xxPluscodeLevel3ID, completePluscode);
 
 
+    } else {
+
+    // Update pluscode lvl 1 numberOfLines
+    increaseNumberOfLinesInPluscodeLvl1By(1, pluscodeLevel1Exists.id, pluscodeLevel1Exists.numberOfLines);
+
+    // Update pluscode lvl 2 numberOfLines
+    increaseNumberOfLinesInPluscodeLvl2By(1, pluscodeLevel2ExistsUnderLvl1.id, pluscodeLevel2ExistsUnderLvl1.numberOfLines);
+
+    // Update pluscode lvl 3 numberOfLines
+    increaseNumberOfLinesInPluscodeLvl3By(1, pluscodeLevel3ExistsUnderLvl2.id, pluscodeLevel3ExistsUnderLvl2.numberOfLines);
+
+    // Creating new line
+    const xxxStartingPointCoordinatesTypeID = await createGraphQLCoordinateType(startingPoint.lat, startingPoint.lng);
+    const xxxEndPointCoordinatesTypeID = await createGraphQLCoordinateType(endPoint.lat, endPoint.lng);
+    const xxxLineID = await createGraphQLLine(xxxStartingPointCoordinatesTypeID, xxxEndPointCoordinatesTypeID, pluscodeLevel3ExistsUnderLvl2.id, completePluscode);
+
+
+    }
 
 
     }
@@ -122,6 +164,63 @@ async function createCompleteLine() {
 
   }
   
+}
+
+async function increaseNumberOfLinesInPluscodeLvl3By(count, id, currentNumberOfLines) {
+  try {
+    const response = await API.graphql(
+      graphqlOperation(updatePlusCodeLevel3, {
+        input: {
+          id: id,
+          numberOfLines: currentNumberOfLines + count
+        },
+      })
+    );
+
+     console.log("GraphQL numberOfLines in pluscode lvl 3 successfully updated" );
+     
+  } catch (err) {
+    console.log("Error updating numberOfLines in pluscode lvl 3 ");
+    
+  }
+ }
+
+async function increaseNumberOfLinesInPluscodeLvl2By(count, id, currentNumberOfLines) {
+  try {
+    const response = await API.graphql(
+      graphqlOperation(updatePlusCodeLevel2, {
+        input: {
+          id: id,
+          numberOfLines: currentNumberOfLines + count
+        },
+      })
+    );
+
+     console.log("GraphQL numberOfLines in pluscode lvl 2 successfully updated" );
+     
+  } catch (err) {
+    console.log("Error updating numberOfLines in pluscode lvl 2 ");
+    
+  }
+ }
+
+async function checkIfLevel3ExistsUnderlvl2(pluscodeLvl2ID, digits) { 
+
+  try {
+    const response = await API.graphql(
+      graphqlOperation(pluscode3ByDigitsAndParent, {
+        parentIdWithDigits: pluscodeLvl2ID + digits
+      })
+    );
+
+    console.log("This pluscode level 3 exists! id: " + JSON.stringify(response.data.pluscode3ByDigitsAndParent.items[0].id));
+    return response.data.pluscode3ByDigitsAndParent.items[0];
+  } catch (err) {
+    console.log(
+      "Warning this pluscode level 3 does not exist under this pluscode lvl 2, returning False " 
+    ); 
+    return {exists: false};
+  }
 }
 
 async function increaseNumberOfLinesInPluscodeLvl1By(count, id, currentNumberOfLines) {
@@ -138,18 +237,19 @@ async function increaseNumberOfLinesInPluscodeLvl1By(count, id, currentNumberOfL
      console.log("GraphQL numberOfLines in pluscode lvl 1 successfully updated" );
      
   } catch (err) {
-    console.log("Error updating numberOfLines in pluscode lvl 1: ", err);
+    console.log("Error updating numberOfLines in pluscode lvl 1 ");
     
   }
  }
 
 async function checkIfLevel2ExistsUnderlvl1(pluscodeLvl1ID, digits) { 
 
+  
+
   try {
     const response = await API.graphql(
       graphqlOperation(pluscode2ByDigitsAndParent, {
-        digits: digits,
-        parentId: pluscodeLvl1ID
+        parentIdWithDigits: pluscodeLvl1ID + digits
       })
     );
 
@@ -157,10 +257,9 @@ async function checkIfLevel2ExistsUnderlvl1(pluscodeLvl1ID, digits) {
     return response.data.pluscode2ByDigitsAndParent.items[0];
   } catch (err) {
     console.log(
-      "Warning this pluscode level 2 does not exist under this pluscode lvl 1, returning False, message: ",
-      err
+      "Warning this pluscode level 2 does not exist under this pluscode lvl 1, returning False "  
     ); 
-    return "False";
+    return {exists: false};
   }
 }
 
@@ -177,14 +276,15 @@ async function checkIfLevel1Exists(digits) {
     return response.data.pluscodeByDigits.items[0];
   } catch (err) {
     console.log(
-      "Warning this pluscode level 1 does not exist, returning False, error message: ",
-      err
+      "Warning this pluscode level 1 does not exist, returning False "
     ); 
-    return "False";
+    return {exists: false};
   }
 }
 
 async function createGraphQLLine(startingPointID, endPointID, parentID, completePluscode) { 
+
+  
   try {
     const response = await API.graphql(
       graphqlOperation(createLines, {
@@ -199,7 +299,7 @@ async function createGraphQLLine(startingPointID, endPointID, parentID, complete
     );
 
      console.log("GraphQL Line successfully made, id:" + JSON.stringify(response.data.createLines.id));
-     return JSON.stringify(response.data.createLines.id);
+     return response.data.createLines.id;
   } catch (err) {
     console.log("Error creating Line:", err);
     return "No ID";
@@ -217,7 +317,7 @@ async function createGraphQLPluscodeLevel3(digits, plusCodeLevel3MiddleCoordId, 
       graphqlOperation(createPlusCodeLevel3, {
         input: {
           digits: digits,
-          parentId: parentID,
+          parentIdWithDigits: parentID + digits,
           plusCodeLevel3MiddleCoordId: plusCodeLevel3MiddleCoordId,
           plusCodeLevel3PluscodeParentId: parentID,
           numberOfLines: numberOfLines, 
@@ -226,7 +326,7 @@ async function createGraphQLPluscodeLevel3(digits, plusCodeLevel3MiddleCoordId, 
     );
 
      console.log("GraphQL pluscodeLevel3 successfully made, id:" + JSON.stringify(response.data.createPlusCodeLevel3.id));
-     return JSON.stringify(response.data.createPlusCodeLevel3.id);
+     return response.data.createPlusCodeLevel3.id;
   } catch (err) {
     console.log("Error creating pluscodelevel3:", err);
     return "No ID";
@@ -235,12 +335,13 @@ async function createGraphQLPluscodeLevel3(digits, plusCodeLevel3MiddleCoordId, 
 }
 
 async function createGraphQLPluscodeLevel2(digits, plusCodeLevel2MiddleCoordId, numberOfLines, parentID ) {
+  
   try {
     const response = await API.graphql(
       graphqlOperation(createPlusCodeLevel2, {
         input: {
           digits: digits,
-          parentId: parentID,
+          parentIdWithDigits: parentID + digits,
           plusCodeLevel2MiddleCoordId: plusCodeLevel2MiddleCoordId,
           plusCodeLevel2PluscodeParentId: parentID,
           numberOfLines: numberOfLines, 
@@ -249,7 +350,7 @@ async function createGraphQLPluscodeLevel2(digits, plusCodeLevel2MiddleCoordId, 
     );
 
      console.log("GraphQL pluscodeLevel2 successfully made, id:" + JSON.stringify(response.data.createPlusCodeLevel2.id));
-     return JSON.stringify(response.data.createPlusCodeLevel2.id);
+     return response.data.createPlusCodeLevel2.id;
   } catch (err) {
     console.log("Error creating pluscodelevel2:", err);
     return "No ID";
@@ -271,7 +372,7 @@ async function createGraphQLPluscodeLevel1(digits, plusCodeLevel1MiddleCoordId, 
     );
 
      console.log("GraphQL pluscodeLevel1 successfully made, id:" + JSON.stringify(response.data.createPlusCodeLevel1.id));
-     return JSON.stringify(response.data.createPlusCodeLevel1.id);
+     return response.data.createPlusCodeLevel1.id;
   } catch (err) {
     console.log("Error creating pluscodelevel1:", err);
     return "No ID";

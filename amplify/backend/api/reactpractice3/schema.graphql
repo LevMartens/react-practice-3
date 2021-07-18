@@ -37,11 +37,11 @@ type PlusCodeLevel2
   @model
   @key(
     name: "pluscode2ByDigitsAndParent"
-    fields: ["parentId","digits"]
+    fields: ["parentIdWithDigits"]
     queryField: "pluscode2ByDigitsAndParent"
   ) {
   id: ID!
-  parentId: String
+  parentIdWithDigits: String
   pluscodeParent: PlusCodeLevel1 @connection(name: "level1Tolevel2")
   digits: String
   middleCoord: Coordinates @connection
@@ -51,11 +51,11 @@ type PlusCodeLevel2
 
 type PlusCodeLevel3 @model @key(
     name: "pluscode3ByDigitsAndParent"
-    fields: ["parentId","digits"]
+    fields: ["parentIdWithDigits"]
     queryField: "pluscode3ByDigitsAndParent"
   ) {
   id: ID!
-  parentId: String
+  parentIdWithDigits: String
   pluscodeParent: PlusCodeLevel2 @connection(name: "level2Tolevel3")
   digits: String
   middleCoord: Coordinates @connection

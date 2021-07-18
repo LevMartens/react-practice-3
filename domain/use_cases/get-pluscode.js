@@ -5,7 +5,7 @@ import React, { Component } from "react";
 async function getValueFor(key) {
   let result = await SecureStore.getItemAsync(key);
   if (result) {
-    console.log("api key " + result);
+    //console.log("api key " + result);
     return result;
   } else {
     console.log("NO api key found");
@@ -23,6 +23,8 @@ export async function getPluscode(pluscode) {
   );
   const json = await response.json();
   //const obj = JSON.parse(json);
-  console.log("PLUS CODE COORD  " + json.plus_code.geometry.location.lng);
+  if (json.plus_code.geometry.location.lng != null) {
+  console.log("Pluscode data is successfully fetched");
+  }
   return json.plus_code.geometry.location;
 }
