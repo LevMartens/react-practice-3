@@ -5,13 +5,15 @@ export async function createGraphQLPluscodeLevel3(
   digits,
   plusCodeLevel3MiddleCoordId,
   numberOfLines,
-  parentID
+  parentID,
+  completePluscode
 ) {
   try {
     const response = await API.graphql(
       graphqlOperation(createPlusCodeLevel3, {
         input: {
           digits: digits,
+          completePluscode: completePluscode,
           parentIdWithDigits: parentID + digits,
           plusCodeLevel3MiddleCoordId: plusCodeLevel3MiddleCoordId,
           plusCodeLevel3PluscodeParentId: parentID,

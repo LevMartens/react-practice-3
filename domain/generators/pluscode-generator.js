@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-// jumps = amount of squares next to the center square .
-// levelbasis = every pair of symbols is one level, so RQJ67X is level 3, we choose the levelbasis based on zoom (latitudeDelta) .
-export function pluscodeGeneratorLevel3(pluscode, jumps) {
+// jumps = amount of squares next to the center square.
+// levelbasis = every pair of symbols is one level, so RQJ67X is level 3, we choose the levelbasis based on zoom.
+export async function pluscodeGeneratorLevel3(pluscode, jumps) {
   var level3a = pluscode.charAt(5);
   var level3b = pluscode.charAt(4);
   var level2a = pluscode.charAt(3);
@@ -455,6 +455,8 @@ export function pluscodeGeneratorLevel3(pluscode, jumps) {
       }
     }
   }
-  console.log("PLUS CODES ARRAY  " + pluscodesArray);
+  pluscodesArray.push(pluscode);
+
   console.log("PLUS CODES ARRAY LENGTH " + pluscodesArray.length);
+  return pluscodesArray;
 }

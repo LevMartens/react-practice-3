@@ -9,7 +9,7 @@ import { createGraphQLLine } from "../resources/graphql/create-graphql-line";
 import { increaseNumberOfLinesInPluscodeLvl1By } from "../resources/graphql/increase-number-of-lines-in-pluscode-lvl-1-by";
 import { increaseNumberOfLinesInPluscodeLvl2By } from "../resources/graphql/increase-number-of-lines-in-pluscode-lvl-2-by";
 import { increaseNumberOfLinesInPluscodeLvl3By } from "../resources/graphql/increase-number-of-lines-in-pluscode-lvl-3-by";
-import { getPluscode } from "../resources/api/get-pluscode";
+import { getCoordinesFromPluscode } from "../resources/api/get-pluscode";
 
 export async function createLine(completePluscode, startingPoint, endPoint) {
   const pluscodeLevel1Digits = completePluscode.substring(0, 2);
@@ -33,7 +33,7 @@ export async function createLine(completePluscode, startingPoint, endPoint) {
     // Pluscode doesn't exist yet, we create everything new:
 
     // Creating pluscode level 1
-    const middleCoordinatesL1 = await getPluscode(
+    const middleCoordinatesL1 = await getCoordinesFromPluscode(
       `${pluscodeLevel1Digits}FFFFFF%2BFF`
     ); // The location where the numberOfLinesMarker will be placed on the map
     const middleCoordinatesTypeL1ID = await createGraphQLCoordinateType(
@@ -47,7 +47,7 @@ export async function createLine(completePluscode, startingPoint, endPoint) {
     ); // Creating a new pluscode level 1 with 1 line in it
 
     // Creating pluscode level 2
-    const middleCoordinatesL2 = await getPluscode(
+    const middleCoordinatesL2 = await getCoordinesFromPluscode(
       `${pluscodeLevel1Digits}${pluscodeLevel2Digits}FFFF%2BFF`
     );
     const middleCoordinatesTypeL2ID = await createGraphQLCoordinateType(
@@ -58,11 +58,12 @@ export async function createLine(completePluscode, startingPoint, endPoint) {
       pluscodeLevel2Digits,
       middleCoordinatesTypeL2ID,
       1,
-      pluscodeLevel1ID
+      pluscodeLevel1ID,
+      completePluscode.substring(0, 4)
     );
 
     // Creating pluscode level 3
-    const middleCoordinatesL3 = await getPluscode(
+    const middleCoordinatesL3 = await getCoordinesFromPluscode(
       `${pluscodeLevel1Digits}${pluscodeLevel2Digits}${pluscodeLevel3Digits}FF%2BFF`
     );
     const middleCoordinatesTypeL3ID = await createGraphQLCoordinateType(
@@ -73,7 +74,8 @@ export async function createLine(completePluscode, startingPoint, endPoint) {
       pluscodeLevel3Digits,
       middleCoordinatesTypeL3ID,
       1,
-      pluscodeLevel2ID
+      pluscodeLevel2ID,
+      completePluscode
     );
 
     // Creating new line
@@ -109,7 +111,7 @@ export async function createLine(completePluscode, startingPoint, endPoint) {
       );
 
       // Creating pluscode level 2
-      const xMiddleCoordinatesL2 = await getPluscode(
+      const xMiddleCoordinatesL2 = await getCoordinesFromPluscode(
         `${pluscodeLevel1Digits}${pluscodeLevel2Digits}FFFF%2BFF`
       );
       const xMiddleCoordinatesTypeL2ID = await createGraphQLCoordinateType(
@@ -120,11 +122,12 @@ export async function createLine(completePluscode, startingPoint, endPoint) {
         pluscodeLevel2Digits,
         xMiddleCoordinatesTypeL2ID,
         1,
-        pluscodeLevel1Exists.id
+        pluscodeLevel1Exists.id,
+        completePluscode.substring(0, 4)
       );
 
       // Creating pluscode level 3
-      const xMiddleCoordinatesL3 = await getPluscode(
+      const xMiddleCoordinatesL3 = await getCoordinesFromPluscode(
         `${pluscodeLevel1Digits}${pluscodeLevel2Digits}${pluscodeLevel3Digits}FF%2BFF`
       );
       const xMiddleCoordinatesTypeL3ID = await createGraphQLCoordinateType(
@@ -135,7 +138,8 @@ export async function createLine(completePluscode, startingPoint, endPoint) {
         pluscodeLevel3Digits,
         xMiddleCoordinatesTypeL3ID,
         1,
-        xPluscodeLevel2ID
+        xPluscodeLevel2ID,
+        completePluscode
       );
 
       // Creating new line
@@ -178,7 +182,7 @@ export async function createLine(completePluscode, startingPoint, endPoint) {
         );
 
         // Creating pluscode level 3
-        const xxMiddleCoordinatesL3 = await getPluscode(
+        const xxMiddleCoordinatesL3 = await getCoordinesFromPluscode(
           `${pluscodeLevel1Digits}${pluscodeLevel2Digits}${pluscodeLevel3Digits}FF%2BFF`
         );
         const xxMiddleCoordinatesTypeL3ID = await createGraphQLCoordinateType(
@@ -189,7 +193,8 @@ export async function createLine(completePluscode, startingPoint, endPoint) {
           pluscodeLevel3Digits,
           xxMiddleCoordinatesTypeL3ID,
           1,
-          pluscodeLevel2ExistsUnderLvl1.id
+          pluscodeLevel2ExistsUnderLvl1.id,
+          completePluscode
         );
 
         // Creating new line

@@ -165,6 +165,7 @@ export const getPlusCodeLevel1 = /* GraphQL */ `
       level2List {
         items {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -211,6 +212,7 @@ export const getPlusCodeLevel2 = /* GraphQL */ `
   query GetPlusCodeLevel2($id: ID!) {
     getPlusCodeLevel2(id: $id) {
       id
+      completePluscode
       parentIdWithDigits
       pluscodeParent {
         id
@@ -240,6 +242,7 @@ export const getPlusCodeLevel2 = /* GraphQL */ `
       level3List {
         items {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -263,6 +266,7 @@ export const listPlusCodeLevel2s = /* GraphQL */ `
     listPlusCodeLevel2s(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
@@ -294,9 +298,11 @@ export const getPlusCodeLevel3 = /* GraphQL */ `
   query GetPlusCodeLevel3($id: ID!) {
     getPlusCodeLevel3(id: $id) {
       id
+      completePluscode
       parentIdWithDigits
       pluscodeParent {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
@@ -353,9 +359,11 @@ export const listPlusCodeLevel3s = /* GraphQL */ `
     listPlusCodeLevel3s(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -388,9 +396,11 @@ export const getLines = /* GraphQL */ `
       parentId
       pluscodeParent {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -444,6 +454,7 @@ export const listLines = /* GraphQL */ `
         parentId
         pluscodeParent {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -554,6 +565,52 @@ export const pluscode2ByDigitsAndParent = /* GraphQL */ `
     ) {
       items {
         id
+        completePluscode
+        parentIdWithDigits
+        pluscodeParent {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        level3List {
+          nextToken
+        }
+        numberOfLines
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const pluscode2ByCompletePluscode = /* GraphQL */ `
+  query Pluscode2ByCompletePluscode(
+    $completePluscode: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelPlusCodeLevel2FilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    pluscode2ByCompletePluscode(
+      completePluscode: $completePluscode
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
@@ -598,9 +655,11 @@ export const pluscode3ByDigitsAndParent = /* GraphQL */ `
     ) {
       items {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -621,6 +680,36 @@ export const pluscode3ByDigitsAndParent = /* GraphQL */ `
         }
         createdAt
         updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const pluscode3ByCompletePluscode = /* GraphQL */ `
+  query Pluscode3ByCompletePluscode(
+    $completePluscode: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelPlusCodeLevel3FilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    pluscode3ByCompletePluscode(
+      completePluscode: $completePluscode
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        numberOfLines
+        middleCoord {
+          lat
+          lng
+        }
+        listOfLines {
+          nextToken
+        }
       }
       nextToken
     }

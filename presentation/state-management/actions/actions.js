@@ -74,3 +74,10 @@ export const updatePath = (
     type: "UPDATEPATH",
   };
 };
+
+export const sendLineMarkers = (event) => {
+  return {
+    lineMarkers: event,
+    type: "GETLINEMARKERS",
+  };
+};

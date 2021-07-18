@@ -39,8 +39,14 @@ type PlusCodeLevel2
     name: "pluscode2ByDigitsAndParent"
     fields: ["parentIdWithDigits"]
     queryField: "pluscode2ByDigitsAndParent"
+  )
+  @key(
+    name: "pluscode2ByCompletePluscode"
+    fields: ["completePluscode"]
+    queryField: "pluscode2ByCompletePluscode"
   ) {
   id: ID!
+  completePluscode: String
   parentIdWithDigits: String
   pluscodeParent: PlusCodeLevel1 @connection(name: "level1Tolevel2")
   digits: String
@@ -49,12 +55,20 @@ type PlusCodeLevel2
   numberOfLines: Int
 }
 
-type PlusCodeLevel3 @model @key(
+type PlusCodeLevel3
+  @model
+  @key(
     name: "pluscode3ByDigitsAndParent"
     fields: ["parentIdWithDigits"]
     queryField: "pluscode3ByDigitsAndParent"
+  )
+  @key(
+    name: "pluscode3ByCompletePluscode"
+    fields: ["completePluscode"]
+    queryField: "pluscode3ByCompletePluscode"
   ) {
   id: ID!
+  completePluscode: String
   parentIdWithDigits: String
   pluscodeParent: PlusCodeLevel2 @connection(name: "level2Tolevel3")
   digits: String

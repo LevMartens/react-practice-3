@@ -277,6 +277,7 @@ export const createPlusCodeLevel1 = /* GraphQL */ `
       level2List {
         items {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -309,6 +310,7 @@ export const updatePlusCodeLevel1 = /* GraphQL */ `
       level2List {
         items {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -341,6 +343,7 @@ export const deletePlusCodeLevel1 = /* GraphQL */ `
       level2List {
         items {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -362,6 +365,7 @@ export const createPlusCodeLevel2 = /* GraphQL */ `
   ) {
     createPlusCodeLevel2(input: $input, condition: $condition) {
       id
+      completePluscode
       parentIdWithDigits
       pluscodeParent {
         id
@@ -391,6 +395,7 @@ export const createPlusCodeLevel2 = /* GraphQL */ `
       level3List {
         items {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -412,6 +417,7 @@ export const updatePlusCodeLevel2 = /* GraphQL */ `
   ) {
     updatePlusCodeLevel2(input: $input, condition: $condition) {
       id
+      completePluscode
       parentIdWithDigits
       pluscodeParent {
         id
@@ -441,6 +447,7 @@ export const updatePlusCodeLevel2 = /* GraphQL */ `
       level3List {
         items {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -462,6 +469,7 @@ export const deletePlusCodeLevel2 = /* GraphQL */ `
   ) {
     deletePlusCodeLevel2(input: $input, condition: $condition) {
       id
+      completePluscode
       parentIdWithDigits
       pluscodeParent {
         id
@@ -491,6 +499,7 @@ export const deletePlusCodeLevel2 = /* GraphQL */ `
       level3List {
         items {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -512,9 +521,11 @@ export const createPlusCodeLevel3 = /* GraphQL */ `
   ) {
     createPlusCodeLevel3(input: $input, condition: $condition) {
       id
+      completePluscode
       parentIdWithDigits
       pluscodeParent {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
@@ -569,9 +580,11 @@ export const updatePlusCodeLevel3 = /* GraphQL */ `
   ) {
     updatePlusCodeLevel3(input: $input, condition: $condition) {
       id
+      completePluscode
       parentIdWithDigits
       pluscodeParent {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
@@ -626,9 +639,11 @@ export const deletePlusCodeLevel3 = /* GraphQL */ `
   ) {
     deletePlusCodeLevel3(input: $input, condition: $condition) {
       id
+      completePluscode
       parentIdWithDigits
       pluscodeParent {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
@@ -686,9 +701,11 @@ export const createLines = /* GraphQL */ `
       parentId
       pluscodeParent {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -740,9 +757,11 @@ export const updateLines = /* GraphQL */ `
       parentId
       pluscodeParent {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -794,9 +813,11 @@ export const deleteLines = /* GraphQL */ `
       parentId
       pluscodeParent {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines

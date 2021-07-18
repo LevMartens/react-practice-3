@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import MapView, { Polyline, Marker, Circle } from "react-native-maps";
-//import * as Svg from "react-native-svg";
 import { ActivityIndicator, Colors } from "react-native-paper";
 import {
   StyleSheet,
@@ -11,42 +9,49 @@ import {
   Image,
   Icon,
 } from "react-native";
-import {
-  currentPositionUpdate,
-  mapPressedForFirstPin,
-  mapPressedForSecondPin,
-  mapPressedForThirdPin,
-  updateCurrentDirection,
-  updatePath,
-  updateCurrentPositionOnce,
-} from "../state-management/actions/actions";
-import { connect } from "react-redux";
-import StartRecordingButton from "./StartRecordingButton";
-import {
-  getCoordinatesBetween,
-  getDistanceBetween,
-  setOneMeterApart,
-} from "../../Core/Calculations";
-import { getGeolocation } from "../../domain/use_cases/getGeolocation";
-import { getHeading } from "../../domain/use_cases/getHeading";
-import { watchPositionForeground } from "../../domain/use_cases/watch-position-foreground";
-import { getPositionOnce } from "../../domain/use_cases/get-position-once";
+import { Polyline, Marker, Circle } from "react-native-maps";
 //import { mdiNavigation } from "@mdi/js";
 //import { getLines } from "../../domain/use_cases/get-lines"; //! create get lines in domain/use_cases/graphql
 
-// export class LinesNearby extends Component {
-//   componentDidMount() {
-//     getLines();
-//   }
+export class LinesNearby extends Component {
+  componentDidMount() {
+    //    getLines();
+  }
 
-//   render() {
-//     return <>{"Array of lines (2x marker + 1 polyline)"}</>;
-//   }
-// }
+  render() {
+    return (
+      <React.Fragment key={Math.random()}>
+        {this.props.lineMarkers}
+      </React.Fragment>
+    );
+  }
+}
 
-// export class Line extends Component {
+export class LineMarker extends Component {
+  render() {
+    return (
+      <>
+        <Marker></Marker>
+        <Circle></Circle>
+        <Polyline></Polyline>
+      </>
+    );
+  }
+}
 
-//   render() {
-//     return ();
-//   }
-// }
+export class NumberOfLinesMarker extends Component {
+  render() {
+    return (
+      <Marker key={this.props.id} coordinate={this.props.coordinates}>
+        <Image
+          source={this.props.image}
+          style={{
+            width: 40,
+            height: 40,
+          }}
+          resizeMode="contain"
+        />
+      </Marker>
+    );
+  }
+}

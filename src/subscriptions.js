@@ -247,6 +247,7 @@ export const onCreatePlusCodeLevel1 = /* GraphQL */ `
       level2List {
         items {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -276,6 +277,7 @@ export const onUpdatePlusCodeLevel1 = /* GraphQL */ `
       level2List {
         items {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -305,6 +307,7 @@ export const onDeletePlusCodeLevel1 = /* GraphQL */ `
       level2List {
         items {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -323,6 +326,7 @@ export const onCreatePlusCodeLevel2 = /* GraphQL */ `
   subscription OnCreatePlusCodeLevel2 {
     onCreatePlusCodeLevel2 {
       id
+      completePluscode
       parentIdWithDigits
       pluscodeParent {
         id
@@ -352,6 +356,7 @@ export const onCreatePlusCodeLevel2 = /* GraphQL */ `
       level3List {
         items {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -370,6 +375,7 @@ export const onUpdatePlusCodeLevel2 = /* GraphQL */ `
   subscription OnUpdatePlusCodeLevel2 {
     onUpdatePlusCodeLevel2 {
       id
+      completePluscode
       parentIdWithDigits
       pluscodeParent {
         id
@@ -399,6 +405,7 @@ export const onUpdatePlusCodeLevel2 = /* GraphQL */ `
       level3List {
         items {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -417,6 +424,7 @@ export const onDeletePlusCodeLevel2 = /* GraphQL */ `
   subscription OnDeletePlusCodeLevel2 {
     onDeletePlusCodeLevel2 {
       id
+      completePluscode
       parentIdWithDigits
       pluscodeParent {
         id
@@ -446,6 +454,7 @@ export const onDeletePlusCodeLevel2 = /* GraphQL */ `
       level3List {
         items {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -464,9 +473,11 @@ export const onCreatePlusCodeLevel3 = /* GraphQL */ `
   subscription OnCreatePlusCodeLevel3 {
     onCreatePlusCodeLevel3 {
       id
+      completePluscode
       parentIdWithDigits
       pluscodeParent {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
@@ -518,9 +529,11 @@ export const onUpdatePlusCodeLevel3 = /* GraphQL */ `
   subscription OnUpdatePlusCodeLevel3 {
     onUpdatePlusCodeLevel3 {
       id
+      completePluscode
       parentIdWithDigits
       pluscodeParent {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
@@ -572,9 +585,11 @@ export const onDeletePlusCodeLevel3 = /* GraphQL */ `
   subscription OnDeletePlusCodeLevel3 {
     onDeletePlusCodeLevel3 {
       id
+      completePluscode
       parentIdWithDigits
       pluscodeParent {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
@@ -629,9 +644,11 @@ export const onCreateLines = /* GraphQL */ `
       parentId
       pluscodeParent {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -680,9 +697,11 @@ export const onUpdateLines = /* GraphQL */ `
       parentId
       pluscodeParent {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines
@@ -731,9 +750,11 @@ export const onDeleteLines = /* GraphQL */ `
       parentId
       pluscodeParent {
         id
+        completePluscode
         parentIdWithDigits
         pluscodeParent {
           id
+          completePluscode
           parentIdWithDigits
           digits
           numberOfLines

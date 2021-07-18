@@ -20,6 +20,7 @@ import {
   updateCurrentDirection,
   updatePath,
   updateCurrentPositionOnce,
+  sendLineMarkers,
 } from "../state-management/actions/actions";
 import { connect } from "react-redux";
 import StartRecordingButton from "../components/StartRecordingButton";
@@ -33,8 +34,10 @@ import { getPluscode } from "../../domain/resources/api/get-pluscode";
 import { getHeading } from "../../domain/resources/environment/getHeading";
 import { watchPositionForeground } from "../../domain/resources/environment/watch-position-foreground";
 import { getPositionOnce } from "../../domain/resources/environment/get-position-once";
-import { onRegionChange } from "../../domain/use_cases/on-region-change";
+import { getLineMarkers } from "../../domain/use_cases/get-line-markers";
+import { LinesNearby } from "../components/lines-nearby";
 import { debounce } from "lodash";
+import { lineMarkersHandler } from "../state-management/reducers/line-marker-handler";
 //import { mdiNavigation } from "@mdi/js";
 
 export class MapViewHome extends Component {
@@ -42,11 +45,10 @@ export class MapViewHome extends Component {
     getPositionOnce();
     watchPositionForeground();
     getHeading();
-    //getPluscode();
   }
 
   changeRegion = debounce(async (region) => {
-    onRegionChange(region);
+    getLineMarkers(region);
   }, 1000);
 
   render() {
@@ -64,6 +66,11 @@ export class MapViewHome extends Component {
           longitudeDelta: 0.001,
         }}
       >
+        <React.Fragment key={Math.random()}>
+          {this.props.lineMarkersHandler}
+        </React.Fragment>
+
+        {/* <LinesNearby lineMarkers={this.props.lineMarkersHandler}></LinesNearby> */}
         <Marker
           key={5}
           flat={true}
@@ -129,6 +136,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
+    lineMarkersHandler: state.lineMarkersHandler,
     mapPressHandlerFirstPin: state.mapPressHandlerFirstPin,
     mapPressHandlerSecondPin: state.mapPressHandlerSecondPin,
     mapPressHandlerThirdPin: state.mapPressHandlerThirdPin,
@@ -142,6 +150,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = () => {
   return {
+    sendLineMarkers: sendLineMarkers,
     mapPressedForFirstPin: mapPressedForFirstPin,
     mapPressedForSecondPin: mapPressedForSecondPin,
     mapPressedForThirdPin: mapPressedForThirdPin,
