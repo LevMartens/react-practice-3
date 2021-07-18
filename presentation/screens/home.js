@@ -4,7 +4,7 @@ import PinMarkButton from "../components/PinMarkButton";
 import { StyleSheet, View } from "react-native";
 import MapViewHome from "../components/map-view-home";
 import GPSLiveMapView from "../components/GPSLiveMapView";
-import { getPositionOnce } from "../../domain/use_cases/environment/get-position-once";
+import { getPositionOnce } from "../../domain/resources/environment/get-position-once";
 
 export default function Home({ navigation }) {
   return (

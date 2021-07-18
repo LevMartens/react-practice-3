@@ -1,15 +1,15 @@
-import { checkIfLevel1Exists } from "../use_cases/graphql/check-if-lvl-1-exists";
-import { checkIfLevel2ExistsUnderlvl1 } from "../use_cases/graphql/check-if-lvl-2-exists-under-lvl-1";
-import { checkIfLevel3ExistsUnderlvl2 } from "../use_cases/graphql/check-if-lvl-3-exists-under-lvl-2";
-import { createGraphQLCoordinateType } from "./graphql/create-graphql-coordinates-type";
-import { createGraphQLPluscodeLevel1 } from "./graphql/create-graphql-pluscode-lvl-1";
-import { createGraphQLPluscodeLevel2 } from "./graphql/create-graphql-pluscode-lvl-2";
-import { createGraphQLPluscodeLevel3 } from "./graphql/create-graphql-pluscode-lvl-3";
-import { createGraphQLLine } from "./graphql/create-graphql-line";
-import { increaseNumberOfLinesInPluscodeLvl1By } from "./graphql/increase-number-of-lines-in-pluscode-lvl-1-by";
-import { increaseNumberOfLinesInPluscodeLvl2By } from "./graphql/increase-number-of-lines-in-pluscode-lvl-2-by";
-import { increaseNumberOfLinesInPluscodeLvl3By } from "./graphql/increase-number-of-lines-in-pluscode-lvl-3-by";
-import { getPluscode } from "./api/get-pluscode";
+import { checkIfLevel1Exists } from "../resources/graphql/check-if-lvl-1-exists";
+import { checkIfLevel2ExistsUnderlvl1 } from "../resources/graphql/check-if-lvl-2-exists-under-lvl-1";
+import { checkIfLevel3ExistsUnderlvl2 } from "../resources/graphql/check-if-lvl-3-exists-under-lvl-2";
+import { createGraphQLCoordinateType } from "../resources/graphql/create-graphql-coordinates-type";
+import { createGraphQLPluscodeLevel1 } from "../resources/graphql/create-graphql-pluscode-lvl-1";
+import { createGraphQLPluscodeLevel2 } from "../resources/graphql/create-graphql-pluscode-lvl-2";
+import { createGraphQLPluscodeLevel3 } from "../resources/graphql/create-graphql-pluscode-lvl-3";
+import { createGraphQLLine } from "../resources/graphql/create-graphql-line";
+import { increaseNumberOfLinesInPluscodeLvl1By } from "../resources/graphql/increase-number-of-lines-in-pluscode-lvl-1-by";
+import { increaseNumberOfLinesInPluscodeLvl2By } from "../resources/graphql/increase-number-of-lines-in-pluscode-lvl-2-by";
+import { increaseNumberOfLinesInPluscodeLvl3By } from "../resources/graphql/increase-number-of-lines-in-pluscode-lvl-3-by";
+import { getPluscode } from "../resources/api/get-pluscode";
 
 export async function createLine(completePluscode, startingPoint, endPoint) {
   const pluscodeLevel1Digits = completePluscode.substring(0, 2);

@@ -28,11 +28,13 @@ import {
   getDistanceBetween,
   setOneMeterApart,
 } from "../../domain/generators/Calculations";
-import { getGeolocation } from "../../domain/use_cases/environment/getGeolocation";
-import { getPluscode } from "../../domain/use_cases/api/get-pluscode";
-import { getHeading } from "../../domain/use_cases/environment/getHeading";
-import { watchPositionForeground } from "../../domain/use_cases/environment/watch-position-foreground";
-import { getPositionOnce } from "../../domain/use_cases/environment/get-position-once";
+import { getGeolocation } from "../../domain/resources/environment/getGeolocation";
+import { getPluscode } from "../../domain/resources/api/get-pluscode";
+import { getHeading } from "../../domain/resources/environment/getHeading";
+import { watchPositionForeground } from "../../domain/resources/environment/watch-position-foreground";
+import { getPositionOnce } from "../../domain/resources/environment/get-position-once";
+import { onRegionChange } from "../../domain/use_cases/on-region-change";
+import { debounce } from "lodash";
 //import { mdiNavigation } from "@mdi/js";
 
 export class MapViewHome extends Component {
@@ -43,13 +45,18 @@ export class MapViewHome extends Component {
     //getPluscode();
   }
 
+  changeRegion = debounce(async (region) => {
+    onRegionChange(region);
+  }, 1000);
+
   render() {
     return this.props.aSingleCurrentPosition.isLoaded == true ? (
       <MapView
         onPress={(e) => {}}
         style={styles.map}
-        // onRegionChangeComplete={}
-
+        onRegionChangeComplete={(region) => {
+          this.changeRegion(region);
+        }}
         initialRegion={{
           latitude: this.props.aSingleCurrentPosition.latitude,
           longitude: this.props.aSingleCurrentPosition.longitude,
