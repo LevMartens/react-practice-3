@@ -609,35 +609,68 @@ export const pluscode2ByCompletePluscode = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
-        id
-        completePluscode
-        parentIdWithDigits
-        pluscodeParent {
-          id
-          digits
-          numberOfLines
-          createdAt
-          updatedAt
-        }
-        digits
-        middleCoord {
-          id
-          lat
-          lng
-          createdAt
-          updatedAt
-        }
         level3List {
+          items {
+            completePluscode
+            id
+            numberOfLines
+            middleCoord {
+              lat
+              lng
+            }
+          }
           nextToken
         }
-        numberOfLines
-        createdAt
-        updatedAt
       }
       nextToken
     }
   }
 `;
+// export const pluscode2ByCompletePluscode = /* GraphQL */ `
+//   query Pluscode2ByCompletePluscode(
+//     $completePluscode: String
+//     $sortDirection: ModelSortDirection
+//     $filter: ModelPlusCodeLevel2FilterInput
+//     $limit: Int
+//     $nextToken: String
+//   ) {
+//     pluscode2ByCompletePluscode(
+//       completePluscode: $completePluscode
+//       sortDirection: $sortDirection
+//       filter: $filter
+//       limit: $limit
+//       nextToken: $nextToken
+//     ) {
+//       items {
+//         id
+//         completePluscode
+//         parentIdWithDigits
+//         pluscodeParent {
+//           id
+//           digits
+//           numberOfLines
+//           createdAt
+//           updatedAt
+//         }
+//         digits
+//         middleCoord {
+//           id
+//           lat
+//           lng
+//           createdAt
+//           updatedAt
+//         }
+//         level3List {
+//           nextToken
+//         }
+//         numberOfLines
+//         createdAt
+//         updatedAt
+//       }
+//       nextToken
+//     }
+//   }
+// `;
 export const pluscode3ByDigitsAndParent = /* GraphQL */ `
   query Pluscode3ByDigitsAndParent(
     $parentIdWithDigits: String

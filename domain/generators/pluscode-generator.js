@@ -250,7 +250,7 @@ export async function pluscodeGeneratorLevel3(pluscode, jumps) {
         newLevel1b = neverOutOfRangeArrayForLevel1b[level1bIndex];
       } else {
         // Decrease level1b by 1
-        var level1bIndex = t.indexOf(level1b) + 7 - 1;
+        var level1bIndex = tForLevel1b.indexOf(level1b) + 7 - 1;
 
         newLevel1b = neverOutOfRangeArrayForLevel1b[level1bIndex];
       }

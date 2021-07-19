@@ -40,6 +40,11 @@ import { debounce } from "lodash";
 import { lineMarkersHandler } from "../state-management/reducers/line-marker-handler";
 //import { mdiNavigation } from "@mdi/js";
 
+const callabonna = {
+  latitude: -29.991626,
+  longitude: 140.00131,
+};
+
 export class MapViewHome extends Component {
   componentDidMount() {
     getPositionOnce();
@@ -60,9 +65,9 @@ export class MapViewHome extends Component {
           this.changeRegion(region);
         }}
         initialRegion={{
-          latitude: this.props.aSingleCurrentPosition.latitude,
-          longitude: this.props.aSingleCurrentPosition.longitude,
-          latitudeDelta: 0.2,
+          latitude: callabonna.latitude, //this.props.aSingleCurrentPosition.latitude,
+          longitude: callabonna.longitude, //this.props.aSingleCurrentPosition.longitude,
+          latitudeDelta: 0.4,
           longitudeDelta: 0.001,
         }}
       >

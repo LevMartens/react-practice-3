@@ -19,6 +19,7 @@ import {
   Image,
   Icon,
 } from "react-native";
+import { getAllLvl3UnderLvl2 } from "../resources/graphql/get-all-lvl-3-under-lvl-2";
 
 export async function getLineMarkers(regionData) {
   var pluscodesArray = [];
@@ -28,6 +29,7 @@ export async function getLineMarkers(regionData) {
   );
 
   const pluscodeLvl3 = pluscode.substring(0, 6);
+  const pluscodeLvl2 = pluscode.substring(0, 4);
 
   const zoomLevel = await getZoomLevel(regionData);
   console.log("Zoom lvl " + zoomLevel);
@@ -44,59 +46,55 @@ export async function getLineMarkers(regionData) {
     pluscodesArray = await pluscodeGeneratorLevel3(pluscodeLvl3, 2);
   }
 
-  if (zoomLevel < 12.4 && zoomLevel > 12.0) {
+  if (zoomLevel < 12.4) {
     // 3 jumps in generator lvl 3
 
     pluscodesArray = await pluscodeGeneratorLevel3(pluscodeLvl3, 3);
   }
 
-  var markerComponentsArray = [];
+  var f = await getAllLvl3UnderLvl2(pluscodeLvl2);
 
-  if (pluscodesArray.length > 1) {
-    for (let x = 0; x < pluscodesArray.length; x++) {
-      // Get numberOfLines from lvl 3
-      var markerData = await getMarkerDataLvl3(pluscodesArray[x]);
+  var t = pluscodesArray.filter((x) => x.substring(0, 4) != pluscodeLvl2);
 
-      if (markerData.numberOfLines > 1) {
-        var coordinates = {
-          latitude: parseFloat(markerData.middleCoord.lat),
-          longitude: parseFloat(markerData.middleCoord.lng),
-        };
-        var image = await getNumberMarkerImage(markerData.numberOfLines);
+  if (t.length != 0) {
+    for (var x = 0; x < t.length; ) {
+      var h = await getAllLvl3UnderLvl2(t[x].substring(0, 4));
 
-        var xPackage = {
-          coordinates: coordinates,
-          key: markerData.id,
-          image: image,
-        };
-        // var comp = (
-        //   <NumberOfLinesMarker
-        //     coordinates={coordinates}
-        //     id={markerData.id}
-        //     image={image}
-        //   ></NumberOfLinesMarker>
-        // );
-
-        markerComponentsArray.push(xPackage);
-        console.log(
-          "markerComponentsArray[0].coordinates.latitude: " +
-            markerComponentsArray[0].coordinates.latitude
-        );
-        var sendComponents = markerComponentsArray.map((x) => (
-          <Marker key={x.key} coordinate={x.coordinates}>
-            <Image
-              source={x.image}
-              style={{
-                width: 40,
-                height: 40,
-              }}
-              resizeMode="contain"
-            />
-          </Marker>
-        ));
+      if (h.length > 0) {
+        f = f.concat(h);
       }
+
+      //remove
+      var g = t.filter((z) => z.substring(0, 4) != t[x].substring(0, 4));
+      t = g;
     }
   }
-  console.log("sendComponets.lengts before sending: " + sendComponents.length);
-  store.dispatch(sendLineMarkers(sendComponents));
+
+  if (f.length > 0) {
+    var lineMarkers = [];
+
+    for (let x = 0; x < f.length; x++) {
+      var image = await getNumberMarkerImage(f[x].numberOfLines);
+
+      var coordinates = {
+        latitude: parseFloat(f[x].middleCoord.lat),
+        longitude: parseFloat(f[x].middleCoord.lng),
+      };
+
+      lineMarkers.push(
+        <Marker key={f[x].id} coordinate={coordinates}>
+          <Image
+            source={image}
+            style={{
+              width: 40,
+              height: 40,
+            }}
+            resizeMode="contain"
+          />
+        </Marker>
+      );
+    }
+
+    store.dispatch(sendLineMarkers(lineMarkers));
+  }
 }
