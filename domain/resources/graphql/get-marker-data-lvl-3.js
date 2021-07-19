@@ -1,6 +1,8 @@
 import { API, graphqlOperation } from "aws-amplify";
 import { pluscode3ByCompletePluscode } from "../../../src/queries";
 
+//TODO not used at the moment, check if still in use
+
 export async function getMarkerDataLvl3(completePluscode) {
   try {
     const response = await API.graphql(

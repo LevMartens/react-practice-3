@@ -1,9 +1,5 @@
 import { API, graphqlOperation } from "aws-amplify";
-import {
-  pluscode2ByCompletePluscode,
-  pluscode2ByCompletePluscodeOnlyLvl3,
-  pluscode3ByCompletePluscode,
-} from "../../../src/queries";
+import { pluscode2ByCompletePluscode } from "../../../src/queries";
 
 export async function getAllLvl3UnderLvl2(completePluscode) {
   try {

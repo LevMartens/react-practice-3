@@ -1,5 +1,7 @@
 export async function getNumberMarkerImage(number) {
   switch (number) {
+    case 1:
+      return require("../../assets/lineMarker.png");
     case 2:
       return require("../../assets/2h.png");
     case 3:
@@ -20,6 +22,6 @@ export async function getNumberMarkerImage(number) {
       return require("../../assets/10.png");
 
     default:
-      return require("../../assets/10+.png");
+      return require("../../assets/10plus.png");
   }
 }

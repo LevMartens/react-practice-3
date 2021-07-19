@@ -528,21 +528,18 @@ export const pluscodeByDigits = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
-        id
-        digits
-        middleCoord {
-          id
-          lat
-          lng
-          createdAt
-          updatedAt
-        }
         level2List {
+          items {
+            completePluscode
+            id
+            numberOfLines
+            middleCoord {
+              lat
+              lng
+            }
+          }
           nextToken
         }
-        numberOfLines
-        createdAt
-        updatedAt
       }
       nextToken
     }

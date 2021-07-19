@@ -65,8 +65,8 @@ export class MapViewHome extends Component {
           this.changeRegion(region);
         }}
         initialRegion={{
-          latitude: callabonna.latitude, //this.props.aSingleCurrentPosition.latitude,
-          longitude: callabonna.longitude, //this.props.aSingleCurrentPosition.longitude,
+          latitude: this.props.aSingleCurrentPosition.latitude,
+          longitude: this.props.aSingleCurrentPosition.longitude,
           latitudeDelta: 0.4,
           longitudeDelta: 0.001,
         }}
