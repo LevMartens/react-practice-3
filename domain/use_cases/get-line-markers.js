@@ -78,6 +78,11 @@ export async function getLineMarkers(regionData) {
       var lineMarkers = [];
 
       for (let x = 0; x < f.length; x++) {
+        //TODO fine tune zoomLevel < 11, and add more if (zoomLevel < X)
+        //TODO Add more lines around melbourne area to test this out
+        //TODO think of ways to improve performance
+        //TODO Clean up code/ make more readable
+        //TODO implement lvl 2
         if (zoomLevel < 11) {
           // Here we merge markers when they get too close
           var u = await pluscodeGeneratorLevel3(f[x].completePluscode, 3);
