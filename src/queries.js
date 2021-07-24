@@ -528,18 +528,21 @@ export const pluscodeByDigits = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
+        id
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
         level2List {
-          items {
-            completePluscode
-            id
-            numberOfLines
-            middleCoord {
-              lat
-              lng
-            }
-          }
           nextToken
         }
+        numberOfLines
+        createdAt
+        updatedAt
       }
       nextToken
     }
@@ -606,11 +609,41 @@ export const pluscode2ByCompletePluscode = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
+        id
+        completePluscode
+        parentIdWithDigits
+        pluscodeParent {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
         level3List {
           items {
             completePluscode
             id
             numberOfLines
+            listOfLines {
+              items {
+                startingCoordinates {
+                  id
+                  lat
+                  lng
+                  createdAt
+                  updatedAt
+                }
+              }
+              nextToken
+            }
             middleCoord {
               lat
               lng
@@ -618,56 +651,14 @@ export const pluscode2ByCompletePluscode = /* GraphQL */ `
           }
           nextToken
         }
+        numberOfLines
+        createdAt
+        updatedAt
       }
       nextToken
     }
   }
 `;
-// export const pluscode2ByCompletePluscode = /* GraphQL */ `
-//   query Pluscode2ByCompletePluscode(
-//     $completePluscode: String
-//     $sortDirection: ModelSortDirection
-//     $filter: ModelPlusCodeLevel2FilterInput
-//     $limit: Int
-//     $nextToken: String
-//   ) {
-//     pluscode2ByCompletePluscode(
-//       completePluscode: $completePluscode
-//       sortDirection: $sortDirection
-//       filter: $filter
-//       limit: $limit
-//       nextToken: $nextToken
-//     ) {
-//       items {
-//         id
-//         completePluscode
-//         parentIdWithDigits
-//         pluscodeParent {
-//           id
-//           digits
-//           numberOfLines
-//           createdAt
-//           updatedAt
-//         }
-//         digits
-//         middleCoord {
-//           id
-//           lat
-//           lng
-//           createdAt
-//           updatedAt
-//         }
-//         level3List {
-//           nextToken
-//         }
-//         numberOfLines
-//         createdAt
-//         updatedAt
-//       }
-//       nextToken
-//     }
-//   }
-// `;
 export const pluscode3ByDigitsAndParent = /* GraphQL */ `
   query Pluscode3ByDigitsAndParent(
     $parentIdWithDigits: String
@@ -732,14 +723,80 @@ export const pluscode3ByCompletePluscode = /* GraphQL */ `
     ) {
       items {
         id
-        numberOfLines
+        completePluscode
+        parentIdWithDigits
+        pluscodeParent {
+          id
+          completePluscode
+          parentIdWithDigits
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        digits
         middleCoord {
+          id
           lat
           lng
+          createdAt
+          updatedAt
         }
+        numberOfLines
         listOfLines {
           nextToken
         }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const lineByCompletePluscodes = /* GraphQL */ `
+  query LineByCompletePluscodes(
+    $complete3LevelPluscode: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelLinesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    lineByCompletePluscodes(
+      complete3LevelPluscode: $complete3LevelPluscode
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        parentId
+        pluscodeParent {
+          id
+          completePluscode
+          parentIdWithDigits
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        complete3LevelPluscode
+        startingCoordinates {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        finishCoordinates {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
       }
       nextToken
     }

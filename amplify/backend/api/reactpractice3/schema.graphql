@@ -77,7 +77,13 @@ type PlusCodeLevel3
   listOfLines: [Lines] @connection(name: "level3ToLine")
 }
 
-type Lines @model {
+type Lines
+  @model
+  @key(
+    name: "lineByCompletePluscodes"
+    fields: ["complete3LevelPluscode"]
+    queryField: "lineByCompletePluscodes"
+  ) {
   id: ID!
   parentId: String
   pluscodeParent: PlusCodeLevel3 @connection(name: "level3ToLine")

@@ -16,16 +16,6 @@ export async function createLine(completePluscode, startingPoint, endPoint) {
   const pluscodeLevel2Digits = completePluscode.substring(2, 4);
   const pluscodeLevel3Digits = completePluscode.substring(4, 6);
 
-  console.log(
-    "string split " +
-      pluscodeLevel1Digits +
-      " " +
-      pluscodeLevel1Digits +
-      " " +
-      pluscodeLevel1Digits +
-      "-"
-  );
-
   // Check if level 1 pluscode exists
   const pluscodeLevel1Exists = await checkIfLevel1Exists(pluscodeLevel1Digits); //returns object with id if true
 

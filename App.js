@@ -20,7 +20,7 @@ export default function App() {
     Evolventa: require("./assets/fonts/Evolventa-Regular.otf"),
   });
   useEffect(() => {
-    //createLine("5R2233", { lat: 20, lng: 20 }, { lat: 20, lng: 20 });
+    //createLine("5R36FF", { lat: 20, lng: 20 }, { lat: 20, lng: 20 });
   }, []);
 
   if (!fontsLoaded) {
