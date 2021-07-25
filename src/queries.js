@@ -538,6 +538,15 @@ export const pluscodeByDigits = /* GraphQL */ `
           updatedAt
         }
         level2List {
+          items {
+            completePluscode
+            id
+            numberOfLines
+            middleCoord {
+              lat
+              lng
+            }
+          }
           nextToken
         }
         numberOfLines
@@ -609,24 +618,8 @@ export const pluscode2ByCompletePluscode = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
-        id
         completePluscode
-        parentIdWithDigits
-        pluscodeParent {
-          id
-          digits
-          numberOfLines
-          createdAt
-          updatedAt
-        }
-        digits
-        middleCoord {
-          id
-          lat
-          lng
-          createdAt
-          updatedAt
-        }
+
         level3List {
           items {
             completePluscode

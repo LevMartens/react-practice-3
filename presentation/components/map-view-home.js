@@ -36,7 +36,7 @@ import { watchPositionForeground } from "../../domain/resources/environment/watc
 import { getPositionOnce } from "../../domain/resources/environment/get-position-once";
 import { getLineMarkers } from "../../domain/use_cases/get-line-markers";
 import { LinesNearby } from "../components/lines-nearby";
-import { debounce } from "lodash";
+import { debounce, throttle } from "lodash";
 import { lineMarkersHandler } from "../state-management/reducers/line-marker-handler";
 //import { mdiNavigation } from "@mdi/js";
 
@@ -45,6 +45,10 @@ const callabonna = {
   longitude: 140.00131,
 };
 
+const positionHasChanged = throttle(function (region, t15) {
+  getLineMarkers(region, t15);
+}, 3000);
+
 export class MapViewHome extends Component {
   componentDidMount() {
     getPositionOnce();
@@ -52,22 +56,19 @@ export class MapViewHome extends Component {
     getHeading();
   }
 
-  changeRegion = debounce(async (region) => {
-    getLineMarkers(region);
-  }, 1000);
-
   render() {
     return this.props.aSingleCurrentPosition.isLoaded == true ? (
       <MapView
         onPress={(e) => {}}
         style={styles.map}
         onRegionChangeComplete={(region) => {
-          this.changeRegion(region);
+          var t15 = performance.now();
+          positionHasChanged(region, t15);
         }}
         initialRegion={{
           latitude: this.props.aSingleCurrentPosition.latitude,
           longitude: this.props.aSingleCurrentPosition.longitude,
-          latitudeDelta: 0.4,
+          latitudeDelta: 1.2, //0.4
           longitudeDelta: 0.001,
         }}
       >
@@ -76,6 +77,42 @@ export class MapViewHome extends Component {
         </React.Fragment>
 
         {/* <LinesNearby lineMarkers={this.props.lineMarkersHandler}></LinesNearby> */}
+        <Marker
+          key={905}
+          flat={true}
+          coordinate={{
+            latitude: this.props.aSingleCurrentPosition.latitude + 0.54,
+            longitude: this.props.aSingleCurrentPosition.longitude + 0.4,
+          }}
+          title={"You"}
+        ></Marker>
+        <Marker
+          key={906}
+          flat={true}
+          coordinate={{
+            latitude: this.props.aSingleCurrentPosition.latitude - 0.54,
+            longitude: this.props.aSingleCurrentPosition.longitude - 0.4,
+          }}
+          title={"You"}
+        ></Marker>
+        <Marker
+          key={907}
+          flat={true}
+          coordinate={{
+            latitude: this.props.aSingleCurrentPosition.latitude + 0.54,
+            longitude: this.props.aSingleCurrentPosition.longitude - 0.4,
+          }}
+          title={"You"}
+        ></Marker>
+        <Marker
+          key={908}
+          flat={true}
+          coordinate={{
+            latitude: this.props.aSingleCurrentPosition.latitude - 0.54,
+            longitude: this.props.aSingleCurrentPosition.longitude + 0.4,
+          }}
+          title={"You"}
+        ></Marker>
         <Marker
           key={5}
           flat={true}

@@ -2,8 +2,6 @@ import { getZoomLevel } from "../generators/zoom-level-generator";
 import { pluscodeGeneratorLevel3 } from "../generators/pluscode-generator-lvl-3";
 import { pluscodeGeneratorLevel2 } from "../generators/pluscode-generator-lvl-2";
 import { getPluscodeFromCoordinates } from "../resources/api/get-pluscode";
-import { getMarkerDataLvl3 } from "../resources/graphql/get-marker-data-lvl-3";
-import { NumberOfLinesMarker } from "../../presentation/components/lines-nearby";
 import { getNumberMarkerImage } from "../helpers/switch_cases";
 import store from "../../presentation/state-management/store/store";
 import { sendLineMarkers } from "../../presentation/state-management/actions/actions";
@@ -12,11 +10,29 @@ import { Marker } from "react-native-maps";
 import { Image } from "react-native";
 import { getAllLvl3UnderLvl2 } from "../resources/graphql/get-all-lvl-3-under-lvl-2";
 import { getAllLvl2UnderLvl1 } from "../resources/graphql/get-all-lvl-2-under-lvl-1";
+import { convertZoomLvlToJumpsFor } from "../helpers/if_statements";
 
 //TODO Fine tune line marker overlap when zoom lvl <5
 
-export async function getLineMarkers(regionData) {
-  var pluscodesArray = [];
+export async function getLineMarkers(regionData, t15) {
+  console.log(" A --------------------------------------------------------");
+  var t16 = performance.now();
+  console.log("Time to start function " + (t16 - t15) + " milliseconds");
+
+  const zoomLevel = await getZoomLevel(regionData);
+  console.log("Zoom level " + zoomLevel);
+
+  var regionVisibleOnScreen = []; // Region that is visible on the screen in either lvl 3 or lvl 2 pluscodes
+  var weUseLvl3Pluscodes = false;
+  var weUseLvl2Pluscodes = false;
+  var regionVisibleOnScreenJumps = await convertZoomLvlToJumpsFor(
+    "REGION_VISIBLE_ON_SCREEN",
+    zoomLevel
+  );
+  var regionToMergeJumps = await convertZoomLvlToJumpsFor(
+    "REGION_TO_MERGE",
+    zoomLevel
+  );
 
   const pluscode = await getPluscodeFromCoordinates(
     `${regionData.latitude},${regionData.longitude}`
@@ -26,207 +42,114 @@ export async function getLineMarkers(regionData) {
   const pluscodeLvl2 = pluscode.substring(0, 4);
   const pluscodeLvl1 = pluscode.substring(0, 2);
 
-  const zoomLevel = await getZoomLevel(regionData);
-  console.log("Zoom lvl " + zoomLevel);
-
-  if (zoomLevel > 12.8698) {
-    // Retreiving all Line Markers.
-
-    pluscodesArray = await pluscodeGeneratorLevel3(pluscodeLvl3, 1);
+  if (zoomLevel < 7.5) {
+    console.log(pluscodeLvl2);
+    regionVisibleOnScreen = await pluscodeGeneratorLevel2(
+      pluscodeLvl2,
+      regionVisibleOnScreenJumps
+    );
+    weUseLvl2Pluscodes = true;
   }
 
-  if (zoomLevel < 12.8698 && zoomLevel > 12.6769) {
-    // Retreiving Line Markers 1 jump (lvl3) from the screen centre lvl 3 pluscode.
+  if (zoomLevel > 7.5) {
+    var t0 = performance.now();
+    console.log(pluscodeLvl3 + " " + regionVisibleOnScreenJumps);
 
-    pluscodesArray = await pluscodeGeneratorLevel3(pluscodeLvl3, 1);
-  }
-
-  if (zoomLevel < 12.6769 && zoomLevel > 12.4) {
-    // Retreiving Line Markers 2 jumps (lvl3) from the screen centre lvl 3 pluscode.
-
-    pluscodesArray = await pluscodeGeneratorLevel3(pluscodeLvl3, 2);
-  }
-
-  if (zoomLevel < 12.4 && zoomLevel > 10) {
-    // Retreiving Line Markers 3 jumps (lvl3) from the screen centre lvl 3 pluscode.
-
-    pluscodesArray = await pluscodeGeneratorLevel3(pluscodeLvl3, 3);
-  }
-
-  if (zoomLevel < 10 && zoomLevel > 7.5) {
-    // Retreiving Line Markers 10 jumps (lvl3) from the screen centre lvl 3 pluscode.
-
-    pluscodesArray = await pluscodeGeneratorLevel3(pluscodeLvl3, 10);
-  }
-
-  if (zoomLevel < 7.5 && zoomLevel > 6.5) {
-    // Retreiving Line Markers 1 jump (lvl2) from the screen centre lvl 2 pluscode.
-
-    pluscodesArray = await pluscodeGeneratorLevel2(pluscodeLvl2, 1);
-  }
-
-  if (zoomLevel < 6.5 && zoomLevel > 5.5) {
-    // Retreiving Line Markers 3 jumps (lvl2) from the screen centre lvl 2 pluscode.
-
-    pluscodesArray = await pluscodeGeneratorLevel2(pluscodeLvl2, 3);
-  }
-
-  if (zoomLevel < 5.5 && zoomLevel > 4) {
-    // Retreiving Line Markers 5 jumps (lvl2) from the screen centre lvl 2 pluscode.
-
-    pluscodesArray = await pluscodeGeneratorLevel2(pluscodeLvl2, 5);
-  }
-
-  if (zoomLevel < 4) {
-    // Retreiving Line Markers 10 jumps (lvl2) from the screen centre lvl 2 pluscode.
-
-    pluscodesArray = await pluscodeGeneratorLevel2(pluscodeLvl2, 10);
+    regionVisibleOnScreen = await pluscodeGeneratorLevel3(
+      pluscodeLvl3,
+      regionVisibleOnScreenJumps
+    );
+    var t1 = performance.now();
+    console.log("Plucodegeneratorlvl3 " + (t1 - t0) + " milliseconds");
+    weUseLvl3Pluscodes = true;
   }
 
   //*_____________________________________________________________________
 
-  if (pluscodesArray[0].length > 4) {
-    // Level 3
+  if (weUseLvl3Pluscodes) {
+    // Finding all lvl 3 pluscodes that have this pluscodeLvl2 as parent in dynamoDB
+    var listOflvl3Objects = await getAllLvl3UnderLvl2({
+      withThisLvl2Pluscode: pluscodeLvl2,
+    });
 
-    var f = await getAllLvl3UnderLvl2(pluscodeLvl2);
+    // All lvl 3 pluscodes that start with this pluscodeLvl2 will be filtered out of the array
+    var leftOverRegionVisibleOnScreen = regionVisibleOnScreen.filter(
+      (x) => x.substring(0, 4) != pluscodeLvl2
+    );
 
-    var t = pluscodesArray.filter((x) => x.substring(0, 4) != pluscodeLvl2);
+    // For looping to get all the remaining lvl 3 objects from dynamoDB
+    if (leftOverRegionVisibleOnScreen.length != 0) {
+      for (var x = 0; x < leftOverRegionVisibleOnScreen.length; ) {
+        // Getting all lvl 3 pluscodes with the remaining lvl 2 pluscodes that are visible on screen
+        var extraListOflvl3Objects = await getAllLvl3UnderLvl2(
+          leftOverRegionVisibleOnScreen[x].substring(0, 4)
+        );
 
-    if (t.length != 0) {
-      for (var x = 0; x < t.length; ) {
-        var h = await getAllLvl3UnderLvl2(t[x].substring(0, 4));
-
-        if (h.length > 0) {
-          f = f.concat(h);
+        // Adding the extra lvl 3 objects to the listOflvl3Objects now the list is complete
+        if (extraListOflvl3Objects.length > 0) {
+          listOflvl3Objects = listOflvl3Objects.concat(extraListOflvl3Objects);
         }
 
-        //remove
-        var g = t.filter((z) => z.substring(0, 4) != t[x].substring(0, 4));
-        t = g;
+        // Filter out this lvl 2 pluscode that we just used to fetch lvl 3 objects with
+        leftOverRegionVisibleOnScreen = leftOverRegionVisibleOnScreen.filter(
+          (y) =>
+            y.substring(0, 4) !=
+            leftOverRegionVisibleOnScreen[x].substring(0, 4)
+        );
       }
     }
 
-    if (f.length > 0) {
+    // Creating the markers for mapview with the lvl 3 objects data
+    if (listOflvl3Objects.length > 0) {
       var lineMarkers = [];
 
-      for (let x = 0; x < f.length; x++) {
-        //TODO implement under lvl 3 (lines only)
-        //TODO think of ways to improve performance
-        //TODO Clean up code/ make more readable
+      for (let x = 0; x < listOflvl3Objects.length; x++) {
+        // Here we merge markers that got too close to eachother when the user zoomed out
+        var regionToMerge = await pluscodeGeneratorLevel3(
+          listOflvl3Objects[x].completePluscode,
+          regionToMergeJumps
+        );
 
-        //TODO If zoom level >12.8698 use lineByCompletePluscode in seperate file in resources/graphql to get lines
+        // Finding the lvl 3 object that we want to merge with to prevent it from merging with itself
+        const aIndex = regionToMerge.findIndex(
+          (i) => i === listOflvl3Objects[x].completePluscode
+        );
 
-        if (zoomLevel < 10.5 && zoomLevel > 10) {
-          // Here we merge markers when they get too close
-          var u = await pluscodeGeneratorLevel3(f[x].completePluscode, 1);
-          console.log("zoomlvl <10.5");
-          ////console.log("BBB " + u.length);
-          const aindex = u.findIndex((i) => i === f[x].completePluscode);
-
-          if (aindex > -1) {
-            u.splice(aindex, 1);
-          }
-
-          for (let c = 0; c < u.length; c++) {
-            const index = f.findIndex((j) => j.completePluscode === u[c]);
-
-            if (index > -1) {
-              f[x].numberOfLines = f[x].numberOfLines + f[index].numberOfLines;
-
-              f.splice(index, 1);
-            }
-          }
+        // Removing the lvl 3 object that we want to merge with from the regionToMergeArray
+        if (aIndex > -1) {
+          regionToMerge.splice(aIndex, 1);
         }
-        if (zoomLevel < 10 && zoomLevel > 9) {
-          // Here we merge markers when they get too close
-          var u = await pluscodeGeneratorLevel3(f[x].completePluscode, 2);
-          console.log("zoomlvl <10 ");
-          ////console.log("BBB " + u.length);
-          const aindex = u.findIndex((i) => i === f[x].completePluscode);
 
-          if (aindex > -1) {
-            u.splice(aindex, 1);
-          }
+        // Merging
+        for (let y = 0; y < regionToMerge.length; y++) {
+          // Checking if any of the lvl 3 objects in listOflvl3Objects lay in the region to merge
+          const index = listOflvl3Objects.findIndex(
+            (i) => i.completePluscode === regionToMerge[y]
+          );
 
-          for (let c = 0; c < u.length; c++) {
-            const index = f.findIndex((j) => j.completePluscode === u[c]);
+          // If there was a lvl 3 object found in the merge region we merge it
+          if (index > -1) {
+            listOflvl3Objects[x].numberOfLines =
+              listOflvl3Objects[x].numberOfLines +
+              listOflvl3Objects[index].numberOfLines;
 
-            if (index > -1) {
-              ////console.log("333 " + f[x].numberOfLines);
-              //// console.log("444 " + f[index].numberOfLines);
-              f[x].numberOfLines = f[x].numberOfLines + f[index].numberOfLines;
-
-              //// console.log("EEE " + f[index].numberOfLines);
-              //// console.log("FFF " + f.length);
-
-              f.splice(index, 1);
-            }
-          }
-        }
-        if (zoomLevel < 9 && zoomLevel > 8) {
-          // Here we merge markers when they get too close
-          var u = await pluscodeGeneratorLevel3(f[x].completePluscode, 3);
-          console.log("zoomlvl <9 ");
-          //// console.log("BBB " + u.length);
-          const aindex = u.findIndex((i) => i === f[x].completePluscode);
-
-          if (aindex > -1) {
-            u.splice(aindex, 1);
-          }
-
-          for (let c = 0; c < u.length; c++) {
-            const index = f.findIndex((j) => j.completePluscode === u[c]);
-
-            if (index > -1) {
-              //// console.log("333 " + f[x].numberOfLines);
-              //// console.log("444 " + f[index].numberOfLines);
-              f[x].numberOfLines = f[x].numberOfLines + f[index].numberOfLines;
-
-              //// console.log("EEE " + f[index].numberOfLines);
-              //// console.log("FFF " + f.length);
-
-              f.splice(index, 1);
-            }
-          }
-        }
-        if (zoomLevel < 8) {
-          // Here we merge markers when they get too close
-          var u = await pluscodeGeneratorLevel3(f[x].completePluscode, 5);
-          console.log("zoomlvl <8 ");
-          //// console.log("BBB " + u.length);
-          const aindex = u.findIndex((i) => i === f[x].completePluscode);
-
-          if (aindex > -1) {
-            u.splice(aindex, 1);
-          }
-
-          for (let c = 0; c < u.length; c++) {
-            const index = f.findIndex((j) => j.completePluscode === u[c]);
-
-            if (index > -1) {
-              //// console.log("333 " + f[x].numberOfLines);
-              //// console.log("444 " + f[index].numberOfLines);
-              f[x].numberOfLines = f[x].numberOfLines + f[index].numberOfLines;
-
-              //// console.log("EEE " + f[index].numberOfLines);
-              //// console.log("FFF " + f.length);
-
-              f.splice(index, 1);
-            }
+            listOflvl3Objects.splice(index, 1);
           }
         }
 
-        //TODO if zoom level > 12.8698 rewrite whats underneath for just line data
         if (zoomLevel < 12.8698) {
-          var image = await getNumberMarkerImage(f[x].numberOfLines);
+          // Creating single line marker & total line marker components
+          var image = await getNumberMarkerImage(
+            listOflvl3Objects[x].numberOfLines
+          );
 
           var coordinates = {
-            latitude: parseFloat(f[x].middleCoord.lat),
-            longitude: parseFloat(f[x].middleCoord.lng),
+            latitude: parseFloat(listOflvl3Objects[x].middleCoord.lat),
+            longitude: parseFloat(listOflvl3Objects[x].middleCoord.lng),
           };
 
           lineMarkers.push(
-            <Marker key={f[x].id} coordinate={coordinates}>
+            <Marker key={listOflvl3Objects[x].id} coordinate={coordinates}>
               <Image
                 source={image}
                 style={{
@@ -237,22 +160,34 @@ export async function getLineMarkers(regionData) {
               />
             </Marker>
           );
-        } else {
-          for (let k = 0; k < f[x].listOfLines.items.length; k++) {
+        }
+
+        if (zoomLevel > 12.8698) {
+          // creating ONLY single line marker components
+          for (
+            let k = 0;
+            k < listOflvl3Objects[x].listOfLines.items.length;
+            k++
+          ) {
             var image = await getNumberMarkerImage(1);
 
             var coordinates = {
               latitude: parseFloat(
-                f[x].listOfLines.items[k].startingCoordinates.lat
+                listOflvl3Objects[x].listOfLines.items[k].startingCoordinates
+                  .lat
               ),
               longitude: parseFloat(
-                f[x].listOfLines.items[k].startingCoordinates.lng
+                listOflvl3Objects[x].listOfLines.items[k].startingCoordinates
+                  .lng
               ),
             };
 
             lineMarkers.push(
               <Marker
-                key={f[x].listOfLines.items[k].startingCoordinates.id}
+                key={
+                  listOflvl3Objects[x].listOfLines.items[k].startingCoordinates
+                    .id
+                }
                 coordinate={coordinates}
               >
                 <Image
@@ -275,93 +210,73 @@ export async function getLineMarkers(regionData) {
 
   //*_____________________________________________________________________
 
-  if (pluscodesArray[0].length > 2 && pluscodesArray[0].length < 5) {
-    // Level 2
-    var f = await getAllLvl2UnderLvl1(pluscodeLvl1);
+  if (weUseLvl2Pluscodes) {
+    var listOflvl2Objects = await getAllLvl2UnderLvl1(pluscodeLvl1);
 
-    var t = pluscodesArray.filter((x) => x.substring(0, 2) != pluscodeLvl1);
+    var leftOverRegionVisibleOnScreen = regionVisibleOnScreen.filter(
+      (x) => x.substring(0, 2) != pluscodeLvl1
+    );
 
-    if (t.length != 0) {
-      for (var x = 0; x < t.length; ) {
-        var h = await getAllLvl2UnderLvl1(t[x].substring(0, 2));
+    if (leftOverRegionVisibleOnScreen.length != 0) {
+      for (var x = 0; x < leftOverRegionVisibleOnScreen.length; ) {
+        var extraListOflvl2Objects = await getAllLvl2UnderLvl1(
+          leftOverRegionVisibleOnScreen[x].substring(0, 2)
+        );
 
-        if (h.length > 0) {
-          f = f.concat(h);
+        if (extraListOflvl2Objects.length > 0) {
+          listOflvl2Objects = listOflvl2Objects.concat(extraListOflvl2Objects);
         }
 
-        //remove
-        var g = t.filter((z) => z.substring(0, 2) != t[x].substring(0, 2));
-        t = g;
+        leftOverRegionVisibleOnScreen = leftOverRegionVisibleOnScreen.filter(
+          (z) =>
+            z.substring(0, 2) !=
+            leftOverRegionVisibleOnScreen[x].substring(0, 2)
+        );
       }
     }
 
-    if (f.length > 0) {
+    if (listOflvl2Objects.length > 0) {
       var lineMarkers = [];
 
-      for (let x = 0; x < f.length; x++) {
-        if (zoomLevel < 7 && zoomLevel > 5) {
-          // Here we merge markers when they get too close
-          var u = await pluscodeGeneratorLevel2(f[x].completePluscode, 1);
-          console.log("zoomlvl <7");
-          ////console.log("BBB " + u.length);
-          const aindex = u.findIndex((i) => i === f[x].completePluscode);
+      for (let x = 0; x < listOflvl2Objects.length; x++) {
+        var regionToMerge = await pluscodeGeneratorLevel2(
+          listOflvl2Objects[x].completePluscode,
+          regionToMergeJumps
+        );
 
-          if (aindex > -1) {
-            u.splice(aindex, 1);
-          }
+        const aindex = regionToMerge.findIndex(
+          (i) => i === listOflvl2Objects[x].completePluscode
+        );
 
-          for (let c = 0; c < u.length; c++) {
-            const index = f.findIndex((j) => j.completePluscode === u[c]);
+        if (aindex > -1) {
+          regionToMerge.splice(aindex, 1);
+        }
 
-            if (index > -1) {
-              ////console.log("333 " + f[x].numberOfLines);
-              ////console.log("444 " + f[index].numberOfLines);
-              f[x].numberOfLines = f[x].numberOfLines + f[index].numberOfLines;
+        for (let c = 0; c < regionToMerge.length; c++) {
+          const index = listOflvl2Objects.findIndex(
+            (j) => j.completePluscode === regionToMerge[c]
+          );
 
-              //// console.log("EEE " + f[index].numberOfLines);
-              //// console.log("FFF " + f.length);
+          if (index > -1) {
+            listOflvl2Objects[x].numberOfLines =
+              listOflvl2Objects[x].numberOfLines +
+              listOflvl2Objects[index].numberOfLines;
 
-              f.splice(index, 1);
-            }
+            listOflvl2Objects.splice(index, 1);
           }
         }
 
-        if (zoomLevel < 5) {
-          // Here we merge markers when they get too close
-          var u = await pluscodeGeneratorLevel2(f[x].completePluscode, 3);
-
-          ////console.log("BBB " + u.length);
-          const aindex = u.findIndex((i) => i === f[x].completePluscode);
-
-          if (aindex > -1) {
-            u.splice(aindex, 1);
-          }
-
-          for (let c = 0; c < u.length; c++) {
-            const index = f.findIndex((j) => j.completePluscode === u[c]);
-
-            if (index > -1) {
-              ////console.log("333 " + f[x].numberOfLines);
-              ////console.log("444 " + f[index].numberOfLines);
-              f[x].numberOfLines = f[x].numberOfLines + f[index].numberOfLines;
-
-              //// console.log("EEE " + f[index].numberOfLines);
-              //// console.log("FFF " + f.length);
-
-              f.splice(index, 1);
-            }
-          }
-        }
-
-        var image = await getNumberMarkerImage(f[x].numberOfLines);
+        var image = await getNumberMarkerImage(
+          listOflvl2Objects[x].numberOfLines
+        );
 
         var coordinates = {
-          latitude: parseFloat(f[x].middleCoord.lat),
-          longitude: parseFloat(f[x].middleCoord.lng),
+          latitude: parseFloat(listOflvl2Objects[x].middleCoord.lat),
+          longitude: parseFloat(listOflvl2Objects[x].middleCoord.lng),
         };
 
         lineMarkers.push(
-          <Marker key={f[x].id} coordinate={coordinates}>
+          <Marker key={listOflvl2Objects[x].id} coordinate={coordinates}>
             <Image
               source={image}
               style={{
@@ -377,4 +292,7 @@ export async function getLineMarkers(regionData) {
       store.dispatch(sendLineMarkers(lineMarkers));
     }
   }
+  var t17 = performance.now();
+  console.log("Complete function time " + (t17 - t15) + " milliseconds");
+  console.log(" B --------------------------------------------------------");
 }

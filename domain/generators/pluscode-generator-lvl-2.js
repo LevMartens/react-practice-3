@@ -413,6 +413,6 @@ export async function pluscodeGeneratorLevel2(pluscode, jumps) {
   }
   pluscodesArray.push(pluscode);
 
-  console.log("PLUS CODES ARRAY LENGTH " + pluscodesArray.length);
+  console.log("PLUS CODES LVL 2 ARRAY LENGTH " + pluscodesArray.length);
   return pluscodesArray;
 }

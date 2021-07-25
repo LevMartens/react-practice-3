@@ -5,7 +5,6 @@ import React, { Component } from "react";
 async function getValueFor(key) {
   let result = await SecureStore.getItemAsync(key);
   if (result) {
-    //console.log("api key " + result);
     return result;
   } else {
     console.log("NO api key found");
@@ -15,7 +14,6 @@ async function getValueFor(key) {
 export async function getPluscodeFromCoordinates(coordinates) {
   const apiKey = await getValueFor("google-API-key");
   const response = await fetch(
-    // Make this YOUR URL
     `https://plus.codes/api?address=${coordinates}&ekey=${apiKey}&email=lmartens_43@hotmail.com`,
     {}
   );
@@ -23,7 +21,7 @@ export async function getPluscodeFromCoordinates(coordinates) {
   ////const obj = JSON.parse(json);
 
   if (json.plus_code.global_code != null) {
-    console.log("Pluscode data is successfully fetched");
+    console.log("Pluscode data is successfully fetched ");
   }
   return json.plus_code.global_code;
 }
