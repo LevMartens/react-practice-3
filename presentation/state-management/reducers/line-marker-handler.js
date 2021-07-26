@@ -19,16 +19,9 @@ const Carlton = {
 
 export const lineMarkersHandler = (
   state = [
-    <Marker key={Math.random()} coordinate={Carlton}>
-      <Image
-        source={require("../../../assets/nada.png")}
-        style={{
-          width: 40,
-          height: 40,
-        }}
-        resizeMode="contain"
-      />
-    </Marker>,
+    {
+      isLoaded: false,
+    },
   ],
   action
 ) => {

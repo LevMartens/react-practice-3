@@ -83,8 +83,30 @@ export class MapViewHome extends Component {
           longitudeDelta: LONGITUDE_DELTA, //0.001,
         }}
       >
-        {this.props.lineMarkersHandler.map((place) => {
-          return place;
+        {this.props.lineMarkersHandler.map((marker) => {
+          if (marker.isLoaded === true) {
+            return (
+              <Marker
+                key={Math.random()}
+                tracksViewChanges={false}
+                zIndex={Math.random()}
+                tracksInfoWindowChanges={false}
+                coordinate={marker.coordinates}
+                onPress={() =>
+                  mapView.animateToRegion(marker.markerRegion, 1000)
+                }
+              >
+                <Image
+                  source={marker.image}
+                  style={{
+                    width: 40,
+                    height: 40,
+                  }}
+                  resizeMode="contain"
+                />
+              </Marker>
+            );
+          }
         })}
 
         <Marker

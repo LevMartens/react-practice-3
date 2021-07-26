@@ -166,25 +166,14 @@ export async function getLineMarkers(regionData, t15, mapView) {
             longitudeDelta: LONGITUDE_DELTA,
           };
 
-          lineMarkers.push(
-            <Marker
-              key={listOflvl3Objects[x].id}
-              tracksViewChanges={false}
-              zIndex={Math.random()}
-              tracksInfoWindowChanges={false}
-              coordinate={coordinates}
-              onPress={() => mapView.animateToRegion(markerRegion, 1000)}
-            >
-              <Image
-                source={image}
-                style={{
-                  width: 40,
-                  height: 40,
-                }}
-                resizeMode="contain"
-              />
-            </Marker>
-          );
+          var lvl3PluscodeObject = {
+            isLoaded: true,
+            rawPluscodeData: listOflvl3Objects[x],
+            image: image,
+            coordinates: coordinates,
+            markerRegion: markerRegion,
+          };
+          lineMarkers.push(lvl3PluscodeObject);
         }
 
         if (zoomLevel > 12.8698) {
@@ -207,24 +196,14 @@ export async function getLineMarkers(regionData, t15, mapView) {
               ),
             };
 
-            lineMarkers.push(
-              <Marker
-                key={
-                  listOflvl3Objects[x].listOfLines.items[k].startingCoordinates
-                    .id
-                }
-                coordinate={coordinates}
-              >
-                <Image
-                  source={image}
-                  style={{
-                    width: 40,
-                    height: 40,
-                  }}
-                  resizeMode="contain"
-                />
-              </Marker>
-            );
+            var lvl3PluscodeObject = {
+              isLoaded: true,
+              rawPluscodeData: listOflvl3Objects[x],
+              image: image,
+              coordinates: coordinates,
+              markerRegion: markerRegion,
+            };
+            lineMarkers.push(lvl3PluscodeObject);
           }
         }
       }
@@ -312,22 +291,14 @@ export async function getLineMarkers(regionData, t15, mapView) {
           longitudeDelta: LONGITUDE_DELTA,
         };
 
-        lineMarkers.push(
-          <Marker
-            key={listOflvl2Objects[x].id}
-            coordinate={coordinates}
-            onPress={() => mapView.animateToRegion(markerRegion, 1000)}
-          >
-            <Image
-              source={image}
-              style={{
-                width: 40,
-                height: 40,
-              }}
-              resizeMode="contain"
-            />
-          </Marker>
-        );
+        var lvl2PluscodeObject = {
+          isLoaded: true,
+          rawPluscodeData: listOflvl2Objects[x],
+          image: image,
+          coordinates: coordinates,
+          markerRegion: markerRegion,
+        };
+        lineMarkers.push(lvl2PluscodeObject);
       }
 
       store.dispatch(sendLineMarkers(lineMarkers));
