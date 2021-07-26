@@ -7,14 +7,15 @@ import store from "../../presentation/state-management/store/store";
 import { sendLineMarkers } from "../../presentation/state-management/actions/actions";
 import React from "react";
 import { Marker } from "react-native-maps";
-import { Image } from "react-native";
+import { Image, Dimensions } from "react-native";
 import { getAllLvl3UnderLvl2 } from "../resources/graphql/get-all-lvl-3-under-lvl-2";
 import { getAllLvl2UnderLvl1 } from "../resources/graphql/get-all-lvl-2-under-lvl-1";
 import { convertZoomLvlToJumpsFor } from "../helpers/if_statements";
+//import { animate } from "../../presentation/components/map-view-home";
 
 //TODO Fine tune line marker overlap when zoom lvl <5
 
-export async function getLineMarkers(regionData, t15) {
+export async function getLineMarkers(regionData, t15, mapView) {
   console.log(" A --------------------------------------------------------");
   var t16 = performance.now();
   console.log("Time to start function " + (t16 - t15) + " milliseconds");
@@ -43,7 +44,6 @@ export async function getLineMarkers(regionData, t15) {
   const pluscodeLvl1 = pluscode.substring(0, 2);
 
   if (zoomLevel < 7.5) {
-    console.log(pluscodeLvl2);
     regionVisibleOnScreen = await pluscodeGeneratorLevel2(
       pluscodeLvl2,
       regionVisibleOnScreenJumps
@@ -53,7 +53,7 @@ export async function getLineMarkers(regionData, t15) {
 
   if (zoomLevel > 7.5) {
     var t0 = performance.now();
-    console.log(pluscodeLvl3 + " " + regionVisibleOnScreenJumps);
+    console.log(pluscodeLvl3 + " " + regionVisibleOnScreenJumps + " jumps");
 
     regionVisibleOnScreen = await pluscodeGeneratorLevel3(
       pluscodeLvl3,
@@ -76,7 +76,7 @@ export async function getLineMarkers(regionData, t15) {
     var leftOverRegionVisibleOnScreen = regionVisibleOnScreen.filter(
       (x) => x.substring(0, 4) != pluscodeLvl2
     );
-
+    var t111 = performance.now();
     // For looping to get all the remaining lvl 3 objects from dynamoDB
     if (leftOverRegionVisibleOnScreen.length != 0) {
       for (var x = 0; x < leftOverRegionVisibleOnScreen.length; ) {
@@ -98,6 +98,9 @@ export async function getLineMarkers(regionData, t15) {
         );
       }
     }
+    var t222 = performance.now();
+    console.log("Leftovers " + (t222 - t111) + " milliseconds");
+    var t333 = performance.now();
 
     // Creating the markers for mapview with the lvl 3 objects data
     if (listOflvl3Objects.length > 0) {
@@ -137,6 +140,9 @@ export async function getLineMarkers(regionData, t15) {
           }
         }
 
+        var t444 = performance.now();
+        console.log("Merging " + (t444 - t333) + " milliseconds");
+
         if (zoomLevel < 12.8698) {
           // Creating single line marker & total line marker components
           var image = await getNumberMarkerImage(
@@ -148,8 +154,27 @@ export async function getLineMarkers(regionData, t15) {
             longitude: parseFloat(listOflvl3Objects[x].middleCoord.lng),
           };
 
+          const { width, height } = Dimensions.get("window");
+          const ASPECT_RATIO = width / height;
+          const LATITUDE_DELTA = 0.2;
+          const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
+          let markerRegion = {
+            latitude: coordinates.latitude,
+            longitude: coordinates.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          };
+
           lineMarkers.push(
-            <Marker key={listOflvl3Objects[x].id} coordinate={coordinates}>
+            <Marker
+              key={listOflvl3Objects[x].id}
+              tracksViewChanges={false}
+              zIndex={Math.random()}
+              tracksInfoWindowChanges={false}
+              coordinate={coordinates}
+              onPress={() => mapView.animateToRegion(markerRegion, 1000)}
+            >
               <Image
                 source={image}
                 style={{
@@ -203,7 +228,7 @@ export async function getLineMarkers(regionData, t15) {
           }
         }
       }
-
+      console.log("double " + lineMarkers.length);
       store.dispatch(sendLineMarkers(lineMarkers));
     }
   }
@@ -275,8 +300,24 @@ export async function getLineMarkers(regionData, t15) {
           longitude: parseFloat(listOflvl2Objects[x].middleCoord.lng),
         };
 
+        const { width, height } = Dimensions.get("window");
+        const ASPECT_RATIO = width / height;
+        const LATITUDE_DELTA = 2.6;
+        const LONGITUDE_DELTA = 0.009; //LATITUDE_DELTA * ASPECT_RATIO;
+
+        let markerRegion = {
+          latitude: coordinates.latitude,
+          longitude: coordinates.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        };
+
         lineMarkers.push(
-          <Marker key={listOflvl2Objects[x].id} coordinate={coordinates}>
+          <Marker
+            key={listOflvl2Objects[x].id}
+            coordinate={coordinates}
+            onPress={() => mapView.animateToRegion(markerRegion, 1000)}
+          >
             <Image
               source={image}
               style={{

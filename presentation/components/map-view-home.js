@@ -11,6 +11,8 @@ import {
   TouchableOpacity,
   Image,
   Icon,
+  Dimensions,
+  Animated,
 } from "react-native";
 import {
   currentPositionUpdate,
@@ -38,6 +40,7 @@ import { getLineMarkers } from "../../domain/use_cases/get-line-markers";
 import { LinesNearby } from "../components/lines-nearby";
 import { debounce, throttle } from "lodash";
 import { lineMarkersHandler } from "../state-management/reducers/line-marker-handler";
+//import Animated from "react-native-reanimated";
 //import { mdiNavigation } from "@mdi/js";
 
 const callabonna = {
@@ -45,9 +48,15 @@ const callabonna = {
   longitude: 140.00131,
 };
 
-const positionHasChanged = throttle(function (region, t15) {
-  getLineMarkers(region, t15);
-}, 3000);
+const positionHasChanged = throttle(function (region, t15, mapView) {
+  getLineMarkers(region, t15, mapView);
+}, 3500);
+
+const { width, height } = Dimensions.get("window");
+const ASPECT_RATIO = width / height;
+const LATITUDE_DELTA = 1.2;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+var mapView = {};
 
 export class MapViewHome extends Component {
   componentDidMount() {
@@ -59,26 +68,28 @@ export class MapViewHome extends Component {
   render() {
     return this.props.aSingleCurrentPosition.isLoaded == true ? (
       <MapView
-        onPress={(e) => {}}
+        ref={(ref) => (mapView = ref)}
+        showsUserLocation={false}
+        liteMode={true}
         style={styles.map}
         onRegionChangeComplete={(region) => {
           var t15 = performance.now();
-          positionHasChanged(region, t15);
+          positionHasChanged(region, t15, mapView);
         }}
         initialRegion={{
           latitude: this.props.aSingleCurrentPosition.latitude,
           longitude: this.props.aSingleCurrentPosition.longitude,
-          latitudeDelta: 1.2, //0.4
-          longitudeDelta: 0.001,
+          latitudeDelta: LATITUDE_DELTA, //1.2, //0.4
+          longitudeDelta: LONGITUDE_DELTA, //0.001,
         }}
       >
-        <React.Fragment key={Math.random()}>
-          {this.props.lineMarkersHandler}
-        </React.Fragment>
+        {this.props.lineMarkersHandler.map((place) => {
+          return place;
+        })}
 
-        {/* <LinesNearby lineMarkers={this.props.lineMarkersHandler}></LinesNearby> */}
         <Marker
           key={905}
+          onPress={() => animate()}
           flat={true}
           coordinate={{
             latitude: this.props.aSingleCurrentPosition.latitude + 0.54,
