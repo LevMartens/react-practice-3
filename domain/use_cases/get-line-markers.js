@@ -166,6 +166,8 @@ export async function getLineMarkers(regionData, t15, mapView) {
             longitudeDelta: LONGITUDE_DELTA,
           };
 
+          //TODO fetch a bunch of data once and use the same array to merge
+
           var lvl3PluscodeObject = {
             isLoaded: true,
             rawPluscodeData: listOflvl3Objects[x],
