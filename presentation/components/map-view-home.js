@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import MapView, { Polyline, Marker, Circle } from "react-native-maps";
 //import * as Svg from "react-native-svg";
 import { ActivityIndicator, Colors } from "react-native-paper";
-
+import store from "../../presentation/state-management/store/store";
 import {
   StyleSheet,
   Text,
@@ -23,6 +23,7 @@ import {
   updatePath,
   updateCurrentPositionOnce,
   sendLineMarkers,
+  sendTest,
 } from "../state-management/actions/actions";
 import { connect } from "react-redux";
 import StartRecordingButton from "../components/StartRecordingButton";
@@ -79,18 +80,15 @@ export class MapViewHome extends Component {
         initialRegion={{
           latitude: this.props.aSingleCurrentPosition.latitude,
           longitude: this.props.aSingleCurrentPosition.longitude,
-          latitudeDelta: LATITUDE_DELTA, //1.2, //0.4
-          longitudeDelta: LONGITUDE_DELTA, //0.001,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
         }}
       >
         {this.props.lineMarkersHandler.map((marker) => {
           if (marker.isLoaded === true) {
             return (
               <Marker
-                key={Math.random()}
-                tracksViewChanges={false}
-                zIndex={Math.random()}
-                tracksInfoWindowChanges={false}
+                key={marker.rawPluscodeData.id}
                 coordinate={marker.coordinates}
                 onPress={() =>
                   mapView.animateToRegion(marker.markerRegion, 1000)
@@ -109,43 +107,6 @@ export class MapViewHome extends Component {
           }
         })}
 
-        <Marker
-          key={905}
-          onPress={() => animate()}
-          flat={true}
-          coordinate={{
-            latitude: this.props.aSingleCurrentPosition.latitude + 0.54,
-            longitude: this.props.aSingleCurrentPosition.longitude + 0.4,
-          }}
-          title={"You"}
-        ></Marker>
-        <Marker
-          key={906}
-          flat={true}
-          coordinate={{
-            latitude: this.props.aSingleCurrentPosition.latitude - 0.54,
-            longitude: this.props.aSingleCurrentPosition.longitude - 0.4,
-          }}
-          title={"You"}
-        ></Marker>
-        <Marker
-          key={907}
-          flat={true}
-          coordinate={{
-            latitude: this.props.aSingleCurrentPosition.latitude + 0.54,
-            longitude: this.props.aSingleCurrentPosition.longitude - 0.4,
-          }}
-          title={"You"}
-        ></Marker>
-        <Marker
-          key={908}
-          flat={true}
-          coordinate={{
-            latitude: this.props.aSingleCurrentPosition.latitude - 0.54,
-            longitude: this.props.aSingleCurrentPosition.longitude + 0.4,
-          }}
-          title={"You"}
-        ></Marker>
         <Marker
           key={5}
           flat={true}
@@ -211,6 +172,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
+    testHandler: state.testHandler,
     lineMarkersHandler: state.lineMarkersHandler,
     mapPressHandlerFirstPin: state.mapPressHandlerFirstPin,
     mapPressHandlerSecondPin: state.mapPressHandlerSecondPin,
@@ -225,6 +187,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = () => {
   return {
+    sendTest: sendTest,
     sendLineMarkers: sendLineMarkers,
     mapPressedForFirstPin: mapPressedForFirstPin,
     mapPressedForSecondPin: mapPressedForSecondPin,

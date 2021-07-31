@@ -15,6 +15,9 @@ import { convertZoomLvlToJumpsFor } from "../helpers/if_statements";
 
 //TODO Fine tune line marker overlap when zoom lvl <5
 
+//!TEST
+var previousRegion = [];
+
 export async function getLineMarkers(regionData, t15, mapView) {
   console.log(" A --------------------------------------------------------");
   var t16 = performance.now();
@@ -30,6 +33,7 @@ export async function getLineMarkers(regionData, t15, mapView) {
     "REGION_VISIBLE_ON_SCREEN",
     zoomLevel
   );
+
   var regionToMergeJumps = await convertZoomLvlToJumpsFor(
     "REGION_TO_MERGE",
     zoomLevel
@@ -43,12 +47,27 @@ export async function getLineMarkers(regionData, t15, mapView) {
   const pluscodeLvl2 = pluscode.substring(0, 4);
   const pluscodeLvl1 = pluscode.substring(0, 2);
 
+  //!TEST
+  var newPreviousRegion = [];
+
   if (zoomLevel < 7.5) {
     regionVisibleOnScreen = await pluscodeGeneratorLevel2(
       pluscodeLvl2,
       regionVisibleOnScreenJumps
     );
     weUseLvl2Pluscodes = true;
+    //!TEST
+    console.log(
+      "length Before Previous filter " + regionVisibleOnScreen.length
+    );
+    newPreviousRegion = regionVisibleOnScreen;
+    //x != previousRegion[i]
+    //for (let i = 0; i < previousRegion.length; i++) {
+    regionVisibleOnScreen = regionVisibleOnScreen.filter(
+      (x) => !previousRegion.includes(x)
+    );
+    //}
+    console.log("length After Previous filter " + regionVisibleOnScreen.length);
   }
 
   if (zoomLevel > 7.5) {
@@ -59,6 +78,19 @@ export async function getLineMarkers(regionData, t15, mapView) {
       pluscodeLvl3,
       regionVisibleOnScreenJumps
     );
+    //!TEST
+    console.log(
+      "length Before Previous filter " + regionVisibleOnScreen.length
+    );
+    newPreviousRegion = regionVisibleOnScreen;
+    //x != previousRegion[i]
+    //for (let i = 0; i < previousRegion.length; i++) {
+    regionVisibleOnScreen = regionVisibleOnScreen.filter(
+      (x) => !previousRegion.includes(x)
+    );
+    //}
+    console.log("length After Previous filter " + regionVisibleOnScreen.length);
+
     var t1 = performance.now();
     console.log("Plucodegeneratorlvl3 " + (t1 - t0) + " milliseconds");
     weUseLvl3Pluscodes = true;
@@ -67,23 +99,31 @@ export async function getLineMarkers(regionData, t15, mapView) {
   //*_____________________________________________________________________
 
   if (weUseLvl3Pluscodes) {
-    // Finding all lvl 3 pluscodes that have this pluscodeLvl2 as parent in dynamoDB
-    var listOflvl3Objects = await getAllLvl3UnderLvl2({
-      withThisLvl2Pluscode: pluscodeLvl2,
-    });
+    //!TEST
+    // // Finding all lvl 3 pluscodes that have this pluscodeLvl2 as parent in dynamoDB
+    // var listOflvl3Objects = await getAllLvl3UnderLvl2({
+    //   withThisLvl2Pluscode: pluscodeLvl2,
+    // });
 
-    // All lvl 3 pluscodes that start with this pluscodeLvl2 will be filtered out of the array
-    var leftOverRegionVisibleOnScreen = regionVisibleOnScreen.filter(
-      (x) => x.substring(0, 4) != pluscodeLvl2
-    );
+    // // All lvl 3 pluscodes that start with this pluscodeLvl2 will be filtered out of the array
+    // var leftOverRegionVisibleOnScreen = regionVisibleOnScreen.filter(
+    //   (x) => x.substring(0, 4) != pluscodeLvl2
+    // );
+
+    var leftOverRegionVisibleOnScreen = regionVisibleOnScreen;
+    var listOflvl3Objects = [];
+
     var t111 = performance.now();
     // For looping to get all the remaining lvl 3 objects from dynamoDB
     if (leftOverRegionVisibleOnScreen.length != 0) {
       for (var x = 0; x < leftOverRegionVisibleOnScreen.length; ) {
         // Getting all lvl 3 pluscodes with the remaining lvl 2 pluscodes that are visible on screen
-        var extraListOflvl3Objects = await getAllLvl3UnderLvl2(
-          leftOverRegionVisibleOnScreen[x].substring(0, 4)
-        );
+        var extraListOflvl3Objects = await getAllLvl3UnderLvl2({
+          withThisLvl2Pluscode: leftOverRegionVisibleOnScreen[x].substring(
+            0,
+            4
+          ),
+        });
 
         // Adding the extra lvl 3 objects to the listOflvl3Objects now the list is complete
         if (extraListOflvl3Objects.length > 0) {
@@ -101,44 +141,45 @@ export async function getLineMarkers(regionData, t15, mapView) {
     var t222 = performance.now();
     console.log("Leftovers " + (t222 - t111) + " milliseconds");
     var t333 = performance.now();
-
+    console.log("listOflvl3Objects.length " + listOflvl3Objects.length);
     // Creating the markers for mapview with the lvl 3 objects data
     if (listOflvl3Objects.length > 0) {
       var lineMarkers = [];
 
       for (let x = 0; x < listOflvl3Objects.length; x++) {
-        // Here we merge markers that got too close to eachother when the user zoomed out
-        var regionToMerge = await pluscodeGeneratorLevel3(
-          listOflvl3Objects[x].completePluscode,
-          regionToMergeJumps
-        );
+        //!TEST disabled merging for test
+        // // Here we merge markers that got too close to eachother when the user zoomed out
+        // var regionToMerge = await pluscodeGeneratorLevel3(
+        //   listOflvl3Objects[x].completePluscode,
+        //   regionToMergeJumps
+        // );
 
-        // Finding the lvl 3 object that we want to merge with to prevent it from merging with itself
-        const aIndex = regionToMerge.findIndex(
-          (i) => i === listOflvl3Objects[x].completePluscode
-        );
+        // // Finding the lvl 3 object that we want to merge with to prevent it from merging with itself
+        // const aIndex = regionToMerge.findIndex(
+        //   (i) => i === listOflvl3Objects[x].completePluscode
+        // );
 
-        // Removing the lvl 3 object that we want to merge with from the regionToMergeArray
-        if (aIndex > -1) {
-          regionToMerge.splice(aIndex, 1);
-        }
+        // // Removing the lvl 3 object that we want to merge with from the regionToMergeArray
+        // if (aIndex > -1) {
+        //   regionToMerge.splice(aIndex, 1);
+        // }
 
-        // Merging
-        for (let y = 0; y < regionToMerge.length; y++) {
-          // Checking if any of the lvl 3 objects in listOflvl3Objects lay in the region to merge
-          const index = listOflvl3Objects.findIndex(
-            (i) => i.completePluscode === regionToMerge[y]
-          );
+        // // Merging
+        // for (let y = 0; y < regionToMerge.length; y++) {
+        //   // Checking if any of the lvl 3 objects in listOflvl3Objects lay in the region to merge
+        //   const index = listOflvl3Objects.findIndex(
+        //     (i) => i.completePluscode === regionToMerge[y]
+        //   );
 
-          // If there was a lvl 3 object found in the merge region we merge it
-          if (index > -1) {
-            listOflvl3Objects[x].numberOfLines =
-              listOflvl3Objects[x].numberOfLines +
-              listOflvl3Objects[index].numberOfLines;
+        //   // If there was a lvl 3 object found in the merge region we merge it
+        //   if (index > -1) {
+        //     listOflvl3Objects[x].numberOfLines =
+        //       listOflvl3Objects[x].numberOfLines +
+        //       listOflvl3Objects[index].numberOfLines;
 
-            listOflvl3Objects.splice(index, 1);
-          }
-        }
+        //     listOflvl3Objects.splice(index, 1);
+        //   }
+        // }
 
         var t444 = performance.now();
         console.log("Merging " + (t444 - t333) + " milliseconds");
@@ -165,8 +206,6 @@ export async function getLineMarkers(regionData, t15, mapView) {
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           };
-
-          //TODO fetch a bunch of data once and use the same array to merge
 
           var lvl3PluscodeObject = {
             isLoaded: true,
@@ -211,6 +250,8 @@ export async function getLineMarkers(regionData, t15, mapView) {
       }
       console.log("double " + lineMarkers.length);
       store.dispatch(sendLineMarkers(lineMarkers));
+      //!TEST
+      previousRegion = newPreviousRegion;
     }
   }
 

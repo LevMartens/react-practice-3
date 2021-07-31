@@ -81,3 +81,10 @@ export const sendLineMarkers = (event) => {
     type: "GETLINEMARKERS",
   };
 };
+
+export const sendTest = (event) => {
+  return {
+    lineMarkers: event,
+    type: "GETTEST",
+  };
+};

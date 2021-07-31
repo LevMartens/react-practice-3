@@ -32,3 +32,19 @@ export const lineMarkersHandler = (
       return state;
   }
 };
+
+export const testHandler = (
+  state = [
+    {
+      isLoaded: false,
+    },
+  ],
+  action
+) => {
+  switch (action.type) {
+    case "GETTEST":
+      return action.lineMarkers;
+    default:
+      return state;
+  }
+};
