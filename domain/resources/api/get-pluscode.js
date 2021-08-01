@@ -7,7 +7,7 @@ async function getValueFor(key) {
   if (result) {
     return result;
   } else {
-    console.log("NO api key found");
+    console.log("NO api key found " + JSON.stringify(result));
   }
 }
 
@@ -18,7 +18,6 @@ export async function getPluscodeFromCoordinates(coordinates) {
     {}
   );
   const json = await response.json();
-  ////const obj = JSON.parse(json);
 
   if (json.plus_code.global_code != null) {
     console.log("Pluscode data is successfully fetched ");
@@ -34,13 +33,13 @@ export async function getCoordinesFromPluscode(pluscode) {
     {}
   );
   const json = await response.json();
-  //const obj = JSON.parse(json);
+
   if (json.plus_code.geometry.location.lng != null) {
     console.log("Pluscode data is successfully fetched");
   }
   return json.plus_code.geometry.location;
 }
 
-//// async function save(key, value) {
-////   await SecureStore.setItemAsync(key, value);
-//// }
+// async function save(key, value) {
+//   await SecureStore.setItemAsync(key, value);
+// }

@@ -82,7 +82,7 @@ export class MapViewHome extends Component {
         style={styles.map}
         onRegionChangeComplete={(region) => {
           var t15 = performance.now();
-          //positionHasChanged(region, t15);
+          positionHasChanged(region, t15);
         }}
         initialRegion={{
           latitude: this.props.aSingleCurrentPosition.latitude,
@@ -103,7 +103,6 @@ export class MapViewHome extends Component {
         />
         {this.props.lineMarkersHandler.map((marker) => {
           if (marker.isLoaded === true) {
-            //console.log("here " + marker.rawLineData.startingCoordinates.lat);
             return (
               <Marker
                 key={marker.rawLineData.startingCoordinates.id}

@@ -33,6 +33,7 @@ export async function getLineMarkers(regionData, t15) {
   const LATITUDE_DELTA = 0.2;
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
+  var image = await getNumberMarkerImage(1);
   var lineObjects = [];
   var lineMarkers = [];
   var regionVisibleOnScreen = []; // Region that is visible on the screen in either lvl 3 or lvl 2 pluscodes
@@ -48,6 +49,8 @@ export async function getLineMarkers(regionData, t15) {
 
   const pluscodeLvl3 = pluscode.substring(0, 6);
   const pluscodeLvl2 = pluscode.substring(0, 4);
+
+  console.log("NN " + pluscodeLvl2 + "-" + pluscodeLvl3);
 
   if (zoomLevel < 7.5) {
     console.log(
@@ -108,8 +111,6 @@ export async function getLineMarkers(regionData, t15) {
 
   // Prepping line marker data to send to MapView
   lineMarkers = lineObjects.map((object) => {
-    var image = getNumberMarkerImage(1);
-
     var coordinates = {
       latitude: parseFloat(object.startingCoordinates.lat),
       longitude: parseFloat(object.startingCoordinates.lng),

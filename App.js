@@ -21,10 +21,11 @@ export default function App() {
     Evolventa: require("./assets/fonts/Evolventa-Regular.otf"),
   });
   useEffect(() => {
-    //createLine("5R36FF", { lat: 20, lng: 20 }, { lat: 20, lng: 20 });
-    console.log(
-      "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX RELOAD XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-    );
+    // createLine(
+    //   "4RJ67X",
+    //   { lat: -37.795932, lng: 144.974475 },
+    //   { lat: -37.894932, lng: 145.073475 }
+    // );
   }, []);
 
   if (!fontsLoaded) {
