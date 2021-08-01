@@ -3,16 +3,19 @@ import MapView, { Polyline, Marker, Circle } from "react-native-maps";
 //import * as Svg from "react-native-svg";
 import { ActivityIndicator, Colors } from "react-native-paper";
 import store from "../../presentation/state-management/store/store";
+//import Toast from "react-native-root-toast";
+import Toast, { DURATION } from "react-native-easy-toast";
 import {
   StyleSheet,
   Text,
   View,
   Button,
-  TouchableOpacity,
+  TouchableNativeFeedback,
   Image,
   Icon,
   Dimensions,
   Animated,
+  TouchableOpacity,
 } from "react-native";
 import {
   currentPositionUpdate,
@@ -23,7 +26,7 @@ import {
   updatePath,
   updateCurrentPositionOnce,
   sendLineMarkers,
-  sendTest,
+  openSnackbar,
 } from "../state-management/actions/actions";
 import { connect } from "react-redux";
 import StartRecordingButton from "../components/StartRecordingButton";
@@ -41,6 +44,8 @@ import { getLineMarkers } from "../../domain/use_cases/get-line-markers";
 import { LinesNearby } from "../components/lines-nearby";
 import { debounce, throttle } from "lodash";
 import { lineMarkersHandler } from "../state-management/reducers/line-marker-handler";
+//import { Snackbar } from "@material-ui/core";
+import { Snackbar, Banner } from "react-native-paper";
 //import Animated from "react-native-reanimated";
 //import { mdiNavigation } from "@mdi/js";
 
@@ -48,10 +53,12 @@ const callabonna = {
   latitude: -29.991626,
   longitude: 140.00131,
 };
+var aToast = {};
 
-const positionHasChanged = throttle(function (region, t15, mapView) {
-  getLineMarkers(region, t15, mapView);
-}, 3500);
+const positionHasChanged = throttle(function (region, t15) {
+  aToast.show("hello world!", 2000);
+  getLineMarkers(region, t15);
+}, 0);
 
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
@@ -75,7 +82,7 @@ export class MapViewHome extends Component {
         style={styles.map}
         onRegionChangeComplete={(region) => {
           var t15 = performance.now();
-          positionHasChanged(region, t15, mapView);
+          //positionHasChanged(region, t15);
         }}
         initialRegion={{
           latitude: this.props.aSingleCurrentPosition.latitude,
@@ -84,11 +91,22 @@ export class MapViewHome extends Component {
           longitudeDelta: LONGITUDE_DELTA,
         }}
       >
+        <Toast
+          ref={(toast) => (aToast = toast)}
+          style={{ backgroundColor: "red" }}
+          position="top"
+          positionValue={0}
+          fadeInDuration={500}
+          fadeOutDuration={500}
+          opacity={0.8}
+          textStyle={{ color: "black" }}
+        />
         {this.props.lineMarkersHandler.map((marker) => {
           if (marker.isLoaded === true) {
+            //console.log("here " + marker.rawLineData.startingCoordinates.lat);
             return (
               <Marker
-                key={marker.rawPluscodeData.id}
+                key={marker.rawLineData.startingCoordinates.id}
                 coordinate={marker.coordinates}
                 onPress={() =>
                   mapView.animateToRegion(marker.markerRegion, 1000)
@@ -172,7 +190,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    testHandler: state.testHandler,
+    snackbarHandler: state.snackbarHandler,
     lineMarkersHandler: state.lineMarkersHandler,
     mapPressHandlerFirstPin: state.mapPressHandlerFirstPin,
     mapPressHandlerSecondPin: state.mapPressHandlerSecondPin,
@@ -187,7 +205,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = () => {
   return {
-    sendTest: sendTest,
+    openSnackbar: openSnackbar,
     sendLineMarkers: sendLineMarkers,
     mapPressedForFirstPin: mapPressedForFirstPin,
     mapPressedForSecondPin: mapPressedForSecondPin,

@@ -33,17 +33,14 @@ export const lineMarkersHandler = (
   }
 };
 
-export const testHandler = (
-  state = [
-    {
-      isLoaded: false,
-    },
-  ],
+export const snackbarHandler = (
+  state = false,
+
   action
 ) => {
   switch (action.type) {
-    case "GETTEST":
-      return action.lineMarkers;
+    case "OPENSNACKBAR":
+      return action.event;
     default:
       return state;
   }

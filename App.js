@@ -13,6 +13,7 @@ import * as Application from "expo-application";
 import Amplify, { API, graphqlOperation } from "aws-amplify";
 import awsconfig from "./src/aws-exports";
 import { createLine } from "./domain/use_cases/create-line";
+import { RootSiblingParent } from "react-native-root-siblings";
 Amplify.configure(awsconfig);
 
 export default function App() {
@@ -21,6 +22,9 @@ export default function App() {
   });
   useEffect(() => {
     //createLine("5R36FF", { lat: 20, lng: 20 }, { lat: 20, lng: 20 });
+    console.log(
+      "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX RELOAD XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    );
   }, []);
 
   if (!fontsLoaded) {
@@ -32,12 +36,14 @@ export default function App() {
   } else {
     return (
       <Provider store={store}>
-        <PaperProvider>
-          <NavigationContainer>
-            <BottomTab></BottomTab>
-            {/* <RootStack> </RootStack> */}
-          </NavigationContainer>
-        </PaperProvider>
+        <RootSiblingParent>
+          <PaperProvider>
+            <NavigationContainer>
+              <BottomTab></BottomTab>
+              {/* <RootStack> </RootStack> */}
+            </NavigationContainer>
+          </PaperProvider>
+        </RootSiblingParent>
       </Provider>
     );
   }

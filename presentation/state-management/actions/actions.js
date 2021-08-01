@@ -82,9 +82,9 @@ export const sendLineMarkers = (event) => {
   };
 };
 
-export const sendTest = (event) => {
+export const openSnackbar = (event) => {
   return {
-    lineMarkers: event,
-    type: "GETTEST",
+    event: event,
+    type: "OPENSNACKBAR",
   };
 };

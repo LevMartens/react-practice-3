@@ -11,10 +11,10 @@ import {
   updatePathReducer,
   aSingleCurrentPosition,
 } from "./updateCurrentPosition";
-import { lineMarkersHandler, testHandler } from "./line-marker-handler";
+import { lineMarkersHandler, snackbarHandler } from "./line-marker-handler";
 
 export default combineReducers({
-  testHandler: testHandler,
+  snackbarHandler: snackbarHandler,
   lineMarkersHandler: lineMarkersHandler,
   setPin: setPin,
   mapPressHandlerFirstPin: mapPressHandlerFirstPin,
