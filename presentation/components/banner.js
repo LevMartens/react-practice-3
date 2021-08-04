@@ -1,16 +1,5 @@
-import React, { Component, useEffect } from "react";
-import { ActivityIndicator, Colors } from "react-native-paper";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TouchableOpacity,
-  Image,
-  Icon,
-  Animated,
-  Dimensions,
-} from "react-native";
+import React, { useEffect } from "react";
+import { StyleSheet, Text, Image, Animated, Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
 

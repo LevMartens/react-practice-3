@@ -15,9 +15,11 @@ import DetailScreen from "../screens/detail";
 import GPSLiveScreen from "../screens/gpsLive";
 import AddLineScreen from "../screens/add-line-screen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { theme } from "../theme/themes";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
 //"#484848"
 //"#3A6351"
 
@@ -44,7 +46,7 @@ export function RootStack() {
             shadowColor: "black",
             shadowRadius: 5,
 
-            backgroundColor: "#3A6351",
+            backgroundColor: theme().primaryColor,
           },
         })}
       />
@@ -291,7 +293,7 @@ export function BottomTab() {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      tabBarOptions={{ style: { backgroundColor: "#3A6351" } }}
+      tabBarOptions={{ style: { backgroundColor: theme().primaryColor } }}
     >
       <Tab.Screen
         name="HomeStack"
