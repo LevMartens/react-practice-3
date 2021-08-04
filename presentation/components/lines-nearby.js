@@ -19,11 +19,8 @@ export class LinesNearby extends Component {
   }
 
   render() {
-    return (
-      <React.Fragment key={Math.random()}>
-        {this.props.lineMarkers}
-      </React.Fragment>
-    );
+    console.log("Re-render lines nearby");
+    return <View></View>;
   }
 }
 

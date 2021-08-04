@@ -23,6 +23,6 @@ export const getPositionOnce = async () => {
     }
   } catch (error) {
     // Error retrieving data
-    console.log(error);
+    console.log("ERROR: " + error + " see: get-position-once.js line 26 ");
   }
 };

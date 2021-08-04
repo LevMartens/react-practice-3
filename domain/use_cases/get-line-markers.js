@@ -8,7 +8,7 @@ import Toast from "react-native-root-toast";
 import { debounce, throttle } from "lodash";
 import {
   sendLineMarkers,
-  openSnackbar,
+  openBanner,
 } from "../../presentation/state-management/actions/actions";
 import React from "react";
 import { Marker } from "react-native-maps";
@@ -16,16 +16,44 @@ import { Image, Dimensions } from "react-native";
 import { getAllLvl3UnderLvl2 } from "../resources/graphql/get-all-lvl-3-under-lvl-2";
 import { getAllLvl2UnderLvl1 } from "../resources/graphql/get-all-lvl-2-under-lvl-1";
 import { convertZoomLvlToJumpsFor } from "../helpers/if_statements";
+import { getDistanceBetween } from "../generators/distance-generator";
 //import { animate } from "../../presentation/components/map-view-home";
 
-//TODO Fine tune line marker overlap when zoom lvl <5
+//TODO Test fetch of one line successful, add more lines and test again
+//TODO improve performance
+//TODO implement snackbar for loading lines and zooming out
+//TODO only get line markers when certain distance has been passed and not zoom lvl
+//TODO cleanup code
 
-export async function getLineMarkers(regionData, t15) {
+const showBanner = throttle(function () {
+  store.dispatch(openBanner(true));
+  setTimeout(function hideBanner() {
+    store.dispatch(openBanner(false));
+  }, 3000);
+}, 0);
+
+export async function getLineMarkers(previousRegion, currentRegion, t15) {
+  var distanceBetweenCurrentAndPreviousRegion = getDistanceBetween(
+    previousRegion,
+    currentRegion
+  );
+  console.log("dis: " + distanceBetweenCurrentAndPreviousRegion);
+
+  if (distanceBetweenCurrentAndPreviousRegion < 50) {
+    console.log(
+      "weShouldNotGetLineMarkers distance: " +
+        distanceBetweenCurrentAndPreviousRegion
+    );
+    return;
+  }
+
+  showBanner();
+
   console.log(" A --------------------------------------------------------");
   var t16 = performance.now();
   console.log("Time to start function " + (t16 - t15) + " milliseconds");
 
-  const zoomLevel = await getZoomLevel(regionData);
+  const zoomLevel = await getZoomLevel(currentRegion);
   console.log("Zoom level " + zoomLevel);
 
   const { width, height } = Dimensions.get("window");
@@ -44,7 +72,7 @@ export async function getLineMarkers(regionData, t15) {
   );
 
   const pluscode = await getPluscodeFromCoordinates(
-    `${regionData.latitude},${regionData.longitude}`
+    `${currentRegion.latitude},${currentRegion.longitude}`
   );
 
   const pluscodeLvl3 = pluscode.substring(0, 6);

@@ -82,7 +82,7 @@ export const sendLineMarkers = (event) => {
   };
 };
 
-export const openSnackbar = (event) => {
+export const openBanner = (event) => {
   return {
     event: event,
     type: "OPENSNACKBAR",

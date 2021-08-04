@@ -3,8 +3,8 @@ import MapView, { Polyline, Marker, Circle } from "react-native-maps";
 //import * as Svg from "react-native-svg";
 import { ActivityIndicator, Colors } from "react-native-paper";
 import store from "../../presentation/state-management/store/store";
-//import Toast from "react-native-root-toast";
-import Toast, { DURATION } from "react-native-easy-toast";
+import Toast from "react-native-root-toast";
+//import Toast, { DURATION } from "react-native-easy-toast";
 import {
   StyleSheet,
   Text,
@@ -26,7 +26,7 @@ import {
   updatePath,
   updateCurrentPositionOnce,
   sendLineMarkers,
-  openSnackbar,
+  openBanner,
 } from "../state-management/actions/actions";
 import { connect } from "react-redux";
 import StartRecordingButton from "../components/StartRecordingButton";
@@ -48,59 +48,53 @@ import { lineMarkersHandler } from "../state-management/reducers/line-marker-han
 import { Snackbar, Banner } from "react-native-paper";
 //import Animated from "react-native-reanimated";
 //import { mdiNavigation } from "@mdi/js";
+import { useSelector, useDispatch } from "react-redux";
 
 const callabonna = {
   latitude: -29.991626,
   longitude: 140.00131,
 };
-var aToast = {};
-
-const positionHasChanged = throttle(function (region, t15) {
-  aToast.show("hello world!", 2000);
-  getLineMarkers(region, t15);
-}, 0);
 
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 1.2;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 var mapView = {};
+var previousRegion = {};
+
+const positionHasChanged = throttle(function (currentRegion, t15) {
+  getLineMarkers(previousRegion, currentRegion, t15);
+  previousRegion = currentRegion;
+}, 0);
 
 export class MapViewHome extends Component {
+  initialRegion = {
+    latitude: this.props.aSingleCurrentPosition.latitude,
+    longitude: this.props.aSingleCurrentPosition.longitude,
+    latitudeDelta: LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
+  };
   componentDidMount() {
     getPositionOnce();
     watchPositionForeground();
     getHeading();
+    previousRegion = this.initialRegion;
   }
 
   render() {
+    console.log("Re-render map-view-home ");
     return this.props.aSingleCurrentPosition.isLoaded == true ? (
       <MapView
         ref={(ref) => (mapView = ref)}
-        showsUserLocation={false}
+        showsUserLocation={true}
         liteMode={true}
         style={styles.map}
         onRegionChangeComplete={(region) => {
           var t15 = performance.now();
           positionHasChanged(region, t15);
         }}
-        initialRegion={{
-          latitude: this.props.aSingleCurrentPosition.latitude,
-          longitude: this.props.aSingleCurrentPosition.longitude,
-          latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA,
-        }}
+        initialRegion={this.initialRegion}
       >
-        <Toast
-          ref={(toast) => (aToast = toast)}
-          style={{ backgroundColor: "red" }}
-          position="top"
-          positionValue={0}
-          fadeInDuration={500}
-          fadeOutDuration={500}
-          opacity={0.8}
-          textStyle={{ color: "black" }}
-        />
         {this.props.lineMarkersHandler.map((marker) => {
           if (marker.isLoaded === true) {
             return (
@@ -124,7 +118,7 @@ export class MapViewHome extends Component {
           }
         })}
 
-        <Marker
+        {/* <Marker
           key={5}
           flat={true}
           coordinate={this.props.watchCurrentPosition}
@@ -143,7 +137,7 @@ export class MapViewHome extends Component {
             }}
             resizeMode="contain"
           />
-        </Marker>
+        </Marker> */}
       </MapView>
     ) : (
       <View style={{ justifyContent: "center" }}>
@@ -172,6 +166,16 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+  snackbar: {
+    zIndex: 99,
+    justifyContent: "center",
+    alignSelf: "center",
+    marginTop: 500,
+    backgroundColor: "#c84b31",
+    width: 200,
+    height: 50,
+    position: "absolute",
+  },
   button: {
     justifyContent: "center",
     alignSelf: "center",
@@ -194,9 +198,9 @@ const mapStateToProps = (state) => {
     mapPressHandlerFirstPin: state.mapPressHandlerFirstPin,
     mapPressHandlerSecondPin: state.mapPressHandlerSecondPin,
     mapPressHandlerThirdPin: state.mapPressHandlerThirdPin,
-    watchCurrentPosition: state.watchCurrentPosition,
+    //watchCurrentPosition: state.watchCurrentPosition,
     setPin: state.setPin,
-    watchDirection: state.watchDirection,
+    //watchDirection: state.watchDirection,
     updatePathReducer: state.updatePathReducer,
     aSingleCurrentPosition: state.aSingleCurrentPosition,
   };
@@ -204,7 +208,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = () => {
   return {
-    openSnackbar: openSnackbar,
+    openBanner: openBanner,
     sendLineMarkers: sendLineMarkers,
     mapPressedForFirstPin: mapPressedForFirstPin,
     mapPressedForSecondPin: mapPressedForSecondPin,
