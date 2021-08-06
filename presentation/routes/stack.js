@@ -277,17 +277,18 @@ export function BottomTab() {
 
 const styles = () => {
   const theme = getTheme();
-  return StyleSheet.create({
-    bottomTabBar: {
-      backgroundColor: theme.primaryColor,
-    },
+  return {
     exploreIconFocused: theme.bottomTabBarExploreIconFocused,
     exploreIconUnFocused: theme.bottomTabBarExploreIconUNFocused,
     createLineIconFocused: theme.bottomTabBarCreateLineIconFocused,
     createLineIconUnFocused: theme.bottomTabBarCreateLineIconUNFocused,
     textColorFocused: theme.bottomTabBarTextColorFocused,
     textColorUnFocused: theme.bottomTabBarTextColorUnFocused,
-
+    backArrowIcon: theme.backArrowIcon,
+    straightLineLogo: theme.straightLineLogo,
+    bottomTabBar: {
+      backgroundColor: theme.primaryColor,
+    },
     createLineIconLayout: {
       marginLeft: 10,
       marginTop: 20,
@@ -311,7 +312,6 @@ const styles = () => {
       shadowRadius: 5,
       backgroundColor: theme.primaryColor,
     },
-    backArrowIcon: theme.backArrowIcon,
     backArrowLayout: {
       marginLeft: 10,
       width: 50,
@@ -323,10 +323,9 @@ const styles = () => {
       height: 50,
       position: "absolute",
     },
-    straightLineLogo: theme.straightLineLogo,
     straightLineLogoLayout: {
       width: 200,
       height: 40,
     },
-  });
+  };
 };

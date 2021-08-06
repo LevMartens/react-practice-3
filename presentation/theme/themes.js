@@ -5,11 +5,9 @@ import createLineFocusedLight from "../../assets/map-marker-distance10.png";
 import createLineUNFocusedLight from "../../assets/map-marker-distance5.png";
 import backArrowIconLight from "../../assets/backArrowNar.png";
 import straightLineLogoLight from "../../assets/StraightLineLogoT.png";
-import React from "react";
 
 export function getTheme() {
   const themeMode = useColorScheme();
-
   return themeMode == "light" ? lightTheme : darkTheme;
 }
 
