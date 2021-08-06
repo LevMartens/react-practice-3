@@ -2,8 +2,8 @@
 
 ### Straight Line 
 
-Straight Line is a game where the objective is to walk a straight line through a rough terrain. 
-The gps will track how much you deviate from that line and will give a score in the end. 
+Straight Line is a game where the objective is to walk a line through a rough terrain as straight as possible. 
+The gps will track how much you deviate from the set line and will give you a score in the end. 
 
 ### Build With
 
