@@ -14,6 +14,7 @@ import Amplify, { API, graphqlOperation } from "aws-amplify";
 import awsconfig from "./src/aws-exports";
 import { createLine } from "./domain/use_cases/create-line";
 import { RootSiblingParent } from "react-native-root-siblings";
+
 Amplify.configure(awsconfig);
 
 export default function App() {

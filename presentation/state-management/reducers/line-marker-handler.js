@@ -33,13 +33,13 @@ export const lineMarkersHandler = (
   }
 };
 
-export const snackbarHandler = (
+export const bannerHandler = (
   state = false,
 
   action
 ) => {
   switch (action.type) {
-    case "OPENSNACKBAR":
+    case "OPENBANNER":
       return action.event;
     default:
       return state;

@@ -1,29 +1,18 @@
 import * as React from "react";
-import { Dimensions } from "react-native";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Button,
-  Icon,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../screens/home";
 import DetailScreen from "../screens/detail";
 import GPSLiveScreen from "../screens/gpsLive";
 import AddLineScreen from "../screens/add-line-screen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { theme } from "../theme/themes";
+import { getTheme } from "../theme/themes";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-//"#484848"
-//"#3A6351"
-
 export function RootStack() {
+  const themedStyles = styles();
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
@@ -32,22 +21,12 @@ export function RootStack() {
         options={({ navigation, route }) => ({
           title: (
             <Image
-              source={require("../../assets/StraightLineLogoT.png")}
-              style={{
-                width: 200,
-                height: 40,
-              }}
+              source={themedStyles.straightLineLogo}
+              style={themedStyles.straightLineLogoLayout}
               resizeMode="contain"
             />
           ),
-          headerStyle: {
-            shadowOpacity: 0.4,
-            shadowOffset: { height: 2 },
-            shadowColor: "black",
-            shadowRadius: 5,
-
-            backgroundColor: theme().primaryColor,
-          },
+          headerStyle: themedStyles.headerStyle,
         })}
       />
       <Stack.Screen
@@ -56,97 +35,65 @@ export function RootStack() {
         options={{
           title: (
             <Image
-              source={require("../../assets/StraightLineLogoT.png")}
-              style={{
-                width: 200,
-                height: 40,
-              }}
+              source={themedStyles.straightLineLogo}
+              style={themedStyles.straightLineLogoLayout}
               resizeMode="contain"
             />
           ),
-          headerStyle: {
-            shadowOpacity: 0.4,
-            shadowOffset: { height: 2 },
-            shadowColor: "black",
-            shadowRadius: 5,
-
-            backgroundColor: "#3A6351",
-          },
+          headerStyle: themedStyles.headerStyle,
         }}
       />
 
       <Stack.Screen
         name="Detail"
         component={DetailScreen}
-        options={({ navigation, route }) => ({
+        options={({ navigation }) => ({
           title: (
             <Image
-              source={require("../../assets/StraightLineLogoT.png")}
-              style={{
-                width: 200,
-                height: 40,
-              }}
+              source={themedStyles.straightLineLogo}
+              style={themedStyles.straightLineLogoLayout}
               resizeMode="contain"
             />
           ),
           headerLeft: () => (
             <TouchableOpacity
-              style={styles.button}
+              style={themedStyles.button}
               onPress={() => navigation.navigate("Home")}
             >
               <Image
-                source={require("../../assets/backArrowNar.png")}
-                style={{
-                  marginLeft: 10,
-                  width: 50,
-                  height: 50,
-                }}
+                source={themedStyles.backArrowIcon}
+                style={themedStyles.backArrowLayout}
                 resizeMode="contain"
               />
             </TouchableOpacity>
           ),
-          headerStyle: {
-            backgroundColor: "#3A6351",
-          },
+          headerStyle: themedStyles.headerStyle,
         })}
       />
       <Stack.Screen
         name="GPSLive"
         component={GPSLiveScreen}
-        options={({ navigation, route }) => ({
+        options={({ navigation }) => ({
           title: (
             <Image
-              source={require("../../assets/StraightLineLogoT.png")}
-              style={{
-                width: 200,
-                height: 40,
-              }}
+              source={themedStyles.straightLineLogo}
+              style={themedStyles.straightLineLogoLayout}
               resizeMode="contain"
             />
           ),
           headerLeft: () => (
             <TouchableOpacity
-              style={styles.button}
+              style={themedStyles.button}
               onPress={() => navigation.navigate("Detail")}
             >
               <Image
-                source={require("../../assets/backArrowNar.png")}
-                style={{
-                  marginLeft: 10,
-                  width: 50,
-                  height: 50,
-                }}
+                source={themedStyles.backArrowIcon}
+                style={themedStyles.backArrowLayout}
                 resizeMode="contain"
               />
             </TouchableOpacity>
           ),
-          headerStyle: {
-            shadowOpacity: 0.4,
-            shadowOffset: { height: 2 },
-            shadowColor: "black",
-            shadowRadius: 5,
-            backgroundColor: "#3A6351",
-          },
+          headerStyle: themedStyles.headerStyle,
         })}
       />
     </Stack.Navigator>
@@ -154,6 +101,7 @@ export function RootStack() {
 }
 
 export function HomeStack() {
+  const themedStyles = styles();
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
@@ -162,22 +110,12 @@ export function HomeStack() {
         options={({ navigation, route }) => ({
           title: (
             <Image
-              source={require("../../assets/StraightLineLogoT.png")}
-              style={{
-                width: 200,
-                height: 40,
-              }}
+              source={themedStyles.straightLineLogo}
+              style={themedStyles.straightLineLogoLayout}
               resizeMode="contain"
             />
           ),
-          headerStyle: {
-            shadowOpacity: 0.4,
-            shadowOffset: { height: 2 },
-            shadowColor: "black",
-            shadowRadius: 5,
-
-            backgroundColor: "#3A6351",
-          },
+          headerStyle: themedStyles.headerStyle,
         })}
       />
     </Stack.Navigator>
@@ -185,6 +123,7 @@ export function HomeStack() {
 }
 
 export function AddLineStack() {
+  const themedStyles = styles();
   return (
     <Stack.Navigator initialRouteName="ADD_LINE_SCREEN">
       <Stack.Screen
@@ -193,96 +132,64 @@ export function AddLineStack() {
         options={({ navigation, route }) => ({
           title: (
             <Image
-              source={require("../../assets/StraightLineLogoT.png")}
-              style={{
-                width: 200,
-                height: 40,
-              }}
+              source={themedStyles.straightLineLogo}
+              style={themedStyles.straightLineLogoLayout}
               resizeMode="contain"
             />
           ),
-          headerStyle: {
-            shadowOpacity: 0.4,
-            shadowOffset: { height: 2 },
-            shadowColor: "black",
-            shadowRadius: 5,
-
-            backgroundColor: "#3A6351",
-          },
+          headerStyle: themedStyles.headerStyle,
         })}
       />
       <Stack.Screen
         name="Detail"
         component={DetailScreen}
-        options={({ navigation, route }) => ({
+        options={({ navigation }) => ({
           title: (
             <Image
-              source={require("../../assets/StraightLineLogoT.png")}
-              style={{
-                width: 200,
-                height: 40,
-              }}
+              source={themedStyles.straightLineLogo}
+              style={themedStyles.straightLineLogoLayout}
               resizeMode="contain"
             />
           ),
           headerLeft: () => (
             <TouchableOpacity
-              style={styles.button}
+              style={themedStyles.button}
               onPress={() => navigation.navigate("Home")}
             >
               <Image
-                source={require("../../assets/backArrowNar.png")}
-                style={{
-                  marginLeft: 10,
-                  width: 50,
-                  height: 50,
-                }}
+                source={themedStyles.backArrowIcon}
+                style={themedStyles.backArrowLayout}
                 resizeMode="contain"
               />
             </TouchableOpacity>
           ),
-          headerStyle: {
-            backgroundColor: "#3A6351",
-          },
+          headerStyle: themedStyles.headerStyle,
         })}
       />
       <Stack.Screen
         name="GPSLive"
         component={GPSLiveScreen}
-        options={({ navigation, route }) => ({
+        options={({ navigation }) => ({
           title: (
             <Image
-              source={require("../../assets/StraightLineLogoT.png")}
-              style={{
-                width: 200,
-                height: 40,
-              }}
+              source={themedStyles.straightLineLogo}
+              style={themedStyles.straightLineLogoLayout}
               resizeMode="contain"
             />
           ),
           headerLeft: () => (
             <TouchableOpacity
-              style={styles.button}
+              style={themedStyles.button}
               onPress={() => navigation.navigate("Detail")}
             >
               <Image
-                source={require("../../assets/backArrowNar.png")}
-                style={{
-                  marginLeft: 10,
-                  width: 50,
-                  height: 50,
-                }}
+                source={themedStyles.backArrowIcon}
+                style={themedStyles.backArrowLayout}
                 resizeMode="contain"
               />
             </TouchableOpacity>
           ),
-          headerStyle: {
-            shadowOpacity: 0.4,
-            shadowOffset: { height: 2 },
-            shadowColor: "black",
-            shadowRadius: 5,
-            backgroundColor: "#3A6351",
-          },
+          headerStyle: themedStyles.headerStyle,
         })}
       />
     </Stack.Navigator>
@@ -290,10 +197,11 @@ export function AddLineStack() {
 }
 
 export function BottomTab() {
+  const themedStyles = styles();
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      tabBarOptions={{ style: { backgroundColor: theme().primaryColor } }}
+      tabBarOptions={{ style: themedStyles.bottomTabBar }}
     >
       <Tab.Screen
         name="HomeStack"
@@ -306,22 +214,21 @@ export function BottomTab() {
                 <Image
                   source={
                     focused == true
-                      ? require("../../assets/map-outline3.png")
-                      : require("../../assets/map-outline1.png")
+                      ? themedStyles.exploreIconFocused
+                      : themedStyles.exploreIconUnFocused
                   }
-                  style={{
-                    marginTop: 20,
-                    width: 35,
-                    height: 35,
-                  }}
+                  style={themedStyles.exploreIconLayout}
                 />
                 <Text
-                  style={{
-                    color: focused == true ? "white" : "black",
-                    textAlign: "center",
-                    fontSize: 11,
-                    fontFamily: "Evolventa",
-                  }}
+                  style={[
+                    themedStyles.text,
+                    {
+                      color:
+                        focused == true
+                          ? themedStyles.textColorFocused
+                          : themedStyles.textColorUnFocused,
+                    },
+                  ]}
                 >
                   {"Explore"}
                 </Text>
@@ -341,23 +248,21 @@ export function BottomTab() {
                 <Image
                   source={
                     focused == true
-                      ? require("../../assets/map-marker-distance10.png")
-                      : require("../../assets/map-marker-distance5.png")
+                      ? themedStyles.createLineIconFocused
+                      : themedStyles.createLineIconUnFocused
                   }
-                  style={{
-                    marginLeft: 10,
-                    marginTop: 20,
-                    width: 35,
-                    height: 35,
-                  }}
+                  style={themedStyles.createLineIconLayout}
                 />
                 <Text
-                  style={{
-                    color: focused == true ? "white" : "black",
-                    textAlign: "center",
-                    fontSize: 11,
-                    fontFamily: "Evolventa",
-                  }}
+                  style={[
+                    themedStyles.text,
+                    {
+                      color:
+                        focused == true
+                          ? themedStyles.textColorFocused
+                          : themedStyles.textColorUnFocused,
+                    },
+                  ]}
                 >
                   {"Create line"}
                 </Text>
@@ -370,27 +275,58 @@ export function BottomTab() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "#d8b384",
-    flex: 1,
-    flexDirection: "column",
-    height: "100%",
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  button: {
-    flex: 1,
-    width: 50,
-    height: 50,
-    position: "absolute",
-  },
-  text: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 10,
-    fontFamily: "Evolventa",
-  },
-});
+const styles = () => {
+  const theme = getTheme();
+  return StyleSheet.create({
+    bottomTabBar: {
+      backgroundColor: theme.primaryColor,
+    },
+    exploreIconFocused: theme.bottomTabBarExploreIconFocused,
+    exploreIconUnFocused: theme.bottomTabBarExploreIconUNFocused,
+    createLineIconFocused: theme.bottomTabBarCreateLineIconFocused,
+    createLineIconUnFocused: theme.bottomTabBarCreateLineIconUNFocused,
+    textColorFocused: theme.bottomTabBarTextColorFocused,
+    textColorUnFocused: theme.bottomTabBarTextColorUnFocused,
+
+    createLineIconLayout: {
+      marginLeft: 10,
+      marginTop: 20,
+      width: 35,
+      height: 35,
+    },
+    exploreIconLayout: {
+      marginTop: 20,
+      width: 35,
+      height: 35,
+    },
+    text: {
+      textAlign: "center",
+      fontSize: 11,
+      fontFamily: theme.fontFamily,
+    },
+    headerStyle: {
+      shadowOpacity: 0.4,
+      shadowOffset: { height: 2 },
+      shadowColor: "black",
+      shadowRadius: 5,
+      backgroundColor: theme.primaryColor,
+    },
+    backArrowIcon: theme.backArrowIcon,
+    backArrowLayout: {
+      marginLeft: 10,
+      width: 50,
+      height: 50,
+    },
+    button: {
+      flex: 1,
+      width: 50,
+      height: 50,
+      position: "absolute",
+    },
+    straightLineLogo: theme.straightLineLogo,
+    straightLineLogoLayout: {
+      width: 200,
+      height: 40,
+    },
+  });
+};

@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    snackbarHandler: state.snackbarHandler,
+    bannerHandler: state.bannerHandler,
     lineMarkersHandler: state.lineMarkersHandler,
     mapPressHandlerFirstPin: state.mapPressHandlerFirstPin,
     mapPressHandlerSecondPin: state.mapPressHandlerSecondPin,

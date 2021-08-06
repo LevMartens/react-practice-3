@@ -85,6 +85,6 @@ export const sendLineMarkers = (event) => {
 export const openBanner = (event) => {
   return {
     event: event,
-    type: "OPENSNACKBAR",
+    type: "OPENBANNER",
   };
 };
