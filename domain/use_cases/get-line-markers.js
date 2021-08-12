@@ -1,15 +1,10 @@
 import { getZoomLevel } from "../generators/zoom-level-generator";
 import { pluscodeGeneratorLevel3 } from "../generators/pluscode-lvl-3-generator";
 import { getPluscodeFromCoordinates } from "../resources/api/get-pluscode";
-import { getNumberMarkerImage } from "../helpers/switch_cases";
 import store from "../../presentation/state-management/store/store";
 import { sendLineMarkers } from "../../presentation/state-management/actions/actions";
 import { getAllLvl3UnderLvl2 } from "../resources/graphql/get-all-lvl-3-under-lvl-2";
-import {
-  convertZoomLvlToJumpsFor,
-  getZoomLevelRules,
-} from "../helpers/if_statements";
-import { getDistanceBetween } from "../generators/distance-generator";
+import { getZoomLevelRules } from "../helpers/if_statements";
 import { showBanner } from "../../presentation/components/banner";
 import {
   LATITUDE_DELTA,
@@ -17,24 +12,19 @@ import {
 } from "../resources/environment/dimensions";
 import image from "../../assets/lineMarker.png";
 
-//TODO Test fetch of one line successful, add more lines and test again
-//TODO improve performance
-//TODO implement snackbar for loading lines and zooming out
-//TODO only get line markers when certain distance has been passed and not zoom lvl
-//TODO cleanup code
+//TODO:
+/**
+ * On large scale you might overuse the google api with region fetching, see if there is an option to put a max distance
+ * before fetching, see git commit 'before removing distance between regions'.
+ */
 
-//! 13.4 Assign variables where you need them, but place them in a reasonable place.
-//! 13.6 Avoid using unary increments and decrements (++, --).  use i += 1
-//! 15.1 Use === and !== over == and !=.
-//! 15.3 Use shortcuts for booleans, but explicit comparisons for strings and numbers.
+let cachedRegion = [];
 
-let cachedRegion = []; // Level 3 pluscodes
-
-export async function getLineMarkers(previousRegion, currentRegion) {
+export async function getLineMarkers(currentRegion) {
   const { latitude, longitude } = currentRegion;
   const zoomLevel = await getZoomLevel(currentRegion);
   const zoomRules = await getZoomLevelRules(zoomLevel);
-  const { minDistanceToContinue, zoomedOutToFar } = zoomRules;
+  const { jumps, zoomedOutToFar } = zoomRules;
 
   if (zoomedOutToFar) {
     showBanner({
@@ -42,49 +32,22 @@ export async function getLineMarkers(previousRegion, currentRegion) {
       time: 3000,
       message: "Please zoom in to search lines",
     });
-    console.log(
-      "MESSAGE: Zoomed out to far on map. source: get-line-markers.js"
-    );
+    console.log("LOG: Zoomed out to far on map. source: get-line-markers.js");
     return;
   }
-
-  // const distanceBetweenRegions = await getDistanceBetween(
-  //   previousRegion,
-  //   currentRegion
-  // );
-
-  // if (distanceBetweenRegions < minDistanceToContinue) {
-  //   console.log(
-  //     "MESSAGE: Not getting linemarkers, not enough change in between regions: " +
-  //       distanceBetweenRegions +
-  //       " meters"
-  //   );
-  //   return;
-  // }
 
   const pluscode = await getPluscodeFromCoordinates(`${latitude},${longitude}`);
 
   const pluscodeLvl3 = pluscode.substring(0, 6);
 
   if (cachedRegion.includes(pluscodeLvl3)) {
-    console.log("MESSAGE: Region already fetched. source: get-line-markers.js");
+    console.log("LOG: Region already fetched. source: get-line-markers.js");
     return;
   }
 
   showBanner({ withTime: true, time: 3000, message: "Loading lines..." });
 
-  //var image = await getNumberMarkerImage(1);
-  //var lineObjects = [];
-  //* let lineObjects;
-  //var lineMarkers = [];
-  //let regionVisibleOnScreen = [];
-
   // Region that is visible on the screen in lvl 3 pluscodes
-  const jumps = await convertZoomLvlToJumpsFor(
-    "REGION_VISIBLE_ON_SCREEN",
-    zoomLevel
-  );
-
   const regionVisibleOnScreen = await pluscodeGeneratorLevel3(
     pluscodeLvl3,
     jumps
@@ -127,7 +90,7 @@ export async function getLineMarkers(previousRegion, currentRegion) {
 
   if (listOflvl3Objects.length < 1) {
     console.log(
-      "MESSAGE: No lvl 3 objects (lines) found in dynamoDB. source: get-line-markers.js"
+      "LOG: No lvl 3 objects (lines) found in dynamoDB. source: get-line-markers.js"
     );
     return;
   }

@@ -16,7 +16,7 @@ export const showBanner = throttle(function ({
   manual,
   visible,
 }) {
-  console.log("MESSAGE: Banner visible: " + message + " source: banner.js");
+  console.log("LOG: Banner visible: " + message + " source: banner.js");
   if (time !== throttleTime - 10 && typeof time !== "undefined") {
     throttleTime = time + 10;
   }
