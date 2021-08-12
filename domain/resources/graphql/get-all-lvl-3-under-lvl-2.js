@@ -11,7 +11,6 @@ export async function getAllLvl3UnderLvl2(param) {
 
     return response.data.pluscode2ByCompletePluscode.items[0].level3List.items;
   } catch (err) {
-    console.log("No lvl 3 under lvl 2 ");
     return [];
   }
 }

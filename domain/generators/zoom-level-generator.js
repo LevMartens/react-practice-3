@@ -1,7 +1,8 @@
-import { Dimensions } from "react-native";
-
-const screenWidth = Dimensions.get("screen").width;
+import { SCREEN_WIDTH } from "../resources/environment/dimensions";
 
 export async function getZoomLevel(regionObject) {
-  return Math.log2(360 * (screenWidth / 256 / regionObject.longitudeDelta)) + 1;
+  let zoomLvl =
+    Math.log2(360 * (SCREEN_WIDTH / 256 / regionObject.longitudeDelta)) + 1;
+  let fixedZoomLvl = zoomLvl.toFixed(1);
+  return fixedZoomLvl;
 }

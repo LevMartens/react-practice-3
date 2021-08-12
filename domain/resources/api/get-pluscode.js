@@ -7,7 +7,11 @@ async function getValueFor(key) {
   if (result) {
     return result;
   } else {
-    console.log("NO api key found " + JSON.stringify(result));
+    console.log(
+      "ERROR: No api key found " +
+        JSON.stringify(result) +
+        ". source: get-pluscode.js"
+    );
   }
 }
 
@@ -19,8 +23,10 @@ export async function getPluscodeFromCoordinates(coordinates) {
   );
   const json = await response.json();
 
-  if (json.plus_code.global_code != null) {
-    console.log("Pluscode data is successfully fetched ");
+  if (json.plus_code.global_code == null) {
+    console.log(
+      "ERROR: Something went wrong fetching pluscodes with coordinates. source: get-pluscode.js"
+    );
   }
   return json.plus_code.global_code;
 }
@@ -34,8 +40,10 @@ export async function getCoordinesFromPluscode(pluscode) {
   );
   const json = await response.json();
 
-  if (json.plus_code.geometry.location.lng != null) {
-    console.log("Pluscode data is successfully fetched");
+  if (json.plus_code.geometry.location.lng == null) {
+    console.log(
+      "ERROR: Something went wrong fetching pluscodes with coordinates. source: get-pluscode.js"
+    );
   }
   return json.plus_code.geometry.location;
 }

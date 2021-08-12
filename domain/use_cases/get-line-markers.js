@@ -1,23 +1,21 @@
 import { getZoomLevel } from "../generators/zoom-level-generator";
-import { pluscodeGeneratorLevel3 } from "../generators/pluscode-generator-lvl-3";
-import { pluscodeGeneratorLevel2 } from "../generators/pluscode-generator-lvl-2";
+import { pluscodeGeneratorLevel3 } from "../generators/pluscode-lvl-3-generator";
 import { getPluscodeFromCoordinates } from "../resources/api/get-pluscode";
 import { getNumberMarkerImage } from "../helpers/switch_cases";
 import store from "../../presentation/state-management/store/store";
-import Toast from "react-native-root-toast";
-import { debounce, throttle } from "lodash";
-import {
-  sendLineMarkers,
-  openBanner,
-} from "../../presentation/state-management/actions/actions";
-import React from "react";
-import { Marker } from "react-native-maps";
-import { Image, Dimensions } from "react-native";
+import { sendLineMarkers } from "../../presentation/state-management/actions/actions";
 import { getAllLvl3UnderLvl2 } from "../resources/graphql/get-all-lvl-3-under-lvl-2";
-import { getAllLvl2UnderLvl1 } from "../resources/graphql/get-all-lvl-2-under-lvl-1";
-import { convertZoomLvlToJumpsFor } from "../helpers/if_statements";
+import {
+  convertZoomLvlToJumpsFor,
+  getZoomLevelRules,
+} from "../helpers/if_statements";
 import { getDistanceBetween } from "../generators/distance-generator";
-//import { animate } from "../../presentation/components/map-view-home";
+import { showBanner } from "../../presentation/components/banner";
+import {
+  LATITUDE_DELTA,
+  LONGITUDE_DELTA,
+} from "../resources/environment/dimensions";
+import image from "../../assets/lineMarker.png";
 
 //TODO Test fetch of one line successful, add more lines and test again
 //TODO improve performance
@@ -25,90 +23,92 @@ import { getDistanceBetween } from "../generators/distance-generator";
 //TODO only get line markers when certain distance has been passed and not zoom lvl
 //TODO cleanup code
 
-const showBanner = throttle(function () {
-  store.dispatch(openBanner(true));
-  setTimeout(function hideBanner() {
-    store.dispatch(openBanner(false));
-  }, 3000);
-}, 0);
+//! 13.4 Assign variables where you need them, but place them in a reasonable place.
+//! 13.6 Avoid using unary increments and decrements (++, --).  use i += 1
+//! 15.1 Use === and !== over == and !=.
+//! 15.3 Use shortcuts for booleans, but explicit comparisons for strings and numbers.
 
-export async function getLineMarkers(previousRegion, currentRegion, t15) {
-  var distanceBetweenCurrentAndPreviousRegion = getDistanceBetween(
-    previousRegion,
-    currentRegion
-  );
-  console.log("dis: " + distanceBetweenCurrentAndPreviousRegion);
+let cachedRegion = []; // Level 3 pluscodes
 
-  if (distanceBetweenCurrentAndPreviousRegion < 50) {
+export async function getLineMarkers(previousRegion, currentRegion) {
+  const { latitude, longitude } = currentRegion;
+  const zoomLevel = await getZoomLevel(currentRegion);
+  const zoomRules = await getZoomLevelRules(zoomLevel);
+  const { minDistanceToContinue, zoomedOutToFar } = zoomRules;
+
+  if (zoomedOutToFar) {
+    showBanner({
+      withTime: true,
+      time: 3000,
+      message: "Please zoom in to search lines",
+    });
     console.log(
-      "weShouldNotGetLineMarkers distance: " +
-        distanceBetweenCurrentAndPreviousRegion
+      "MESSAGE: Zoomed out to far on map. source: get-line-markers.js"
     );
     return;
   }
 
-  showBanner();
+  // const distanceBetweenRegions = await getDistanceBetween(
+  //   previousRegion,
+  //   currentRegion
+  // );
 
-  console.log(" A --------------------------------------------------------");
-  var t16 = performance.now();
-  console.log("Time to start function " + (t16 - t15) + " milliseconds");
+  // if (distanceBetweenRegions < minDistanceToContinue) {
+  //   console.log(
+  //     "MESSAGE: Not getting linemarkers, not enough change in between regions: " +
+  //       distanceBetweenRegions +
+  //       " meters"
+  //   );
+  //   return;
+  // }
 
-  const zoomLevel = await getZoomLevel(currentRegion);
-  console.log("Zoom level " + zoomLevel);
+  const pluscode = await getPluscodeFromCoordinates(`${latitude},${longitude}`);
 
-  const { width, height } = Dimensions.get("window");
-  const ASPECT_RATIO = width / height;
-  const LATITUDE_DELTA = 0.2;
-  const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+  const pluscodeLvl3 = pluscode.substring(0, 6);
 
-  var image = await getNumberMarkerImage(1);
-  var lineObjects = [];
-  var lineMarkers = [];
-  var regionVisibleOnScreen = []; // Region that is visible on the screen in either lvl 3 or lvl 2 pluscodes
+  if (cachedRegion.includes(pluscodeLvl3)) {
+    console.log("MESSAGE: Region already fetched. source: get-line-markers.js");
+    return;
+  }
 
-  var regionVisibleOnScreenJumps = await convertZoomLvlToJumpsFor(
+  showBanner({ withTime: true, time: 3000, message: "Loading lines..." });
+
+  //var image = await getNumberMarkerImage(1);
+  //var lineObjects = [];
+  //* let lineObjects;
+  //var lineMarkers = [];
+  //let regionVisibleOnScreen = [];
+
+  // Region that is visible on the screen in lvl 3 pluscodes
+  const jumps = await convertZoomLvlToJumpsFor(
     "REGION_VISIBLE_ON_SCREEN",
     zoomLevel
   );
 
-  const pluscode = await getPluscodeFromCoordinates(
-    `${currentRegion.latitude},${currentRegion.longitude}`
-  );
-
-  const pluscodeLvl3 = pluscode.substring(0, 6);
-  const pluscodeLvl2 = pluscode.substring(0, 4);
-
-  console.log("NN " + pluscodeLvl2 + "-" + pluscodeLvl3);
-
-  if (zoomLevel < 7.5) {
-    console.log(
-      "ERROR: Zoomed out to far on map. source: get-line-markers.js line 52"
-    );
-    return;
-  }
-
-  console.log(pluscodeLvl3 + " " + regionVisibleOnScreenJumps + " jumps");
-
-  regionVisibleOnScreen = await pluscodeGeneratorLevel3(
+  const regionVisibleOnScreen = await pluscodeGeneratorLevel3(
     pluscodeLvl3,
-    regionVisibleOnScreenJumps
+    jumps
   );
+
+  cachedRegion = cachedRegion.concat(regionVisibleOnScreen);
 
   // Finding all lvl 3 pluscodes that have this pluscodeLvl2 as parent in dynamoDB
-  var listOflvl3Objects = await getAllLvl3UnderLvl2({
+  const pluscodeLvl2 = pluscode.substring(0, 4);
+
+  let listOflvl3Objects = await getAllLvl3UnderLvl2({
     withThisLvl2Pluscode: pluscodeLvl2,
   });
 
   // All lvl 3 pluscodes that start with this pluscodeLvl2 will be filtered out of the array
-  var leftOverRegionVisibleOnScreen = regionVisibleOnScreen.filter(
+  let leftOverRegionVisibleOnScreen = regionVisibleOnScreen.filter(
     (x) => x.substring(0, 4) != pluscodeLvl2
   );
 
   // For looping to get all the remaining lvl 3 objects from dynamoDB
   if (leftOverRegionVisibleOnScreen.length != 0) {
-    for (var x = 0; x < leftOverRegionVisibleOnScreen.length; ) {
+    for (let x = 0; x < leftOverRegionVisibleOnScreen.length; ) {
       // Getting all lvl 3 pluscodes with the remaining lvl 2 pluscodes that are visible on screen
-      var extraListOflvl3Objects = await getAllLvl3UnderLvl2({
+      let extraListOflvl3Objects = await getAllLvl3UnderLvl2({
         withThisLvl2Pluscode: leftOverRegionVisibleOnScreen[x].substring(0, 4),
       });
 
@@ -127,31 +127,33 @@ export async function getLineMarkers(previousRegion, currentRegion, t15) {
 
   if (listOflvl3Objects.length < 1) {
     console.log(
-      "ERROR: No lvl 3 objects found. source: get-line-markers.js line 95"
+      "MESSAGE: No lvl 3 objects (lines) found in dynamoDB. source: get-line-markers.js"
     );
     return;
   }
 
   // Extracting line objects from lvl 3 objects
+  let lineObjects = [];
+
   listOflvl3Objects.map((object) => {
     lineObjects = lineObjects.concat(object.listOfLines.items);
   });
 
   // Prepping line marker data to send to MapView
-  lineMarkers = lineObjects.map((object) => {
-    var coordinates = {
+  const lineMarkers = lineObjects.map((object) => {
+    const coordinates = {
       latitude: parseFloat(object.startingCoordinates.lat),
       longitude: parseFloat(object.startingCoordinates.lng),
     };
 
-    let markerRegion = {
+    const markerRegion = {
       latitude: coordinates.latitude,
       longitude: coordinates.longitude,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
     };
 
-    var lineMarkerData = {
+    const lineMarkerData = {
       isLoaded: true,
       rawLineData: object,
       image: image,
@@ -162,8 +164,4 @@ export async function getLineMarkers(previousRegion, currentRegion, t15) {
   });
 
   store.dispatch(sendLineMarkers(lineMarkers));
-
-  var t17 = performance.now();
-  console.log("Complete function time " + (t17 - t15) + " milliseconds");
-  console.log(" B --------------------------------------------------------");
 }

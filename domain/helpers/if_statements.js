@@ -15,19 +15,6 @@ export async function convertZoomLvlToJumpsFor(region, zoomLevel) {
     if (zoomLevel < 10 && zoomLevel > 7.5) {
       return 40;
     }
-    // Level 2 pluscodes
-    if (zoomLevel < 7.5 && zoomLevel > 6.5) {
-      return 1;
-    }
-    if (zoomLevel < 6.5 && zoomLevel > 5.5) {
-      return 3;
-    }
-    if (zoomLevel < 5.5 && zoomLevel > 4) {
-      return 5;
-    }
-    if (zoomLevel < 4) {
-      return 10;
-    }
   }
 
   if (region === "REGION_TO_MERGE") {
@@ -50,5 +37,38 @@ export async function convertZoomLvlToJumpsFor(region, zoomLevel) {
     if (zoomLevel < 5) {
       return 3;
     }
+  }
+}
+
+export async function getZoomLevelRules(zoomLevel) {
+  if (zoomLevel >= 11.5) {
+    return {
+      minDistanceToContinue: 5000,
+      zoomedOutToFar: false,
+    };
+  }
+  if (zoomLevel < 11.5 && zoomLevel >= 11) {
+    return {
+      minDistanceToContinue: 10000,
+      zoomedOutToFar: false,
+    };
+  }
+  if (zoomLevel < 11 && zoomLevel >= 10.4) {
+    return {
+      minDistanceToContinue: 20000,
+      zoomedOutToFar: false,
+    };
+  }
+  if (zoomLevel < 10.4 && zoomLevel >= 9.5) {
+    return {
+      minDistanceToContinue: 30000,
+      zoomedOutToFar: false,
+    };
+  }
+  if (zoomLevel < 9.5) {
+    return {
+      minDistanceToContinue: 35000,
+      zoomedOutToFar: true,
+    };
   }
 }

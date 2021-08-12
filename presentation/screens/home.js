@@ -6,13 +6,13 @@ import Banner from "../components/banner";
 import { getTheme } from "../theme/themes";
 
 export default function Home({ navigation }) {
-  const visible = useSelector((state) => state.bannerHandler);
+  const { visible, message } = useSelector((state) => state.bannerHandler);
   const themedStyles = styles();
 
   return (
     <View style={themedStyles.container}>
       <MapViewHome></MapViewHome>
-      <Banner visible={visible} bannerText={"Loading lines..."}></Banner>
+      <Banner visible={visible} bannerText={message}></Banner>
     </View>
   );
 }

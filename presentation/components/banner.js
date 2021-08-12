@@ -2,6 +2,39 @@ import React, { useEffect } from "react";
 import { StyleSheet, Text, Image, Animated, Dimensions } from "react-native";
 import { getTheme } from "../theme/themes";
 import infinityActivityIndicator from "../../assets/inf2.gif";
+import { openBanner } from "../../presentation/state-management/actions/actions";
+import store from "../../presentation/state-management/store/store";
+import { throttle } from "lodash";
+import { SCREEN_WIDTH } from "../../domain/resources/environment/dimensions";
+
+let throttleTime = 3010;
+
+export const showBanner = throttle(function ({
+  withTime,
+  time,
+  message,
+  manual,
+  visible,
+}) {
+  console.log("MESSAGE: Banner visible: " + message + " source: banner.js");
+  if (time !== throttleTime - 10 && typeof time !== "undefined") {
+    throttleTime = time + 10;
+  }
+
+  if (manual && visible) {
+    store.dispatch(openBanner({ visible: true, message: message }));
+  }
+  if (manual && visible === false) {
+    store.dispatch(openBanner({ visible: false, message: "..." }));
+  }
+  if (withTime) {
+    store.dispatch(openBanner({ visible: true, message: message }));
+    setTimeout(function hideBanner() {
+      store.dispatch(openBanner({ visible: false, message: "..." }));
+    }, time);
+  }
+},
+throttleTime);
 
 export default function Banner(props) {
   const themedStyle = styles();
@@ -45,7 +78,6 @@ export default function Banner(props) {
 }
 
 const styles = () => {
-  const { width } = Dimensions.get("window");
   const theme = getTheme();
   return StyleSheet.create({
     animatedView: {
@@ -54,7 +86,7 @@ const styles = () => {
       backgroundColor: theme.bannerBackgroundColor,
       opacity: 0.7,
       height: 150,
-      width: width,
+      width: SCREEN_WIDTH,
       flexDirection: "row",
     },
     bannerText: {

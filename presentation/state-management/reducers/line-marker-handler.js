@@ -34,7 +34,10 @@ export const lineMarkersHandler = (
 };
 
 export const bannerHandler = (
-  state = false,
+  state = {
+    visible: false,
+    message: "Bonjorno",
+  },
 
   action
 ) => {

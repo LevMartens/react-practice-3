@@ -1,3 +1,5 @@
+//! 15.5 Use braces to create blocks in case and default clauses that contain lexical declarations (e.g. let, const, function, and class).
+
 export async function getNumberMarkerImage(number) {
   switch (number) {
     case 1:

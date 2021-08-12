@@ -1,6 +1,6 @@
 import React from "react";
 
-export function getDistanceBetween(pointA, pointB) {
+export async function getDistanceBetween(pointA, pointB) {
   var lat1 = pointA.latitude;
   var lon1 = pointA.longitude;
   var lat2 = pointB.latitude;
