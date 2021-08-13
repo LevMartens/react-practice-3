@@ -30,7 +30,7 @@ export const showBanner = throttle(function ({
   if (withTime) {
     store.dispatch(openBanner({ visible: true, message: message }));
     setTimeout(function hideBanner() {
-      store.dispatch(openBanner({ visible: false, message: "..." }));
+      store.dispatch(openBanner({ visible: false, message: message }));
     }, time);
   }
 },
