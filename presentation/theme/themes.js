@@ -14,6 +14,7 @@ export function getTheme() {
 export const lightTheme = {
   primaryColor: "#3A6351",
   buttonColor: "#c84b31",
+  tertiaryColor: "black",
   secondaryColor: "#284538",
   backgroundColor: "#284538",
   textColor: "#fff5eb",
@@ -36,6 +37,7 @@ export const darkTheme = {
   buttonColor: "#c84b31",
   secondaryColor: "#284538",
   backgroundColor: "#284538",
+  tertiaryColor: "#323232",
   textColor: "#fff5eb",
   fontFamily: "Evolventa",
   bannerTextColor: "#ffffff",

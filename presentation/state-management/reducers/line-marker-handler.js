@@ -52,6 +52,7 @@ export const bannerHandler = (
 export const selectedMarkerHandler = (
   state = {
     id: 0,
+    isLoaded: false,
   },
 
   action

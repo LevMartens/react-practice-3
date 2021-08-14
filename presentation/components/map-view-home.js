@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import MapView, { Marker } from "react-native-maps";
 import { getTheme } from "../theme/themes";
 import { ActivityIndicator } from "react-native-paper";
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View, Image, Text } from "react-native";
 import { getPositionOnce } from "../../domain/resources/environment/get-position-once";
 import { getLineMarkers } from "../../domain/use_cases/get-line-markers";
 import { useSelector } from "react-redux";
 import { selectMarker } from "../state-management/actions/actions";
 import store from "../../presentation/state-management/store/store";
+import Modal from "react-native-modalbox";
 import {
   LATITUDE_DELTA,
   LONGITUDE_DELTA,
@@ -35,6 +36,7 @@ export default function MapViewHome() {
   };
 
   let mapView;
+  const sheetRef = useRef();
 
   const positionHasChanged = async function (currentRegion) {
     getLineMarkers(currentRegion);
@@ -55,7 +57,6 @@ export default function MapViewHome() {
         const {
           id,
           isLoaded,
-
           coordinates,
           markerRegion,
           image,
@@ -69,7 +70,6 @@ export default function MapViewHome() {
               coordinate={coordinates}
               onPress={() => {
                 mapView.animateToRegion(markerRegion, 1000);
-
                 store.dispatch(selectMarker(marker));
               }}
             >
@@ -84,6 +84,20 @@ export default function MapViewHome() {
           );
         }
       })}
+      <Modal
+        style={themedStyles.modal}
+        animationDuration={500}
+        swipeThreshold={50}
+        ref={sheetRef}
+        isOpen={markerCurrentlySelected.isLoaded}
+        backdrop={false}
+        swipeToClose={true}
+        onClosingState={() => {
+          store.dispatch(selectMarker({ id: 0, isLoaded: false }));
+        }}
+      >
+        <Text>Basic modal</Text>
+      </Modal>
     </MapView>
   ) : (
     <View style={themedStyles.activityIndicatorView}>
@@ -114,6 +128,15 @@ const styles = () => {
     },
     mapView: {
       ...StyleSheet.absoluteFillObject,
+    },
+    modal: {
+      marginTop: 250,
+      borderRadius: 10,
+      height: 250,
+      backgroundColor: theme.tertiaryColor,
+      opacity: 0.8,
+      justifyContent: "center",
+      alignItems: "center",
     },
   });
 };
