@@ -11,9 +11,14 @@ import {
   updatePathReducer,
   aSingleCurrentPosition,
 } from "./updateCurrentPosition";
-import { lineMarkersHandler, bannerHandler } from "./line-marker-handler";
+import {
+  lineMarkersHandler,
+  bannerHandler,
+  selectedMarkerHandler,
+} from "./line-marker-handler";
 
 export default combineReducers({
+  selectedMarkerHandler: selectedMarkerHandler,
   bannerHandler: bannerHandler,
   lineMarkersHandler: lineMarkersHandler,
   setPin: setPin,

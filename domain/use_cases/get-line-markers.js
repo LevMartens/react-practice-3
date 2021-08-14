@@ -11,6 +11,7 @@ import {
   LONGITUDE_DELTA,
 } from "../resources/environment/dimensions";
 import image from "../../assets/lineMarker.png";
+import imageSelected from "../../assets/lineMarkerSelected.png";
 
 //TODO:
 /**
@@ -104,6 +105,8 @@ export async function getLineMarkers(currentRegion) {
 
   // Prepping line marker data to send to MapView
   const lineMarkers = lineObjects.map((object) => {
+    const { id } = object.startingCoordinates;
+
     const coordinates = {
       latitude: parseFloat(object.startingCoordinates.lat),
       longitude: parseFloat(object.startingCoordinates.lng),
@@ -117,8 +120,10 @@ export async function getLineMarkers(currentRegion) {
     };
 
     const lineMarkerData = {
+      id: id,
       isLoaded: true,
       rawLineData: object,
+      imageSelected: imageSelected,
       image: image,
       coordinates: coordinates,
       markerRegion: markerRegion,

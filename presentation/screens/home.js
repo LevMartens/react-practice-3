@@ -16,7 +16,7 @@ export default function Home({ navigation }) {
       <Modal
         style={themedStyles.modal}
         animationDuration={0}
-        swipeThreshold={300}
+        swipeThreshold={50}
         ref={sheetRef}
         isOpen={true}
         backdrop={false}

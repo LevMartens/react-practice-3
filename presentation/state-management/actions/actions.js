@@ -88,3 +88,10 @@ export const openBanner = (event) => {
     type: "OPENBANNER",
   };
 };
+
+export const selectMarker = (event) => {
+  return {
+    event: event,
+    type: "SELECTMARKER",
+  };
+};

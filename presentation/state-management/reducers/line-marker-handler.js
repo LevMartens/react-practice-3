@@ -48,3 +48,18 @@ export const bannerHandler = (
       return state;
   }
 };
+
+export const selectedMarkerHandler = (
+  state = {
+    id: 0,
+  },
+
+  action
+) => {
+  switch (action.type) {
+    case "SELECTMARKER":
+      return action.event;
+    default:
+      return state;
+  }
+};

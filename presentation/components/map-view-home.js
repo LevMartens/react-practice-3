@@ -6,6 +6,8 @@ import { StyleSheet, View, Image } from "react-native";
 import { getPositionOnce } from "../../domain/resources/environment/get-position-once";
 import { getLineMarkers } from "../../domain/use_cases/get-line-markers";
 import { useSelector } from "react-redux";
+import { selectMarker } from "../state-management/actions/actions";
+import store from "../../presentation/state-management/store/store";
 import {
   LATITUDE_DELTA,
   LONGITUDE_DELTA,
@@ -15,6 +17,10 @@ export default function MapViewHome() {
   useEffect(() => {
     getPositionOnce(); //TODO this function bypasses use_cases
   }, []);
+
+  const markerCurrentlySelected = useSelector(
+    (state) => state.selectedMarkerHandler
+  );
 
   const lineMarkers = useSelector((state) => state.lineMarkersHandler);
   const aSingleCurrentPosition = useSelector(
@@ -46,15 +52,31 @@ export default function MapViewHome() {
       initialRegion={initialRegion}
     >
       {lineMarkers.map((marker) => {
-        if (marker.isLoaded === true) {
+        const {
+          id,
+          isLoaded,
+
+          coordinates,
+          markerRegion,
+          image,
+          imageSelected,
+        } = marker;
+
+        if (isLoaded === true) {
           return (
             <Marker
-              key={marker.rawLineData.startingCoordinates.id}
-              coordinate={marker.coordinates}
-              onPress={() => mapView.animateToRegion(marker.markerRegion, 1000)}
+              key={id}
+              coordinate={coordinates}
+              onPress={() => {
+                mapView.animateToRegion(markerRegion, 1000);
+
+                store.dispatch(selectMarker(marker));
+              }}
             >
               <Image
-                source={marker.image}
+                source={
+                  id === markerCurrentlySelected.id ? imageSelected : image
+                }
                 style={themedStyles.lineMarkerImageLayout}
                 resizeMode="contain"
               />
