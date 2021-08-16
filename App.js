@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { Provider } from "react-redux";
-import store from "./presentation/state-management/store/store";
+import store from "./src/presentation/state-management/store/store";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Home from "./presentation/screens/home";
+import Home from "./src/presentation/screens/home";
 import { NavigationContainer } from "@react-navigation/native";
-import { RootStack, BottomTab } from "./presentation/routes/stack";
+import { RootStack, BottomTab } from "./src/presentation/routes/stack";
 import * as Location from "expo-location";
 import { ActivityIndicator, Colors } from "react-native-paper";
 import { Provider as PaperProvider } from "react-native-paper";
@@ -12,7 +12,7 @@ import { useFonts } from "expo-font";
 import * as Application from "expo-application";
 import Amplify, { API, graphqlOperation } from "aws-amplify";
 import awsconfig from "./src/aws-exports";
-import { createLine } from "./domain/use_cases/create-line";
+import { createLine } from "./src/domain/use_cases/create-line";
 import { RootSiblingParent } from "react-native-root-siblings";
 
 Amplify.configure(awsconfig);
