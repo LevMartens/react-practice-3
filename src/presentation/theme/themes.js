@@ -5,6 +5,10 @@ import createLineFocusedLight from "../../../assets/map-marker-distance10.png";
 import createLineUNFocusedLight from "../../../assets/map-marker-distance5.png";
 import backArrowIconLight from "../../../assets/backArrowNar.png";
 import straightLineLogoLight from "../../../assets/StraightLineLogoT.png";
+import finishPinBeforeSetLight from "../../../assets/marker7.png";
+import finishPinAfterSetLight from "../../../assets/marker6.png";
+import startPinBeforeSetLight from "../../../assets/marker8.png";
+import startPinAfterSetLight from "../../../assets/marker5.png";
 
 export function getTheme() {
   const themeMode = useColorScheme();
@@ -18,6 +22,7 @@ export const lightTheme = {
   secondaryColor: "#284538",
   backgroundColor: "#284538",
   textColor: "#fff5eb",
+  polylineColor: "#B61919",
   fontFamily: "Evolventa",
   bannerTextColor: "#ffffff",
   bannerBackgroundColor: "black",
@@ -30,6 +35,10 @@ export const lightTheme = {
   bottomTabBarTextColorUnFocused: "black",
   backArrowIcon: backArrowIconLight,
   straightLineLogo: straightLineLogoLight,
+  finishPinBeforeSet: finishPinBeforeSetLight,
+  finishPinAfterSet: finishPinAfterSetLight,
+  startPinBeforeSet: startPinBeforeSetLight,
+  startPinAfterSet: startPinAfterSetLight,
 };
 
 export const darkTheme = {
@@ -38,6 +47,7 @@ export const darkTheme = {
   secondaryColor: "#284538",
   backgroundColor: "#284538",
   tertiaryColor: "#323232",
+  polylineColor: "#B61919",
   textColor: "#fff5eb",
   fontFamily: "Evolventa",
   bannerTextColor: "#ffffff",
@@ -51,4 +61,8 @@ export const darkTheme = {
   bottomTabBarTextColorUnFocused: "black",
   backArrowIcon: backArrowIconLight,
   straightLineLogo: straightLineLogoLight,
+  finishPinBeforeSet: finishPinBeforeSetLight,
+  finishPinAfterSet: finishPinAfterSetLight,
+  startPinBeforeSet: startPinBeforeSetLight,
+  startPinAfterSet: startPinAfterSetLight,
 };
