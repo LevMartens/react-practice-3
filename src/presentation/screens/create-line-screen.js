@@ -1,13 +1,13 @@
 import React from "react";
 import MapViewCreateLine from "../../presentation/components/map-view-create-line";
-import PinMarkButton from "../components/PinMarkButton";
+import PinSetButton from "../components/pin-set-button";
 import { StyleSheet, View } from "react-native";
 
 export default function CreateLineScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <MapViewCreateLine> </MapViewCreateLine>
-      <PinMarkButton navigation={navigation}> </PinMarkButton>
+      <PinSetButton navigation={navigation}> </PinSetButton>
     </View>
   );
 }

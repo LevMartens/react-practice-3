@@ -7,7 +7,6 @@ import {
   LONGITUDE_DELTA,
   LATITUDE_DELTA,
 } from "../../domain/resources/environment/dimensions";
-
 import {
   mapPressedForFirstPin,
   mapPressedForSecondPin,

@@ -10,6 +10,12 @@ export const setPinEndPoint = () => {
   };
 };
 
+export const resetPin = () => {
+  return {
+    type: "RESET",
+  };
+};
+
 export const mapPressedForFirstPin = (event) => {
   return {
     newCoordinates: event,

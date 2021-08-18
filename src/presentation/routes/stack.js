@@ -7,6 +7,8 @@ import GPSLiveScreen from "../screens/gpsLive";
 import CreateLineScreen from "../screens/create-line-screen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { getTheme } from "../theme/themes";
+import store from "../state-management/store/store";
+import { resetPin } from "../state-management/actions/actions";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -154,7 +156,7 @@ export function CreateLineStack() {
           headerLeft: () => (
             <TouchableOpacity
               style={themedStyles.button}
-              onPress={() => navigation.navigate("Home")}
+              onPress={() => navigation.navigate("CreateLineScreen")}
             >
               <Image
                 source={themedStyles.backArrowIcon}
