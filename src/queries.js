@@ -340,6 +340,17 @@ export const getPlusCodeLevel3 = /* GraphQL */ `
           id
           parentId
           complete3LevelPluscode
+          creatorName
+          description
+          title
+          hashtags
+          dificultyLevel
+          verified
+          lineCompleted
+          elevationPoints
+          latitudeDeltaFit
+          longitudeDeltaFit
+          distance
           createdAt
           updatedAt
         }
@@ -437,6 +448,17 @@ export const getLines = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      creatorName
+      description
+      title
+      hashtags
+      dificultyLevel
+      verified
+      lineCompleted
+      elevationPoints
+      latitudeDeltaFit
+      longitudeDeltaFit
+      distance
       createdAt
       updatedAt
     }
@@ -476,6 +498,17 @@ export const listLines = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        creatorName
+        description
+        title
+        hashtags
+        dificultyLevel
+        verified
+        lineCompleted
+        elevationPoints
+        latitudeDeltaFit
+        longitudeDeltaFit
+        distance
         createdAt
         updatedAt
       }
@@ -538,15 +571,6 @@ export const pluscodeByDigits = /* GraphQL */ `
           updatedAt
         }
         level2List {
-          items {
-            completePluscode
-            id
-            numberOfLines
-            middleCoord {
-              lat
-              lng
-            }
-          }
           nextToken
         }
         numberOfLines
@@ -618,30 +642,25 @@ export const pluscode2ByCompletePluscode = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
+        id
         completePluscode
-
+        parentIdWithDigits
+        pluscodeParent {
+          id
+          digits
+          numberOfLines
+          createdAt
+          updatedAt
+        }
+        digits
+        middleCoord {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
         level3List {
-          items {
-            completePluscode
-            id
-            numberOfLines
-            listOfLines {
-              items {
-                startingCoordinates {
-                  id
-                  lat
-                  lng
-                  createdAt
-                  updatedAt
-                }
-              }
-              nextToken
-            }
-            middleCoord {
-              lat
-              lng
-            }
-          }
           nextToken
         }
         numberOfLines
@@ -788,6 +807,17 @@ export const lineByCompletePluscodes = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        creatorName
+        description
+        title
+        hashtags
+        dificultyLevel
+        verified
+        lineCompleted
+        elevationPoints
+        latitudeDeltaFit
+        longitudeDeltaFit
+        distance
         createdAt
         updatedAt
       }

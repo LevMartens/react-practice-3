@@ -14,11 +14,18 @@ export async function checkIfLevel1Exists(digits) {
       "This pluscode level1 exists! id: " +
         JSON.stringify(response.data.pluscodeByDigits.items[0].id)
     );
-    return response.data.pluscodeByDigits.items[0];
+    return response.data.pluscodeByDigits.items[0].id == null
+      ? { doesNotExist: true, exists: false }
+      : {
+          doesNotExist: false,
+          exists: true,
+          id: response.data.pluscodeByDigits.items[0].id,
+          numberOfLines: response.data.pluscodeByDigits.items[0].numberOfLines,
+        };
   } catch (err) {
     console.log(
       "Warning this pluscode level 1 does not exist, returning False "
     );
-    return { exists: false };
+    return { doesNotExist: false, exists: true };
   }
 }

@@ -14,20 +14,27 @@ import Amplify, { API, graphqlOperation } from "aws-amplify";
 import awsconfig from "./src/aws-exports";
 import { createLine } from "./src/domain/use_cases/create-line";
 import { RootSiblingParent } from "react-native-root-siblings";
+import { getElevation } from "./src/domain/resources/api/get-elevation";
+import { gt } from "./test";
+import { LONGITUDE_DELTA } from "./src/domain/resources/environment/dimensions";
 
 Amplify.configure(awsconfig);
+const Melbourne = {
+  latitude: -37.840935,
+  longitude: 144.946457,
+};
+
+const Carlton = {
+  latitude: -37.794932,
+  longitude: 144.973475,
+};
 
 export default function App() {
   let [fontsLoaded] = useFonts({
     Evolventa: require("./assets/fonts/Evolventa-Regular.otf"),
   });
-  useEffect(() => {
-    // createLine(
-    //   "4RJ65X",
-    //   { lat: -37.377772, lng: 144.17816 },
-    //   { lat: -37.898932, lng: 145.073875 }
-    // );
-  }, []);
+
+  useEffect(() => {}, []);
 
   if (!fontsLoaded) {
     return (

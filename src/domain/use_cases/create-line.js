@@ -2,41 +2,76 @@ import { checkIfLevel1Exists } from "../resources/backend/check-if-lvl-1-exists"
 import { checkIfLevel2ExistsUnderlvl1 } from "../resources/backend/check-if-lvl-2-exists-under-lvl-1";
 import { checkIfLevel3ExistsUnderlvl2 } from "../resources/backend/check-if-lvl-3-exists-under-lvl-2";
 import { createGraphQLCoordinateType } from "../resources/backend/create-graphql-coordinates-type";
-import { createGraphQLPluscodeLevel1 } from "../resources/backend/create-graphql-pluscode-lvl-1";
-import { createGraphQLPluscodeLevel2 } from "../resources/backend/create-graphql-pluscode-lvl-2";
-import { createGraphQLPluscodeLevel3 } from "../resources/backend/create-graphql-pluscode-lvl-3";
-import { createGraphQLLine } from "../resources/backend/create-graphql-line";
+import { savePluscodeLevel1 } from "../resources/backend/save-pluscode-lvl-1";
+import { savePluscodeLevel2 } from "../resources/backend/save-pluscode-lvl-2";
+import { savePluscodeLevel3 } from "../resources/backend/save-pluscode-lvl-3";
+import { saveLine } from "../resources/backend/save-line";
 import { increaseNumberOfLinesInPluscodeLvl1By } from "../resources/backend/increase-number-of-lines-in-pluscode-lvl-1-by";
 import { increaseNumberOfLinesInPluscodeLvl2By } from "../resources/backend/increase-number-of-lines-in-pluscode-lvl-2-by";
 import { increaseNumberOfLinesInPluscodeLvl3By } from "../resources/backend/increase-number-of-lines-in-pluscode-lvl-3-by";
 import { getCoordinesFromPluscode } from "../resources/api/get-pluscode";
+import { getDistanceBetween } from "../generators/distance-generator";
+import { mapElevationPoints, packLineMarkerData } from "../helpers/packers";
+import { showAlert } from "../resources/environment/alerts";
 
-export async function createLine(completePluscode, startingPoint, endPoint) {
-  const pluscodeLevel1Digits = completePluscode.substring(0, 2);
-  const pluscodeLevel2Digits = completePluscode.substring(2, 4);
-  const pluscodeLevel3Digits = completePluscode.substring(4, 6);
+export async function createLine(startingPoint, endPoint) {
+  const { latitude, longitude } = startingPoint;
 
-  // Check if level 1 pluscode exists
-  const pluscodeLevel1Exists = await checkIfLevel1Exists(pluscodeLevel1Digits); //returns object with id if true
+  const pluscode = await getPluscodeFromCoordinates(`${latitude},${longitude}`);
 
-  if (pluscodeLevel1Exists.id == null) {
-    // Pluscode doesn't exist yet, we create everything new:
+  const completePluscode = pluscode.substring(0, 6);
+  const pluscodeLevel1Digits = pluscode.substring(0, 2);
+  const pluscodeLevel2Digits = pluscode.substring(2, 4);
+  const pluscodeLevel3Digits = pluscode.substring(4, 6);
 
-    // Creating pluscode level 1
+  const pluscodeLevel1InDB = await checkIfLevel1Exists(pluscodeLevel1Digits);
+  let pluscodeLevel1ID = "";
+
+  if (pluscodeLevel1InDB.exists) {
+    pluscodeLevel1ID = pluscodeLevel1InDB.id;
+    increaseNumberOfLinesInPluscodeLvl1By(
+      1,
+      pluscodeLevel1InDB.id,
+      pluscodeLevel1InDB.numberOfLines
+    );
+  }
+
+  if (pluscodeLevel1InDB.doesNotExist) {
     const middleCoordinatesL1 = await getCoordinesFromPluscode(
       `${pluscodeLevel1Digits}FFFFFF%2BFF`
-    ); // The location where the numberOfLinesMarker will be placed on the map
+    );
+
     const middleCoordinatesTypeL1ID = await createGraphQLCoordinateType(
       middleCoordinatesL1.lat,
       middleCoordinatesL1.lng
     );
-    const pluscodeLevel1ID = await createGraphQLPluscodeLevel1(
+
+    pluscodeLevel1ID = await savePluscodeLevel1(
       pluscodeLevel1Digits,
       middleCoordinatesTypeL1ID,
       1
-    ); // Creating a new pluscode level 1 with 1 line in it
+    );
+  }
 
-    // Creating pluscode level 2
+  const pluscodeLevel2InDB = pluscodeLevel1InDB.doesNotExist
+    ? { doesNotExist: true, exists: false }
+    : await checkIfLevel2ExistsUnderlvl1(
+        pluscodeLevel1ID,
+        pluscodeLevel2Digits
+      );
+
+  let pluscodeLevel2ID = "";
+
+  if (pluscodeLevel2InDB.exists) {
+    pluscodeLevel2ID = pluscodeLevel2InDB.id;
+    increaseNumberOfLinesInPluscodeLvl2By(
+      1,
+      pluscodeLevel2InDB.id,
+      pluscodeLevel2InDB.numberOfLines
+    );
+  }
+
+  if (pluscodeLevel2InDB.doesNotExist) {
     const middleCoordinatesL2 = await getCoordinesFromPluscode(
       `${pluscodeLevel1Digits}${pluscodeLevel2Digits}FFFF%2BFF`
     );
@@ -44,15 +79,34 @@ export async function createLine(completePluscode, startingPoint, endPoint) {
       middleCoordinatesL2.lat,
       middleCoordinatesL2.lng
     );
-    const pluscodeLevel2ID = await createGraphQLPluscodeLevel2(
+    pluscodeLevel2ID = await savePluscodeLevel2(
       pluscodeLevel2Digits,
       middleCoordinatesTypeL2ID,
       1,
       pluscodeLevel1ID,
       completePluscode.substring(0, 4)
     );
+  }
 
-    // Creating pluscode level 3
+  const pluscodeLevel3InDB = pluscodeLevel2InDB.doesNotExist
+    ? { doesNotExist: true, exists: false }
+    : await checkIfLevel3ExistsUnderlvl2(
+        pluscodeLevel2ID,
+        pluscodeLevel3Digits
+      );
+
+  let pluscodeLevel3ID = "";
+
+  if (pluscodeLevel3InDB.exists) {
+    pluscodeLevel3ID = pluscodeLevel3InDB.id;
+    increaseNumberOfLinesInPluscodeLvl3By(
+      1,
+      pluscodeLevel3InDB.id,
+      pluscodeLevel3InDB.numberOfLines
+    );
+  }
+
+  if (pluscodeLevel3InDB.doesNotExist) {
     const middleCoordinatesL3 = await getCoordinesFromPluscode(
       `${pluscodeLevel1Digits}${pluscodeLevel2Digits}${pluscodeLevel3Digits}FF%2BFF`
     );
@@ -60,188 +114,80 @@ export async function createLine(completePluscode, startingPoint, endPoint) {
       middleCoordinatesL3.lat,
       middleCoordinatesL3.lng
     );
-    const pluscodeLevel3ID = await createGraphQLPluscodeLevel3(
+    pluscodeLevel3ID = await savePluscodeLevel3(
       pluscodeLevel3Digits,
       middleCoordinatesTypeL3ID,
       1,
       pluscodeLevel2ID,
       completePluscode
     );
-
-    // Creating new line
-    const startingPointCoordinatesTypeID = await createGraphQLCoordinateType(
-      startingPoint.lat,
-      startingPoint.lng
-    );
-    const endPointCoordinatesTypeID = await createGraphQLCoordinateType(
-      endPoint.lat,
-      endPoint.lng
-    );
-    const lineID = await createGraphQLLine(
-      startingPointCoordinatesTypeID,
-      endPointCoordinatesTypeID,
-      pluscodeLevel3ID,
-      completePluscode
-    );
-  } else {
-    // Check if pluscode lvl 2 exists under pluscode lvl 1
-    const pluscodeLevel2ExistsUnderLvl1 = await checkIfLevel2ExistsUnderlvl1(
-      pluscodeLevel1Exists.id,
-      pluscodeLevel2Digits
-    ); //returns id if true
-
-    if (pluscodeLevel2ExistsUnderLvl1.id == null) {
-      // Pluscode does not exists under lvl 1, we create a new branch under this pluscode lvl 1
-
-      // Update pluscode lvl 1 numberOfLines
-      increaseNumberOfLinesInPluscodeLvl1By(
-        1,
-        pluscodeLevel1Exists.id,
-        pluscodeLevel1Exists.numberOfLines
-      );
-
-      // Creating pluscode level 2
-      const xMiddleCoordinatesL2 = await getCoordinesFromPluscode(
-        `${pluscodeLevel1Digits}${pluscodeLevel2Digits}FFFF%2BFF`
-      );
-      const xMiddleCoordinatesTypeL2ID = await createGraphQLCoordinateType(
-        xMiddleCoordinatesL2.lat,
-        xMiddleCoordinatesL2.lng
-      );
-      const xPluscodeLevel2ID = await createGraphQLPluscodeLevel2(
-        pluscodeLevel2Digits,
-        xMiddleCoordinatesTypeL2ID,
-        1,
-        pluscodeLevel1Exists.id,
-        completePluscode.substring(0, 4)
-      );
-
-      // Creating pluscode level 3
-      const xMiddleCoordinatesL3 = await getCoordinesFromPluscode(
-        `${pluscodeLevel1Digits}${pluscodeLevel2Digits}${pluscodeLevel3Digits}FF%2BFF`
-      );
-      const xMiddleCoordinatesTypeL3ID = await createGraphQLCoordinateType(
-        xMiddleCoordinatesL3.lat,
-        xMiddleCoordinatesL3.lng
-      );
-      const xPluscodeLevel3ID = await createGraphQLPluscodeLevel3(
-        pluscodeLevel3Digits,
-        xMiddleCoordinatesTypeL3ID,
-        1,
-        xPluscodeLevel2ID,
-        completePluscode
-      );
-
-      // Creating new line
-      const xStartingPointCoordinatesTypeID = await createGraphQLCoordinateType(
-        startingPoint.lat,
-        startingPoint.lng
-      );
-      const xEndPointCoordinatesTypeID = await createGraphQLCoordinateType(
-        endPoint.lat,
-        endPoint.lng
-      );
-      const xLineID = await createGraphQLLine(
-        xStartingPointCoordinatesTypeID,
-        xEndPointCoordinatesTypeID,
-        xPluscodeLevel3ID,
-        completePluscode
-      );
-    } else {
-      // Check if pluscode lvl 3 exists under pluscode lvl 2
-      const pluscodeLevel3ExistsUnderLvl2 = await checkIfLevel3ExistsUnderlvl2(
-        pluscodeLevel2ExistsUnderLvl1.id,
-        pluscodeLevel3Digits
-      );
-
-      if (pluscodeLevel3ExistsUnderLvl2.id == null) {
-        // Pluscode does not exists under lvl 2, we create a new branch under this pluscode lvl 2
-
-        // Update pluscode lvl 1 numberOfLines
-        increaseNumberOfLinesInPluscodeLvl1By(
-          1,
-          pluscodeLevel1Exists.id,
-          pluscodeLevel1Exists.numberOfLines
-        );
-
-        // Update pluscode lvl 2 numberOfLines
-        increaseNumberOfLinesInPluscodeLvl2By(
-          1,
-          pluscodeLevel2ExistsUnderLvl1.id,
-          pluscodeLevel2ExistsUnderLvl1.numberOfLines
-        );
-
-        // Creating pluscode level 3
-        const xxMiddleCoordinatesL3 = await getCoordinesFromPluscode(
-          `${pluscodeLevel1Digits}${pluscodeLevel2Digits}${pluscodeLevel3Digits}FF%2BFF`
-        );
-        const xxMiddleCoordinatesTypeL3ID = await createGraphQLCoordinateType(
-          xxMiddleCoordinatesL3.lat,
-          xxMiddleCoordinatesL3.lng
-        );
-        const xxPluscodeLevel3ID = await createGraphQLPluscodeLevel3(
-          pluscodeLevel3Digits,
-          xxMiddleCoordinatesTypeL3ID,
-          1,
-          pluscodeLevel2ExistsUnderLvl1.id,
-          completePluscode
-        );
-
-        // Creating new line
-        const xxStartingPointCoordinatesTypeID =
-          await createGraphQLCoordinateType(
-            startingPoint.lat,
-            startingPoint.lng
-          );
-        const xxEndPointCoordinatesTypeID = await createGraphQLCoordinateType(
-          endPoint.lat,
-          endPoint.lng
-        );
-        const xxLineID = await createGraphQLLine(
-          xxStartingPointCoordinatesTypeID,
-          xxEndPointCoordinatesTypeID,
-          xxPluscodeLevel3ID,
-          completePluscode
-        );
-      } else {
-        // Update pluscode lvl 1 numberOfLines
-        increaseNumberOfLinesInPluscodeLvl1By(
-          1,
-          pluscodeLevel1Exists.id,
-          pluscodeLevel1Exists.numberOfLines
-        );
-
-        // Update pluscode lvl 2 numberOfLines
-        increaseNumberOfLinesInPluscodeLvl2By(
-          1,
-          pluscodeLevel2ExistsUnderLvl1.id,
-          pluscodeLevel2ExistsUnderLvl1.numberOfLines
-        );
-
-        // Update pluscode lvl 3 numberOfLines
-        increaseNumberOfLinesInPluscodeLvl3By(
-          1,
-          pluscodeLevel3ExistsUnderLvl2.id,
-          pluscodeLevel3ExistsUnderLvl2.numberOfLines
-        );
-
-        // Creating new line
-        const xxxStartingPointCoordinatesTypeID =
-          await createGraphQLCoordinateType(
-            startingPoint.lat,
-            startingPoint.lng
-          );
-        const xxxEndPointCoordinatesTypeID = await createGraphQLCoordinateType(
-          endPoint.lat,
-          endPoint.lng
-        );
-        const xxxLineID = await createGraphQLLine(
-          xxxStartingPointCoordinatesTypeID,
-          xxxEndPointCoordinatesTypeID,
-          pluscodeLevel3ExistsUnderLvl2.id,
-          completePluscode
-        );
-      }
-    }
   }
+
+  const distance = await getDistanceBetween(startingPoint, endPoint);
+
+  const fitLineInFrame = await getLatLongDeltaBasedOn(distance);
+
+  const { latitudeDeltaFit, longitudeDeltaFit } = fitLineInFrame;
+
+  const rawElevationData = await getElevation(startingPoint, endPoint);
+
+  const elevationPoints = await mapElevationPoints(rawElevationData);
+
+  const lineCompleted = false; // Becomes public after completion
+
+  const verified = false; // Can be set/amended by an authorised person
+
+  const dificultyLevel = "N/A"; // Can be set by the user after completion
+
+  const hashTags = []; // Can be set by the user after completion
+
+  const title = "N/A"; // Can be set by the user after completion
+
+  const description = "N/A"; // Can be set by the user after completion
+
+  const creatorName = "N/A"; //TODO
+
+  const startingPointCoordinatesTypeID = await createGraphQLCoordinateType(
+    startingPoint.lat,
+    startingPoint.lng
+  );
+  const endPointCoordinatesTypeID = await createGraphQLCoordinateType(
+    endPoint.lat,
+    endPoint.lng
+  );
+
+  const input = {
+    parentId: pluscodeLevel3ID,
+    linesPluscodeParentId: pluscodeLevel3ID,
+    complete3LevelPluscode: completePluscode,
+    linesStartingCoordinatesId: startingPointCoordinatesTypeID,
+    linesFinishCoordinatesId: endPointCoordinatesTypeID,
+    creatorName: creatorName,
+    description: description,
+    dificultyLevel: dificultyLevel,
+    distance: distance,
+    elevationPoints: elevationPoints,
+    hashTags: hashTags,
+    latitudeDeltaFit: latitudeDeltaFit,
+    longitudeDeltaFit: longitudeDeltaFit,
+    lineCompleted: lineCompleted,
+    title: title,
+    verified: verified,
+  };
+
+  const line = await saveLine(input);
+
+  if (line.isNOTSaved) {
+    showAlert("Lines didn't save, Lev sucks");
+    console.log(
+      "Line didn't save, data back: " +
+        JSON.stringify(line.data) +
+        " source: create-line.js 184"
+    );
+    return;
+  }
+
+  const lineMarker = await packLineMarkerData(line);
+
+  store.dispatch(selectMarker(lineMarker));
 }

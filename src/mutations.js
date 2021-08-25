@@ -563,6 +563,17 @@ export const createPlusCodeLevel3 = /* GraphQL */ `
           id
           parentId
           complete3LevelPluscode
+          creatorName
+          description
+          title
+          hashtags
+          dificultyLevel
+          verified
+          lineCompleted
+          elevationPoints
+          latitudeDeltaFit
+          longitudeDeltaFit
+          distance
           createdAt
           updatedAt
         }
@@ -622,6 +633,17 @@ export const updatePlusCodeLevel3 = /* GraphQL */ `
           id
           parentId
           complete3LevelPluscode
+          creatorName
+          description
+          title
+          hashtags
+          dificultyLevel
+          verified
+          lineCompleted
+          elevationPoints
+          latitudeDeltaFit
+          longitudeDeltaFit
+          distance
           createdAt
           updatedAt
         }
@@ -681,6 +703,17 @@ export const deletePlusCodeLevel3 = /* GraphQL */ `
           id
           parentId
           complete3LevelPluscode
+          creatorName
+          description
+          title
+          hashtags
+          dificultyLevel
+          verified
+          lineCompleted
+          elevationPoints
+          latitudeDeltaFit
+          longitudeDeltaFit
+          distance
           createdAt
           updatedAt
         }
@@ -742,6 +775,17 @@ export const createLines = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      creatorName
+      description
+      title
+      hashtags
+      dificultyLevel
+      verified
+      lineCompleted
+      elevationPoints
+      latitudeDeltaFit
+      longitudeDeltaFit
+      distance
       createdAt
       updatedAt
     }
@@ -798,6 +842,17 @@ export const updateLines = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      creatorName
+      description
+      title
+      hashtags
+      dificultyLevel
+      verified
+      lineCompleted
+      elevationPoints
+      latitudeDeltaFit
+      longitudeDeltaFit
+      distance
       createdAt
       updatedAt
     }
@@ -854,6 +909,17 @@ export const deleteLines = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      creatorName
+      description
+      title
+      hashtags
+      dificultyLevel
+      verified
+      lineCompleted
+      elevationPoints
+      latitudeDeltaFit
+      longitudeDeltaFit
+      distance
       createdAt
       updatedAt
     }

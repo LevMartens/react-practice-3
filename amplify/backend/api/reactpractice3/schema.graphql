@@ -90,6 +90,17 @@ type Lines
   complete3LevelPluscode: String
   startingCoordinates: Coordinates @connection
   finishCoordinates: Coordinates @connection
+  creatorName: String
+  description: String
+  title: String
+  hashtags: [String]
+  dificultyLevel: String
+  verified: Boolean
+  lineCompleted: Boolean
+  elevationPoints: [Float]
+  latitudeDeltaFit: Float
+  longitudeDeltaFit: Float
+  distance: Float
 }
 
 type Coordinates @model {

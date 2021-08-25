@@ -14,7 +14,15 @@ export async function checkIfLevel3ExistsUnderlvl2(pluscodeLvl2ID, digits) {
       "This pluscode level 3 exists! id: " +
         JSON.stringify(response.data.pluscode3ByDigitsAndParent.items[0].id)
     );
-    return response.data.pluscode3ByDigitsAndParent.items[0];
+    return response.data.pluscode3ByDigitsAndParent.items[0].id == null
+      ? { doesNotExist: true, exists: false }
+      : {
+          doesNotExist: false,
+          exists: true,
+          id: response.data.pluscode3ByDigitsAndParent.items[0].id,
+          numberOfLines:
+            response.data.pluscode3ByDigitsAndParent.items[0].numberOfLines,
+        };
   } catch (err) {
     console.log(
       "Warning this pluscode level 3 does not exist under this pluscode lvl 2, returning False "

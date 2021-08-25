@@ -9,11 +9,19 @@ import {
   resetPin,
 } from "../state-management/actions/actions";
 import store from "../state-management/store/store";
+import { createLine } from "../../domain/use_cases/create-line";
 
 export default function PinSetButton({ navigation }) {
   const themedStyles = styles();
 
   const pinState = useSelector((state) => state.setPin);
+
+  const firstPinCoordinates = useSelector(
+    (state) => state.mapPressHandlerFirstPin
+  );
+  const secondPinCoordinates = useSelector(
+    (state) => state.mapPressHandlerSecondPin
+  );
 
   const pinButtonPressed = () => {
     if (pinState == "Set starting point") {
@@ -25,6 +33,8 @@ export default function PinSetButton({ navigation }) {
 
     if (pinState == "Done!") {
       store.dispatch(resetPin());
+      createLine(firstPinCoordinates, secondPinCoordinates);
+
       navigation.navigate("Detail");
     }
   };

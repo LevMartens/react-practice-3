@@ -2,21 +2,44 @@ import React from "react";
 import MapViewCreateLine from "../../presentation/components/map-view-create-line";
 import PinSetButton from "../components/pin-set-button";
 import { StyleSheet, View } from "react-native";
+import { getTheme } from "../theme/themes";
+import { useSelector } from "react-redux";
+import {
+  LATITUDE_DELTA,
+  LONGITUDE_DELTA,
+} from "../../domain/resources/environment/dimensions";
+
+//TODO give aSingleCurrentPosition an "isLoaded" and render MapViewCreateLine conditionally
 
 export default function CreateLineScreen({ navigation }) {
+  const themedStyles = styles();
+  const { latitude, longitude } = useSelector(
+    (state) => state.aSingleCurrentPosition
+  );
+
+  const initialRegion = {
+    latitude: latitude,
+    longitude: longitude,
+    latitudeDelta: LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
+  };
+
   return (
-    <View style={styles.container}>
-      <MapViewCreateLine> </MapViewCreateLine>
+    <View style={themedStyles.container}>
+      <MapViewCreateLine initialRegion={initialRegion}> </MapViewCreateLine>
       <PinSetButton navigation={navigation}> </PinSetButton>
     </View>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "#d8b384",
-    flex: 1,
-    flexDirection: "column",
-    height: "100%",
-  },
-});
+const styles = () => {
+  const theme = getTheme();
+  return StyleSheet.create({
+    container: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: theme.containerBackgroundColor,
+      flex: 1,
+      flexDirection: "column",
+      height: "100%",
+    },
+  });
+};

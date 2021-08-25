@@ -42,7 +42,7 @@ export default function MapViewExplore() {
     getLineMarkers(currentRegion);
   };
 
-  return aSingleCurrentPosition.isLoaded == true ? (
+  return aSingleCurrentPosition.isLoaded === true ? (
     <MapView
       ref={(ref) => (mapView = ref)}
       showsUserLocation={true}
@@ -57,7 +57,7 @@ export default function MapViewExplore() {
         const {
           id,
           isLoaded,
-          coordinates,
+          markerCoordinates,
           markerRegion,
           image,
           imageSelected,
@@ -67,7 +67,7 @@ export default function MapViewExplore() {
           return (
             <Marker
               key={id}
-              coordinate={coordinates}
+              coordinate={markerCoordinates}
               onPress={() => {
                 mapView.animateToRegion(markerRegion, 1000);
                 store.dispatch(selectMarker(marker));

@@ -1,7 +1,7 @@
 import { API, graphqlOperation } from "aws-amplify";
 import { createPlusCodeLevel1 } from "../../../mutations";
 
-export async function createGraphQLPluscodeLevel1(
+export async function savePluscodeLevel1(
   digits,
   plusCodeLevel1MiddleCoordId,
   numberOfLines

@@ -14,7 +14,9 @@ import {
 import { getTheme } from "../theme/themes";
 import store from "../state-management/store/store";
 
-export default function MapViewCreateLine() {
+//TODO place markers based on current position
+
+export default function MapViewCreateLine({ initialRegion }) {
   const themedStyles = styles();
 
   const pinState = useSelector((state) => state.setPin);
@@ -24,17 +26,6 @@ export default function MapViewCreateLine() {
   const secondPinCoordinates = useSelector(
     (state) => state.mapPressHandlerSecondPin
   );
-
-  const aSingleCurrentPosition = useSelector(
-    (state) => state.aSingleCurrentPosition
-  );
-
-  const initialRegion = {
-    latitude: aSingleCurrentPosition.latitude,
-    longitude: aSingleCurrentPosition.longitude,
-    latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA,
-  };
 
   const mapPressed = (coordinates) => {
     pinState == "Set starting point" &&
@@ -99,7 +90,6 @@ export default function MapViewCreateLine() {
       />
     </MapView>
   );
-  //}
 }
 
 const styles = () => {
