@@ -9,7 +9,26 @@ export async function getAllLvl3UnderLvl2(param) {
       })
     );
 
-    return response.data.pluscode2ByCompletePluscode.items[0].level3List.items;
+    //response.data.pluscode2ByCompletePluscode.items[0].level3List.items;
+    const {
+      data: {
+        pluscode2ByCompletePluscode: {
+          items: [
+            {
+              level3List: { items },
+            },
+          ],
+        },
+      },
+    } = response;
+
+    console.log(
+      "TEST: DD destructering items " +
+        items +
+        " source: get-all-lvl-3-under-lvl-2.js"
+    );
+
+    return items === undefined ? [] : items;
   } catch (err) {
     return [];
   }

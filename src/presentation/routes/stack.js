@@ -156,7 +156,9 @@ export function CreateLineStack() {
           headerLeft: () => (
             <TouchableOpacity
               style={themedStyles.button}
-              onPress={() => navigation.navigate("CreateLineScreen")}
+              onPress={() => {
+                navigation.navigate("CreateLineScreen");
+              }}
             >
               <Image
                 source={themedStyles.backArrowIcon}

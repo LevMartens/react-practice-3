@@ -33,8 +33,8 @@ export default function PinSetButton({ navigation }) {
 
     if (pinState == "Done!") {
       store.dispatch(resetPin());
-      createLine(firstPinCoordinates, secondPinCoordinates);
 
+      createLine(firstPinCoordinates, secondPinCoordinates);
       navigation.navigate("Detail");
     }
   };

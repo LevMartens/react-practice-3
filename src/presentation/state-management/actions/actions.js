@@ -101,3 +101,10 @@ export const selectMarker = (event) => {
     type: "SELECTMARKER",
   };
 };
+
+export const resetMarker = (event) => {
+  return {
+    event: event,
+    type: "RESETMARKER",
+  };
+};

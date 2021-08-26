@@ -18,6 +18,7 @@ import {
   StackedBarChart,
 } from "react-native-chart-kit";
 import { SCREEN_WIDTH } from "../../domain/resources/environment/dimensions";
+import { getTheme } from "../theme/themes";
 
 export default function DetailScreen({ navigation }) {
   const themedStyles = styles();

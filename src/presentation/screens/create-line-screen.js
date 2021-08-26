@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MapViewCreateLine from "../../presentation/components/map-view-create-line";
 import PinSetButton from "../components/pin-set-button";
 import { StyleSheet, View } from "react-native";

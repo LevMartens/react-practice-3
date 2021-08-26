@@ -18,6 +18,9 @@ import { getElevation } from "./src/domain/resources/api/get-elevation";
 import { gt } from "./test";
 import { LONGITUDE_DELTA } from "./src/domain/resources/environment/dimensions";
 
+//TODO 3.4 Use property value shorthand. eslint: & 3.5 Group your shorthand properties at the beginning of your object declaration.
+//TODO create a new type draftLines and use it with @auth, add "where" to type line to query lines created by user
+
 Amplify.configure(awsconfig);
 const Melbourne = {
   latitude: -37.840935,

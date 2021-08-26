@@ -6,7 +6,7 @@ import { StyleSheet, View, Image, Text } from "react-native";
 import { getPositionOnce } from "../../domain/resources/environment/get-position-once";
 import { getLineMarkers } from "../../domain/use_cases/get-line-markers";
 import { useSelector } from "react-redux";
-import { selectMarker } from "../state-management/actions/actions";
+import { selectMarker, resetMarker } from "../state-management/actions/actions";
 import store from "../state-management/store/store";
 import Modal from "react-native-modalbox";
 import {
@@ -16,6 +16,10 @@ import {
 
 export default function MapViewExplore() {
   useEffect(() => {
+    store.dispatch(resetMarker());
+    console.log(
+      "UseEffect called in MapViewExplore source: map-view-explore.js"
+    );
     getPositionOnce(); //TODO this function bypasses use_cases
   }, []);
 
@@ -93,7 +97,7 @@ export default function MapViewExplore() {
         backdrop={false}
         swipeToClose={true}
         onClosingState={() => {
-          store.dispatch(selectMarker({ id: 0, isLoaded: false }));
+          store.dispatch(resetMarker());
         }}
       >
         {/* <View>

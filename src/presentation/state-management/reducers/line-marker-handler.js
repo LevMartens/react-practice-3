@@ -59,7 +59,11 @@ export const selectedMarkerHandler = (
 ) => {
   switch (action.type) {
     case "SELECTMARKER":
+      console.log("New marker selected. source: line-marker-handler.js");
       return action.event;
+    case "RESETMARKER":
+      console.log("Marker reset. source: line-marker-handler.js");
+      return state;
     default:
       return state;
   }
