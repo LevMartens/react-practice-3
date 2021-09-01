@@ -232,6 +232,114 @@ export const onDeleteComment = /* GraphQL */ `
     }
   }
 `;
+export const onCreateLineDrafts = /* GraphQL */ `
+  subscription OnCreateLineDrafts {
+    onCreateLineDrafts {
+      id
+      parentId
+      complete3LevelPluscode
+      startingCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      finishCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      creatorName
+      description
+      title
+      hashtags
+      dificultyLevel
+      verified
+      lineCompleted
+      elevationPoints
+      latitudeDeltaFit
+      longitudeDeltaFit
+      distance
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateLineDrafts = /* GraphQL */ `
+  subscription OnUpdateLineDrafts {
+    onUpdateLineDrafts {
+      id
+      parentId
+      complete3LevelPluscode
+      startingCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      finishCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      creatorName
+      description
+      title
+      hashtags
+      dificultyLevel
+      verified
+      lineCompleted
+      elevationPoints
+      latitudeDeltaFit
+      longitudeDeltaFit
+      distance
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteLineDrafts = /* GraphQL */ `
+  subscription OnDeleteLineDrafts {
+    onDeleteLineDrafts {
+      id
+      parentId
+      complete3LevelPluscode
+      startingCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      finishCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      creatorName
+      description
+      title
+      hashtags
+      dificultyLevel
+      verified
+      lineCompleted
+      elevationPoints
+      latitudeDeltaFit
+      longitudeDeltaFit
+      distance
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreatePlusCodeLevel1 = /* GraphQL */ `
   subscription OnCreatePlusCodeLevel1 {
     onCreatePlusCodeLevel1 {

@@ -259,6 +259,123 @@ export const deleteComment = /* GraphQL */ `
     }
   }
 `;
+export const createLineDrafts = /* GraphQL */ `
+  mutation CreateLineDrafts(
+    $input: CreateLineDraftsInput!
+    $condition: ModelLineDraftsConditionInput
+  ) {
+    createLineDrafts(input: $input, condition: $condition) {
+      id
+      parentId
+      complete3LevelPluscode
+      startingCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      finishCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      creatorName
+      description
+      title
+      hashtags
+      dificultyLevel
+      verified
+      lineCompleted
+      elevationPoints
+      latitudeDeltaFit
+      longitudeDeltaFit
+      distance
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateLineDrafts = /* GraphQL */ `
+  mutation UpdateLineDrafts(
+    $input: UpdateLineDraftsInput!
+    $condition: ModelLineDraftsConditionInput
+  ) {
+    updateLineDrafts(input: $input, condition: $condition) {
+      id
+      parentId
+      complete3LevelPluscode
+      startingCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      finishCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      creatorName
+      description
+      title
+      hashtags
+      dificultyLevel
+      verified
+      lineCompleted
+      elevationPoints
+      latitudeDeltaFit
+      longitudeDeltaFit
+      distance
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteLineDrafts = /* GraphQL */ `
+  mutation DeleteLineDrafts(
+    $input: DeleteLineDraftsInput!
+    $condition: ModelLineDraftsConditionInput
+  ) {
+    deleteLineDrafts(input: $input, condition: $condition) {
+      id
+      parentId
+      complete3LevelPluscode
+      startingCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      finishCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      creatorName
+      description
+      title
+      hashtags
+      dificultyLevel
+      verified
+      lineCompleted
+      elevationPoints
+      latitudeDeltaFit
+      longitudeDeltaFit
+      distance
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createPlusCodeLevel1 = /* GraphQL */ `
   mutation CreatePlusCodeLevel1(
     $input: CreatePlusCodeLevel1Input!

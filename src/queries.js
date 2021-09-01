@@ -150,6 +150,85 @@ export const listComments = /* GraphQL */ `
     }
   }
 `;
+export const getLineDrafts = /* GraphQL */ `
+  query GetLineDrafts($id: ID!) {
+    getLineDrafts(id: $id) {
+      id
+      parentId
+      complete3LevelPluscode
+      startingCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      finishCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      creatorName
+      description
+      title
+      hashtags
+      dificultyLevel
+      verified
+      lineCompleted
+      elevationPoints
+      latitudeDeltaFit
+      longitudeDeltaFit
+      distance
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listLineDrafts = /* GraphQL */ `
+  query ListLineDrafts(
+    $filter: ModelLineDraftsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listLineDrafts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        parentId
+        complete3LevelPluscode
+        startingCoordinates {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        finishCoordinates {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        creatorName
+        description
+        title
+        hashtags
+        dificultyLevel
+        verified
+        lineCompleted
+        elevationPoints
+        latitudeDeltaFit
+        longitudeDeltaFit
+        distance
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getPlusCodeLevel1 = /* GraphQL */ `
   query GetPlusCodeLevel1($id: ID!) {
     getPlusCodeLevel1(id: $id) {

@@ -13,6 +13,7 @@ import { getCoordinesFromPluscode } from "../resources/api/get-pluscode";
 import { getDistanceBetween } from "../generators/distance-generator";
 import { mapElevationPoints, packLineMarkerData } from "../helpers/packers";
 import { showAlert } from "../resources/environment/alerts";
+import { saveLineDraft } from "../resources/backend/save-line-draft";
 
 export async function createLine(startingPoint, endPoint) {
   const { latitude, longitude } = startingPoint;
@@ -175,7 +176,7 @@ export async function createLine(startingPoint, endPoint) {
     verified: verified,
   };
 
-  const line = await saveLine(input);
+  const line = await saveLineDraft(input);
 
   if (line.isNOTSaved) {
     showAlert("Lines didn't save, Lev sucks");

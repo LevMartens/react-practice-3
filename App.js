@@ -20,6 +20,7 @@ import { LONGITUDE_DELTA } from "./src/domain/resources/environment/dimensions";
 
 //TODO 3.4 Use property value shorthand. eslint: & 3.5 Group your shorthand properties at the beginning of your object declaration.
 //TODO create a new type draftLines and use it with @auth, add "where" to type line to query lines created by user
+//TODO in create line create linedraft instead of line, create line when line is walked using linedraft
 
 Amplify.configure(awsconfig);
 const Melbourne = {

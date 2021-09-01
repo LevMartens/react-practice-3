@@ -19,6 +19,25 @@ type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
   content: String!
 }
 
+type LineDrafts @model {
+  id: ID!
+  parentId: String
+  complete3LevelPluscode: String
+  startingCoordinates: Coordinates @connection
+  finishCoordinates: Coordinates @connection
+  creatorName: String
+  description: String
+  title: String
+  hashtags: [String]
+  dificultyLevel: String
+  verified: Boolean
+  lineCompleted: Boolean
+  elevationPoints: [Float]
+  latitudeDeltaFit: Float
+  longitudeDeltaFit: Float
+  distance: Float
+}
+
 type PlusCodeLevel1
   @model
   @key(
