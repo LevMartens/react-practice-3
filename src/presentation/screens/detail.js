@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import MapViewCreateLine from "../components/map-view-create-line";
+import { ActivityIndicator } from "react-native-paper";
 import {
   StyleSheet,
   View,
@@ -23,8 +24,12 @@ import { getTheme } from "../theme/themes";
 export default function DetailScreen({ navigation }) {
   const themedStyles = styles();
   const { markerRegionZoomedIn, isLoaded, rawLineData } = useSelector(
-    (state) => state.selectedMarkerHandler
+    (state) => state.selectedLineDraftHandler
   );
+
+  useEffect(() => {
+    console.log("FF" + JSON.stringify(rawLineData));
+  }, []);
 
   const { distance, elevationPoints } = rawLineData;
 

@@ -108,3 +108,17 @@ export const resetMarker = (event) => {
     type: "RESETMARKER",
   };
 };
+
+export const selectLineDraft = (event) => {
+  return {
+    event: event,
+    type: "SELECTLINEDRAFT",
+  };
+};
+
+export const resetLineDraft = (event) => {
+  return {
+    event: event,
+    type: "RESETLINEDRAFT",
+  };
+};

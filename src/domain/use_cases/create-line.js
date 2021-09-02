@@ -9,11 +9,15 @@ import { saveLine } from "../resources/backend/save-line";
 import { increaseNumberOfLinesInPluscodeLvl1By } from "../resources/backend/increase-number-of-lines-in-pluscode-lvl-1-by";
 import { increaseNumberOfLinesInPluscodeLvl2By } from "../resources/backend/increase-number-of-lines-in-pluscode-lvl-2-by";
 import { increaseNumberOfLinesInPluscodeLvl3By } from "../resources/backend/increase-number-of-lines-in-pluscode-lvl-3-by";
-import { getCoordinesFromPluscode } from "../resources/api/get-pluscode";
+import {
+  getCoordinesFromPluscode,
+  getPluscodeFromCoordinates,
+} from "../resources/api/get-pluscode";
 import { getDistanceBetween } from "../generators/distance-generator";
 import { mapElevationPoints, packLineMarkerData } from "../helpers/packers";
 import { showAlert } from "../resources/environment/alerts";
 import { saveLineDraft } from "../resources/backend/save-line-draft";
+import { selectLineDraft } from "../../presentation/state-management/actions/actions";
 
 export async function createLine(startingPoint, endPoint) {
   const { latitude, longitude } = startingPoint;
@@ -189,6 +193,7 @@ export async function createLine(startingPoint, endPoint) {
   }
 
   const lineMarker = await packLineMarkerData(line);
+  console.log("GG" + JSON.stringify(line));
 
-  store.dispatch(selectMarker(lineMarker));
+  store.dispatch(selectLineDraft(lineMarker));
 }
