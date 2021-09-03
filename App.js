@@ -12,7 +12,7 @@ import { useFonts } from "expo-font";
 import * as Application from "expo-application";
 import Amplify, { API, graphqlOperation } from "aws-amplify";
 import awsconfig from "./src/aws-exports";
-import { createLine } from "./src/domain/use_cases/create-line";
+
 import { RootSiblingParent } from "react-native-root-siblings";
 import { getElevation } from "./src/domain/resources/api/get-elevation";
 import { gt } from "./test";

@@ -9,7 +9,7 @@ import {
   resetPin,
 } from "../state-management/actions/actions";
 import store from "../state-management/store/store";
-import { createLine } from "../../domain/use_cases/create-line";
+import { createLineDraft } from "../../domain/use_cases/create-line-draft";
 
 export default function PinSetButton({ navigation }) {
   const themedStyles = styles();
@@ -34,7 +34,7 @@ export default function PinSetButton({ navigation }) {
     if (pinState == "Done!") {
       store.dispatch(resetPin());
 
-      createLine(firstPinCoordinates, secondPinCoordinates);
+      createLineDraft(firstPinCoordinates, secondPinCoordinates);
       navigation.navigate("Detail");
     }
   };

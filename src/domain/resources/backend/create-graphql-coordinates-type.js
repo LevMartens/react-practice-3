@@ -10,7 +10,7 @@ export async function createGraphQLCoordinateType(lat, lng) {
     );
 
     console.log(
-      "GraphQL Coordinate type successfully made   " +
+      "LOG: GraphQL Coordinate type successfully made " +
         JSON.stringify(response.data.createCoordinates.id)
     );
 

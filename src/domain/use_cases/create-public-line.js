@@ -14,20 +14,35 @@ import {
   getPluscodeFromCoordinates,
 } from "../resources/api/get-pluscode";
 import { getDistanceBetween } from "../generators/distance-generator";
-import { mapElevationPoints, packLineMarkerData } from "../helpers/packers";
+import { mapElevationPoints, packLineData } from "../helpers/packers";
 import { showAlert } from "../resources/environment/alerts";
 import { saveLineDraft } from "../resources/backend/save-line-draft";
 import { selectLineDraft } from "../../presentation/state-management/actions/actions";
 
-export async function createLine(startingPoint, endPoint) {
-  const { latitude, longitude } = startingPoint;
+export async function createPublicLine(lineDraft) {
+  const {
+    rawLineData: {
+      complete3LevelPluscode,
+      lineDraftsStartingCoordinatesId,
+      lineDraftsFinishCoordinatesId,
+      creatorName,
+      description,
+      dificultyLevel,
+      distance,
+      elevationPoints,
+      hashTags,
+      latitudeDeltaFit,
+      longitudeDeltaFit,
+      lineCompleted,
+      title,
+      verified,
+    },
+  } = lineDraft;
 
-  const pluscode = await getPluscodeFromCoordinates(`${latitude},${longitude}`);
-
-  const completePluscode = pluscode.substring(0, 6);
-  const pluscodeLevel1Digits = pluscode.substring(0, 2);
-  const pluscodeLevel2Digits = pluscode.substring(2, 4);
-  const pluscodeLevel3Digits = pluscode.substring(4, 6);
+  const completePluscode = complete3LevelPluscode;
+  const pluscodeLevel1Digits = complete3LevelPluscode.substring(0, 2);
+  const pluscodeLevel2Digits = complete3LevelPluscode.substring(2, 4);
+  const pluscodeLevel3Digits = complete3LevelPluscode.substring(4, 6);
 
   const pluscodeLevel1InDB = await checkIfLevel1Exists(pluscodeLevel1Digits);
   let pluscodeLevel1ID = "";
@@ -128,45 +143,12 @@ export async function createLine(startingPoint, endPoint) {
     );
   }
 
-  const distance = await getDistanceBetween(startingPoint, endPoint);
-
-  const fitLineInFrame = await getLatLongDeltaBasedOn(distance);
-
-  const { latitudeDeltaFit, longitudeDeltaFit } = fitLineInFrame;
-
-  const rawElevationData = await getElevation(startingPoint, endPoint);
-
-  const elevationPoints = await mapElevationPoints(rawElevationData);
-
-  const lineCompleted = false; // Becomes public after completion
-
-  const verified = false; // Can be set/amended by an authorised person
-
-  const dificultyLevel = "N/A"; // Can be set by the user after completion
-
-  const hashTags = []; // Can be set by the user after completion
-
-  const title = "N/A"; // Can be set by the user after completion
-
-  const description = "N/A"; // Can be set by the user after completion
-
-  const creatorName = "N/A"; //TODO
-
-  const startingPointCoordinatesTypeID = await createGraphQLCoordinateType(
-    startingPoint.lat,
-    startingPoint.lng
-  );
-  const endPointCoordinatesTypeID = await createGraphQLCoordinateType(
-    endPoint.lat,
-    endPoint.lng
-  );
-
   const input = {
     parentId: pluscodeLevel3ID,
     linesPluscodeParentId: pluscodeLevel3ID,
-    complete3LevelPluscode: completePluscode,
-    linesStartingCoordinatesId: startingPointCoordinatesTypeID,
-    linesFinishCoordinatesId: endPointCoordinatesTypeID,
+    complete3LevelPluscode: complete3LevelPluscode,
+    linesStartingCoordinatesId: lineDraftsStartingCoordinatesId,
+    linesFinishCoordinatesId: lineDraftsFinishCoordinatesId,
     creatorName: creatorName,
     description: description,
     dificultyLevel: dificultyLevel,
@@ -180,7 +162,7 @@ export async function createLine(startingPoint, endPoint) {
     verified: verified,
   };
 
-  const line = await saveLineDraft(input);
+  const line = await saveLine(input);
 
   if (line.isNOTSaved) {
     showAlert("Lines didn't save, Lev sucks");
@@ -191,9 +173,4 @@ export async function createLine(startingPoint, endPoint) {
     );
     return;
   }
-
-  const lineMarker = await packLineMarkerData(line);
-  console.log("GG" + JSON.stringify(line));
-
-  store.dispatch(selectLineDraft(lineMarker));
 }

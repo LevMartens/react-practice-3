@@ -282,6 +282,13 @@ export const createLineDrafts = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      midLineCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
       creatorName
       description
       title
@@ -321,6 +328,13 @@ export const updateLineDrafts = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      midLineCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
       creatorName
       description
       title
@@ -354,6 +368,13 @@ export const deleteLineDrafts = /* GraphQL */ `
         updatedAt
       }
       finishCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
+      midLineCoordinates {
         id
         lat
         lng

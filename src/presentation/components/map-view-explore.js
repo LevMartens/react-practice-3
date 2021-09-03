@@ -17,9 +17,6 @@ import {
 export default function MapViewExplore() {
   useEffect(() => {
     store.dispatch(resetMarker());
-    console.log(
-      "UseEffect called in MapViewExplore source: map-view-explore.js"
-    );
     getPositionOnce(); //TODO this function bypasses use_cases
   }, []);
 

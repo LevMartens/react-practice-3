@@ -10,7 +10,9 @@ function radiansToDegrees(radians) {
   return radians * (180 / pi);
 }
 
-export function getCoordinatesBetween(pointA, pointB, distanceToUse) {
+export async function getCoordinatesBetween(pointA, pointB, atThisPoint) {
+  // atThisPoint: 0.5 = middle, 0.25 = quarter of total distance etc...
+
   // Convert degrees to radians
   var latitudeRadian1 = degreesToRadians(pointA.latitude);
   var longitudeRadian1 = degreesToRadians(pointA.longitude);
@@ -39,7 +41,7 @@ export function getCoordinatesBetween(pointA, pointB, distanceToUse) {
   );
 
   // Find new point
-  var angularDistance = distance * distanceToUse;
+  var angularDistance = distance * atThisPoint;
   var angDistSin = Math.sin(angularDistance);
   var angDistCos = Math.cos(angularDistance);
   var xlatRad = Math.asin(

@@ -25,6 +25,7 @@ type LineDrafts @model {
   complete3LevelPluscode: String
   startingCoordinates: Coordinates @connection
   finishCoordinates: Coordinates @connection
+  midLineCoordinates: Coordinates @connection
   creatorName: String
   description: String
   title: String

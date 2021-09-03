@@ -170,6 +170,13 @@ export const getLineDrafts = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      midLineCoordinates {
+        id
+        lat
+        lng
+        createdAt
+        updatedAt
+      }
       creatorName
       description
       title
@@ -205,6 +212,13 @@ export const listLineDrafts = /* GraphQL */ `
           updatedAt
         }
         finishCoordinates {
+          id
+          lat
+          lng
+          createdAt
+          updatedAt
+        }
+        midLineCoordinates {
           id
           lat
           lng

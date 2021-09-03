@@ -1,6 +1,8 @@
 import { API, graphqlOperation } from "aws-amplify";
 import { pluscode2ByCompletePluscode } from "../../../queries";
 
+//TODO: destructering test paused, waiting for lines to fetch
+
 export async function getAllLvl3UnderLvl2(param) {
   try {
     const response = await API.graphql(

@@ -27,10 +27,6 @@ export default function DetailScreen({ navigation }) {
     (state) => state.selectedLineDraftHandler
   );
 
-  useEffect(() => {
-    console.log("FF" + JSON.stringify(rawLineData));
-  }, []);
-
   const { distance, elevationPoints } = rawLineData;
 
   return (
@@ -53,8 +49,8 @@ export default function DetailScreen({ navigation }) {
       {isLoaded == true ? (
         <LineChart
           data={{
-            labels: ["Elevation"],
-            legend: [`Distance: ${distance}m`],
+            labels: [`Distance: ${distance}m`],
+            legend: ["Elevation"],
             datasets: [
               {
                 data: elevationPoints,
