@@ -74,7 +74,7 @@ export default function DetailScreen({ navigation }) {
       )}
 
       <TouchableOpacity style={themedStyles.button} onPress={() => {}}>
-        <Text style={themedStyles.text1}>{"Save Draft"}</Text>
+        <Text style={themedStyles.text1}>{"Walk some other time"}</Text>
       </TouchableOpacity>
       <StartButton navigation={navigation}></StartButton>
     </View>

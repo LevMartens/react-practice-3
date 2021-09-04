@@ -16,9 +16,11 @@ import {
   bannerHandler,
   selectedMarkerHandler,
   selectedLineDraftHandler,
+  lineTitleHandler,
 } from "./line-data-handlers";
 
 export default combineReducers({
+  lineTitleHandler: lineTitleHandler,
   selectedLineDraftHandler: selectedLineDraftHandler,
   selectedMarkerHandler: selectedMarkerHandler,
   bannerHandler: bannerHandler,

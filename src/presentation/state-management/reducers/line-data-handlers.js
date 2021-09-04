@@ -100,3 +100,12 @@ export const selectedLineDraftHandler = (
       return state;
   }
 };
+
+export const lineTitleHandler = (state = "Nameless", action) => {
+  switch (action.type) {
+    case "ADDLINETITLE":
+      return action.event;
+    default:
+      return state;
+  }
+};

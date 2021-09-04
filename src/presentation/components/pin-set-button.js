@@ -10,11 +10,16 @@ import {
 } from "../state-management/actions/actions";
 import store from "../state-management/store/store";
 import { createLineDraft } from "../../domain/use_cases/create-line-draft";
+import { showAddLineTitleAlert } from "../../domain/resources/environment/alerts";
 
 export default function PinSetButton({ navigation }) {
   const themedStyles = styles();
 
   const pinState = useSelector((state) => state.setPin);
+
+  //TODO move these 3 to the createLineDraft function so you don't have to pass in any arg
+
+  const title = useSelector((state) => state.lineTitleHandler);
 
   const firstPinCoordinates = useSelector(
     (state) => state.mapPressHandlerFirstPin
@@ -23,18 +28,19 @@ export default function PinSetButton({ navigation }) {
     (state) => state.mapPressHandlerSecondPin
   );
 
-  const pinButtonPressed = () => {
+  const pinButtonPressed = async () => {
     if (pinState == "Set starting point") {
       store.dispatch(setPinStartingPoint());
     }
     if (pinState == "Set end point") {
       store.dispatch(setPinEndPoint());
+      showAddLineTitleAlert();
     }
 
     if (pinState == "Done!") {
       store.dispatch(resetPin());
 
-      createLineDraft(firstPinCoordinates, secondPinCoordinates);
+      createLineDraft(firstPinCoordinates, secondPinCoordinates, title);
       navigation.navigate("Detail");
     }
   };

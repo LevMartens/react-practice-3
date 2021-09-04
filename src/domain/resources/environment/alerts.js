@@ -1,4 +1,6 @@
 import { Alert } from "react-native";
+import { addLineTitle } from "../../../presentation/state-management/actions/actions";
+import store from "../../../presentation/state-management/store/store";
 
 export function showAlert(message) {
   Alert.alert(
@@ -14,4 +16,15 @@ export function showAlert(message) {
     ],
     { cancelable: true }
   );
+}
+
+export function showAddLineTitleAlert() {
+  const buttons = [
+    {
+      text: "Add",
+      onPress: (userInput) => store.dispatch(addLineTitle(userInput)),
+      style: "default",
+    },
+  ];
+  Alert.prompt("Give your line a name", "", buttons);
 }
