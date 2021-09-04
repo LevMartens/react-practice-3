@@ -12,6 +12,9 @@ web-build/
 # macOS
 .DS_Store
 
+# api-key
+api-key.js
+
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*

@@ -9,10 +9,14 @@ import { getLatLongDeltaBasedOn } from "../generators/lat-long-delta-generator";
 import { getElevation } from "../resources/api/get-elevation";
 import store from "../../presentation/state-management/store/store";
 import { getCoordinatesBetween } from "../generators/Calculations";
-import { useSelector } from "react-redux";
 
-export async function createLineDraft(startingPoint, endPoint, lineTitle) {
-  console.log("TEST: KFKF " + lineTitle);
+export async function createLineDraft(pointA, pointB, lineTitle) {
+  const startingPoint = pointA;
+
+  const endPoint = pointB;
+
+  const title = lineTitle;
+
   const { latitude, longitude } = startingPoint;
 
   const pluscode = await getPluscodeFromCoordinates(`${latitude},${longitude}`);
@@ -38,10 +42,6 @@ export async function createLineDraft(startingPoint, endPoint, lineTitle) {
   const dificultyLevel = "N/A"; // Can be set by the user after completion
 
   const hashtags = []; // Can be set by the user after completion
-
-  //   const title = useSelector(
-  //     (state) => state.lineTitleHandler
-  //   );
 
   const description = "N/A"; // Can be set by the user after completion
 
@@ -75,7 +75,7 @@ export async function createLineDraft(startingPoint, endPoint, lineTitle) {
     latitudeDeltaFit: latitudeDelta,
     longitudeDeltaFit: longitudeDelta,
     lineCompleted: lineCompleted,
-    title: lineTitle,
+    title: title,
     verified: verified,
   };
 
@@ -94,4 +94,6 @@ export async function createLineDraft(startingPoint, endPoint, lineTitle) {
   const lineDraft = await packLineData(line);
 
   store.dispatch(selectLineDraft(lineDraft));
+
+  return lineDraft; // Return for testing
 }

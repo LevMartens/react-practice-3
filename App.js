@@ -15,7 +15,6 @@ import awsconfig from "./src/aws-exports";
 
 import { RootSiblingParent } from "react-native-root-siblings";
 import { getElevation } from "./src/domain/resources/api/get-elevation";
-import { gt } from "./test";
 import { LONGITUDE_DELTA } from "./src/domain/resources/environment/dimensions";
 
 //TODO 3.4 Use property value shorthand. eslint: & 3.5 Group your shorthand properties at the beginning of your object declaration.

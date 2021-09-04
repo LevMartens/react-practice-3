@@ -17,8 +17,6 @@ export default function PinSetButton({ navigation }) {
 
   const pinState = useSelector((state) => state.setPin);
 
-  //TODO move these 3 to the createLineDraft function so you don't have to pass in any arg
-
   const title = useSelector((state) => state.lineTitleHandler);
 
   const firstPinCoordinates = useSelector(

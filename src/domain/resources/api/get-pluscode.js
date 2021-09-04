@@ -16,6 +16,7 @@ async function getValueFor(key) {
 }
 
 export async function getPluscodeFromCoordinates(coordinates) {
+  //save("google-API-key", "AIzaSyC9cUphfk3J0J49xMlj22QA3qAK9CUQ_U8");
   const apiKey = await getValueFor("google-API-key");
   const response = await fetch(
     `https://plus.codes/api?address=${coordinates}&ekey=${apiKey}&email=lmartens_43@hotmail.com`,
@@ -48,6 +49,6 @@ export async function getCoordinesFromPluscode(pluscode) {
   return json.plus_code.geometry.location;
 }
 
-// async function save(key, value) {
-//   await SecureStore.setItemAsync(key, value);
-// }
+async function save(key, value) {
+  await SecureStore.setItemAsync(key, value);
+}

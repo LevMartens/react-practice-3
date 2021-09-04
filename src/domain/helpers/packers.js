@@ -19,12 +19,13 @@ export async function mapElevationPoints(rawData) {
 export async function packLineData(rawData) {
   const { data } = rawData;
   const {
+    id,
     startingCoordinates,
     midLineCoordinates,
     latitudeDeltaFit,
     longitudeDeltaFit,
   } = data;
-  const { id, lat, lng } = startingCoordinates;
+  const { lat, lng } = startingCoordinates;
 
   const markerCoordinates = {
     latitude: parseFloat(lat),
