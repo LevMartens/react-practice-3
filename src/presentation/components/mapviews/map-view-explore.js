@@ -98,6 +98,7 @@ export default function MapViewExplore() {
         }}
       >
         {/* <View>
+        //TODO make up the model when there are public lines
           <Image source={markerCurrentlySelected.rawLineData.images[0]}></Image>
         </View> */}
       </Modal>

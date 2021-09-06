@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import MapViewExplore from "../components/map-view-explore";
+import MapViewExplore from "../components/mapviews/map-view-explore";
 import { useSelector } from "react-redux";
 import Banner from "../components/banner";
 import { getTheme } from "../theme/themes";

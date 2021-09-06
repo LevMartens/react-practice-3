@@ -1,6 +1,7 @@
 import { watchPosition } from "../resources/environment/watch-position";
 import store from "../../presentation/state-management/store/store";
 import { currentPositionUpdate } from "../../presentation/state-management/actions/actions";
+
 export async function followUserPosition() {
   const callback = (location) => {
     console.log("TEST: followUserPosition location update");

@@ -4,28 +4,18 @@ import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { StyleSheet, Image } from "react-native";
 import {
-  LONGITUDE_DELTA,
-  LATITUDE_DELTA,
-} from "../../domain/resources/environment/dimensions";
-import {
   mapPressedForFirstPin,
   mapPressedForSecondPin,
 } from "../state-management/actions/actions";
 import { getTheme } from "../theme/themes";
 import store from "../state-management/store/store";
 
-//TODO place markers based on current position
-
 export default function MapViewCreateLine({ initialRegion }) {
   const themedStyles = styles();
 
-  const pinState = useSelector((state) => state.setPin);
-  const firstPinCoordinates = useSelector(
-    (state) => state.mapPressHandlerFirstPin
-  );
-  const secondPinCoordinates = useSelector(
-    (state) => state.mapPressHandlerSecondPin
-  );
+  const pinState = useSelector((state) => state.createLineStateHandler);
+  const firstPinCoordinates = useSelector((state) => state.startMarkerHandler);
+  const secondPinCoordinates = useSelector((state) => state.endMarkerHandler);
 
   const mapPressed = (coordinates) => {
     pinState == "Set starting point" &&

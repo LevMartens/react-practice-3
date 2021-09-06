@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import MapViewCreateLine from "../../presentation/components/map-view-create-line";
-import PinSetButton from "../components/pin-set-button";
+import React from "react";
+import MapViewCreateLine from "../../presentation/components/mapviews/map-view-create-line";
+import PinSetButton from "../components/buttons/pin-set-button";
 import { StyleSheet, View } from "react-native";
 import { getTheme } from "../theme/themes";
 import { useSelector } from "react-redux";

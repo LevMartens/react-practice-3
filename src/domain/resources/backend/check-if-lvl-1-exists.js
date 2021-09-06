@@ -1,5 +1,4 @@
 import { API, graphqlOperation } from "aws-amplify";
-
 import { pluscodeByDigits } from "../../../queries";
 
 export async function checkIfLevel1Exists(digits) {
@@ -10,22 +9,24 @@ export async function checkIfLevel1Exists(digits) {
       })
     );
 
-    console.log(
-      "This pluscode level1 exists! id: " +
-        JSON.stringify(response.data.pluscodeByDigits.items[0].id)
-    );
-    return response.data.pluscodeByDigits.items[0].id == null
+    const {
+      data: {
+        pluscodeByDigits: {
+          items: [{ id, numberOfLines }],
+        },
+      },
+    } = response;
+
+    return id == null
       ? { doesNotExist: true, exists: false }
       : {
           doesNotExist: false,
           exists: true,
-          id: response.data.pluscodeByDigits.items[0].id,
-          numberOfLines: response.data.pluscodeByDigits.items[0].numberOfLines,
+          id: id,
+          numberOfLines: numberOfLines,
         };
   } catch (err) {
-    console.log(
-      "Warning this pluscode level 1 does not exist, returning False "
-    );
-    return { doesNotExist: false, exists: true };
+    console.log("WARNING: this pluscode level 1 does not exist");
+    return { doesNotExist: true, exists: false };
   }
 }

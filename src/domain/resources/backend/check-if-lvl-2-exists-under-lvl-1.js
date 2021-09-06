@@ -1,5 +1,4 @@
 import { API, graphqlOperation } from "aws-amplify";
-
 import { pluscode2ByDigitsAndParent } from "../../../queries";
 
 export async function checkIfLevel2ExistsUnderlvl1(pluscodeLvl1ID, digits) {
@@ -9,24 +8,26 @@ export async function checkIfLevel2ExistsUnderlvl1(pluscodeLvl1ID, digits) {
         parentIdWithDigits: pluscodeLvl1ID + digits,
       })
     );
+    const {
+      data: {
+        pluscode2ByDigitsAndParent: {
+          items: [{ id, numberOfLines }],
+        },
+      },
+    } = response;
 
-    console.log(
-      "This pluscode level 2 exists! id: " +
-        JSON.stringify(response.data.pluscode2ByDigitsAndParent.items[0].id)
-    );
-    return response.data.pluscode2ByDigitsAndParent.items[0].id == null
+    return id == null
       ? { doesNotExist: true, exists: false }
       : {
           doesNotExist: false,
           exists: true,
-          id: response.data.pluscode2ByDigitsAndParent.items[0].id,
-          numberOfLines:
-            response.data.pluscode2ByDigitsAndParent.items[0].numberOfLines,
+          id: id,
+          numberOfLines: numberOfLines,
         };
   } catch (err) {
     console.log(
-      "Warning this pluscode level 2 does not exist under this pluscode lvl 1, returning False "
+      "WARNING: this pluscode level 2 does not exist under this pluscode lvl 1 "
     );
-    return { exists: false };
+    return { doesNotExist: true, exists: false };
   }
 }

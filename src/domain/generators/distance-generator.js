@@ -1,22 +1,19 @@
-import React from "react";
-
 export async function getDistanceBetween(pointA, pointB) {
-  var lat1 = pointA.latitude;
-  var lon1 = pointA.longitude;
-  var lat2 = pointB.latitude;
-  var lon2 = pointB.longitude;
+  const { latitude: pointALat, longitude: pointALng } = pointA;
+  const { latitude: pointBLat, longitude: pointBLng } = pointB;
 
-  var R = 6378.137; // Radius of earth in KM
-  var dLat = (lat2 * Math.PI) / 180 - (lat1 * Math.PI) / 180;
-  var dLon = (lon2 * Math.PI) / 180 - (lon1 * Math.PI) / 180;
-  var a =
+  const R = 6378.137; // Radius of earth in KM
+  const dLat = (pointBLat * Math.PI) / 180 - (pointALat * Math.PI) / 180;
+  const dLng = (pointBLng * Math.PI) / 180 - (pointALng * Math.PI) / 180;
+  const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  var d = R * c;
-  var be = d * 1000;
-  return Math.round(be);
+    Math.cos((pointALat * Math.PI) / 180) *
+      Math.cos((pointBLat * Math.PI) / 180) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
+  const b = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const c = R * b;
+  const d = c * 1000;
+  const e = Math.round(d);
+  return e;
 }

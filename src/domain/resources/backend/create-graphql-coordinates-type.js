@@ -8,15 +8,15 @@ export async function createGraphQLCoordinateType(lat, lng) {
         input: { lat: lat, lng: lng },
       })
     );
+    const {
+      data: {
+        createCoordinates: { id },
+      },
+    } = response;
 
-    console.log(
-      "LOG: GraphQL Coordinate type successfully made " +
-        JSON.stringify(response.data.createCoordinates.id)
-    );
-
-    return response.data.createCoordinates.id;
+    return id;
   } catch (err) {
-    console.log("Error creating GraphQL Coordinate type:", err);
+    console.log("WARNING: creating GraphQL Coordinate type:", err);
     return "No ID";
   }
 }

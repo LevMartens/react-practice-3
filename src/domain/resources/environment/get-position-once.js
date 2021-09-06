@@ -1,10 +1,9 @@
-import React from "react";
 import * as Location from "expo-location";
 import store from "../../../presentation/state-management/store/store";
 import { updateCurrentPositionOnce } from "../../../presentation/state-management/actions/actions";
 
 export const getPositionOnce = async () => {
-  let { status } = await Location.requestForegroundPermissionsAsync();
+  const { status } = await Location.requestForegroundPermissionsAsync();
 
   if (status !== "granted") {
     console.log(
@@ -13,16 +12,16 @@ export const getPositionOnce = async () => {
   }
 
   try {
-    let location = await Location.getCurrentPositionAsync({
+    const location = await Location.getCurrentPositionAsync({
       accuracy: Location.Accuracy.BestForNavigation,
     });
     if (location !== null) {
-      store.dispatch(updateCurrentPositionOnce(location.coords));
+      const { coords: coordinates } = location;
+      store.dispatch(updateCurrentPositionOnce(coordinates));
 
-      return location.coords;
+      return coordinates;
     }
   } catch (error) {
-    // Error retrieving data
-    console.log("ERROR: " + error + " see: get-position-once.js line 26 ");
+    console.log("ERROR: " + error + " see: get-position-once.js");
   }
 };

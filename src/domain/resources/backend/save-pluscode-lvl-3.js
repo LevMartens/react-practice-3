@@ -22,13 +22,10 @@ export async function savePluscodeLevel3(
       })
     );
 
-    console.log(
-      "GraphQL pluscodeLevel3 successfully made, id:" +
-        JSON.stringify(response.data.createPlusCodeLevel3.id)
-    );
-    return response.data.createPlusCodeLevel3.id;
+    const {data:{createPlusCodeLevel3:{id}}}
+    return id;
   } catch (err) {
-    console.log("Error creating pluscodelevel3:", err);
+    console.log("ERROR: Error creating pluscodelevel3:", err);
     return "No ID";
   }
 }

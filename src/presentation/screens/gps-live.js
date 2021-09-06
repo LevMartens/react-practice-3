@@ -1,7 +1,7 @@
 import React from "react";
-import MapViewGPSLive from "../components/map-view-gps-live";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
-import StartRecordingButton from "../components/start-recording-button";
+import MapViewGPSLive from "../components/mapviews/map-view-gps-live";
+import { StyleSheet, View } from "react-native";
+import StartRecordingButton from "../components/buttons/start-recording-button";
 
 export default function GPSLiveScreen() {
   return (

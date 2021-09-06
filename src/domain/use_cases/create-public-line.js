@@ -173,4 +173,6 @@ export async function createPublicLine(lineDraft) {
     );
     return;
   }
+
+  return line; // Return for testing
 }

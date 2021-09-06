@@ -6,7 +6,7 @@ import { sendLineMarkers } from "../../presentation/state-management/actions/act
 import { getAllLvl3UnderLvl2 } from "../resources/backend/get-all-lvl-3-under-lvl-2";
 import { getZoomLevelRules } from "../helpers/if_statements";
 import { showBanner } from "../../presentation/components/banner";
-import { packLineMarkerData } from "../helpers/packers";
+import { packLineData } from "../helpers/packers";
 
 //TODO:
 /**
@@ -28,7 +28,6 @@ export async function getLineMarkers(currentRegion) {
       time: 3000,
       message: "Please zoom in to search lines",
     });
-    console.log("LOG: Zoomed out to far on map. source: get-line-markers.js");
     return;
   }
 
@@ -101,10 +100,12 @@ export async function getLineMarkers(currentRegion) {
   // Prepping line marker data to send to MapView
   const lineMarkers = await Promise.all(
     lineObjects.map(async (rawData) => {
-      const lineMarkerData = await packLineMarkerData(rawData); //TODO obsolete
+      const lineMarkerData = await packLineData(rawData);
       return lineMarkerData;
     })
   );
 
   store.dispatch(sendLineMarkers(lineMarkers));
+
+  return lineMarkers; // Return for testing
 }

@@ -16,14 +16,14 @@ export async function savePluscodeLevel1(
         },
       })
     );
-
-    console.log(
-      "GraphQL pluscodeLevel1 successfully made, id:" +
-        JSON.stringify(response.data.createPlusCodeLevel1.id)
-    );
-    return response.data.createPlusCodeLevel1.id;
+    const {
+      data: {
+        createPlusCodeLevel1: { id },
+      },
+    } = response;
+    return id;
   } catch (err) {
-    console.log("Error creating pluscodelevel1:", err);
+    console.log("ERROR: Error creating pluscodelevel1:", err);
     return "No ID";
   }
 }

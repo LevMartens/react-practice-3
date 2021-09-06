@@ -9,9 +9,11 @@ export async function getAllLvl2UnderLvl1(lvl1Digits) {
       })
     );
 
-    return response.data.pluscodeByDigits.items[0].level2List.items;
+    const {data: {pluscodeByDigits: {items: [{level2List:{items}}]}}}
+
+    return items;
   } catch (err) {
-    console.log("No lvl 2 under lvl 1 ");
+    console.log("WARNING: No lvl 2 under lvl 1 ");
     return [];
   }
 }

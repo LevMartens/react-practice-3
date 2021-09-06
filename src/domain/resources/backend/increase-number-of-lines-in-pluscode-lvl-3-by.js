@@ -7,7 +7,7 @@ export async function increaseNumberOfLinesInPluscodeLvl3By(
   currentNumberOfLines
 ) {
   try {
-    const response = await API.graphql(
+    await API.graphql(
       graphqlOperation(updatePlusCodeLevel3, {
         input: {
           id: id,
@@ -15,9 +15,9 @@ export async function increaseNumberOfLinesInPluscodeLvl3By(
         },
       })
     );
-
-    console.log("GraphQL numberOfLines in pluscode lvl 3 successfully updated");
   } catch (err) {
-    console.log("Error updating numberOfLines in pluscode lvl 3 ");
+    console.log(
+      "ERROR: Error updating numberOfLines in pluscode lvl 3: " + err
+    );
   }
 }

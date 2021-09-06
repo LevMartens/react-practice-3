@@ -32,6 +32,7 @@ export async function getAllLvl3UnderLvl2(param) {
 
     return items === undefined ? [] : items;
   } catch (err) {
+    console.log("WARNING: No lvl 3 under lvl 2 ");
     return [];
   }
 }

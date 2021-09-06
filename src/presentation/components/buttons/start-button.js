@@ -1,11 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { SCREEN_WIDTH } from "../../domain/resources/environment/dimensions";
 
 export default function StartButton({ navigation }) {
-  //render() {
-  //const navigation = this.props.navigation;
-
   return (
     <TouchableOpacity
       style={styles.button}
@@ -16,7 +13,6 @@ export default function StartButton({ navigation }) {
       <Text style={styles.text}>{"Start"}</Text>
     </TouchableOpacity>
   );
-  //}
 }
 
 const styles = StyleSheet.create({
@@ -49,5 +45,3 @@ const styles = StyleSheet.create({
     fontFamily: "Evolventa",
   },
 });
-
-//export default StartButton;

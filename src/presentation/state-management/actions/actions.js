@@ -30,13 +30,6 @@ export const mapPressedForSecondPin = (event) => {
   };
 };
 
-export const mapPressedForThirdPin = (event) => {
-  return {
-    newCoordinates: event,
-    type: "MAPPRESSFORTHIRDPIN",
-  };
-};
-
 export const currentPositionUpdate = (event) => {
   return {
     newCoordinates: event,
@@ -57,29 +50,6 @@ export const updateCurrentDirection = (event) => {
     type: "WATCHDIRECTION",
   };
 };
-
-// export const updatePath = (
-//   pointA,
-//   pointB,
-//   aMeter,
-//   currentPosition,
-//   measurePoint,
-//   //pathColorsArray,
-//   path,
-//   isWithin20m
-// ) => {
-//   return {
-//     pointA: pointA,
-//     pointB: pointB,
-//     aMeter: aMeter,
-//     currentPosition: currentPosition,
-//     measurePoint: measurePoint,
-//     //pathColorsArray: pathColorsArray,
-//     path: path,
-//     isWithin20m: isWithin20m,
-//     type: "UPDATEPATH",
-//   };
-// };
 
 export const updatePath = (event) => {
   return {
@@ -134,5 +104,19 @@ export const addLineTitle = (event) => {
   return {
     event: event,
     type: "ADDLINETITLE",
+  };
+};
+
+export const setPositionWatcher = (event) => {
+  return {
+    event: event,
+    type: "SETWATCHER",
+  };
+};
+
+export const setHeadingWatcher = (event) => {
+  return {
+    event: event,
+    type: "SETHEADINGWATCHER",
   };
 };

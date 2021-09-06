@@ -19,12 +19,8 @@ export default function PinSetButton({ navigation }) {
 
   const title = useSelector((state) => state.lineTitleHandler);
 
-  const firstPinCoordinates = useSelector(
-    (state) => state.mapPressHandlerFirstPin
-  );
-  const secondPinCoordinates = useSelector(
-    (state) => state.mapPressHandlerSecondPin
-  );
+  const firstPinCoordinates = useSelector((state) => state.startMarkerHandler);
+  const secondPinCoordinates = useSelector((state) => state.endMarkerHandler);
 
   const pinButtonPressed = async () => {
     if (pinState == "Set starting point") {

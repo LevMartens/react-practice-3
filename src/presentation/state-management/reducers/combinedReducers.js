@@ -1,16 +1,16 @@
 import { combineReducers } from "redux";
-import setPin from "./pinHandler";
 import {
-  mapPressHandlerFirstPin,
-  mapPressHandlerSecondPin,
-  mapPressHandlerThirdPin,
-} from "./mapPressHandler";
+  startMarkerHandler,
+  endMarkerHandler,
+  createLineStateHandler,
+} from "./create-line-handler";
 import {
   watchCurrentPosition,
   watchDirection,
-  updatePathReducer,
   aSingleCurrentPosition,
-} from "./updateCurrentPosition";
+  positionWatcherHandler,
+  headingWatcherHandler,
+} from "./location-handler";
 import {
   lineMarkersHandler,
   bannerHandler,
@@ -21,18 +21,35 @@ import {
 import { pathHandler } from "./live-line-recording-handler";
 
 export default combineReducers({
-  pathHandler: pathHandler,
-  lineTitleHandler: lineTitleHandler,
-  selectedLineDraftHandler: selectedLineDraftHandler,
-  selectedMarkerHandler: selectedMarkerHandler,
-  bannerHandler: bannerHandler,
-  lineMarkersHandler: lineMarkersHandler,
-  setPin: setPin,
-  mapPressHandlerFirstPin: mapPressHandlerFirstPin,
-  mapPressHandlerSecondPin: mapPressHandlerSecondPin,
-  mapPressHandlerThirdPin: mapPressHandlerThirdPin,
-  watchCurrentPosition: watchCurrentPosition,
-  watchDirection: watchDirection,
-  updatePathReducer: updatePathReducer,
-  aSingleCurrentPosition: aSingleCurrentPosition,
+  headingWatcherHandler,
+  positionWatcherHandler,
+  pathHandler,
+  lineTitleHandler,
+  selectedLineDraftHandler,
+  selectedMarkerHandler,
+  bannerHandler,
+  lineMarkersHandler,
+  createLineStateHandler,
+  startMarkerHandler,
+  endMarkerHandler,
+  watchCurrentPosition,
+  watchDirection,
+  aSingleCurrentPosition,
 });
+
+//TODO test if the shorthand version works on combined reducers
+// headingWatcherHandler: headingWatcherHandler,
+// positionWatcherHandler: positionWatcherHandler,
+// pathHandler: pathHandler,
+// lineTitleHandler: lineTitleHandler,
+// selectedLineDraftHandler: selectedLineDraftHandler,
+// selectedMarkerHandler: selectedMarkerHandler,
+// bannerHandler: bannerHandler,
+// lineMarkersHandler: lineMarkersHandler,
+// createLineStateHandler: createLineStateHandler,
+// startMarkerHandler: startMarkerHandler,
+// endMarkerHandler: endMarkerHandler,
+// mapPressHandlerThirdPin: mapPressHandlerThirdPin,
+// watchCurrentPosition: watchCurrentPosition,
+// watchDirection: watchDirection,
+// aSingleCurrentPosition: aSingleCurrentPosition,

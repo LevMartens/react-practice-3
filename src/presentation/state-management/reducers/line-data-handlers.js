@@ -1,22 +1,3 @@
-import MapView, { Polyline, Marker, Circle } from "react-native-maps";
-
-import React, { Component } from "react";
-import { ActivityIndicator, Colors } from "react-native-paper";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TouchableOpacity,
-  Image,
-  Icon,
-} from "react-native";
-
-const Carlton = {
-  latitude: -37.794932,
-  longitude: 144.973475,
-};
-
 export const lineMarkersHandler = (
   state = [
     {
@@ -59,10 +40,8 @@ export const selectedMarkerHandler = (
 ) => {
   switch (action.type) {
     case "SELECTMARKER":
-      console.log("LOG: New marker selected. source: line-data-handlers.js");
       return action.event;
     case "RESETMARKER":
-      console.log("LOG: Marker reset. source: line-data-handlers.js");
       return state;
     default:
       return state;

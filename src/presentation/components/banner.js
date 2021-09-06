@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, Image, Animated, Dimensions } from "react-native";
+import { StyleSheet, Text, Image, Animated } from "react-native";
 import { getTheme } from "../theme/themes";
 import infinityActivityIndicator from "../../../assets/inf2.gif";
 import { openBanner } from "../state-management/actions/actions";
@@ -16,7 +16,6 @@ export const showBanner = throttle(function ({
   manual,
   visible,
 }) {
-  console.log("LOG: Banner visible: " + message + " source: banner.js");
   if (time !== throttleTime - 10 && typeof time !== "undefined") {
     throttleTime = time + 10;
   }

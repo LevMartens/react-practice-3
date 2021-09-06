@@ -1,23 +1,10 @@
-import React, { useEffect, useRef } from "react";
-import MapViewCreateLine from "../components/map-view-create-line";
+import React from "react";
+import MapViewCreateLine from "../components/mapviews/map-view-create-line";
 import { ActivityIndicator } from "react-native-paper";
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
-import StartButton from "../components/start-button";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import StartButton from "../components/buttons/start-button";
 import { useSelector } from "react-redux";
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
+import { LineChart } from "react-native-chart-kit";
 import { SCREEN_WIDTH } from "../../domain/resources/environment/dimensions";
 import { getTheme } from "../theme/themes";
 
@@ -130,19 +117,14 @@ const styles = () => {
       flexDirection: "row",
       justifyContent: "center",
       alignSelf: "center",
-      //marginTop: 20,
       backgroundColor: "#c84b31",
-      //right: 20,
       top: 40,
-      //bottom: 20,
       width: 250,
       height: 50,
       borderRadius: 16,
-      //position: "absolute",
     },
     container: {
       ...StyleSheet.absoluteFillObject,
-      //marginTop: 0,
       backgroundColor: "#284538",
       flex: 1,
       flexDirection: "column",
@@ -152,16 +134,12 @@ const styles = () => {
     text: {
       backgroundColor: "#e26a00",
       marginTop: 20,
-      // marginBottom: 0,
-      // paddingBottom: 0,
       fontSize: 25,
       color: "#fff5eb",
       textAlign: "center",
       fontFamily: "Evolventa",
     },
     text1: {
-      //paddingBottom: 50,
-      //marginLeft: 20,
       marginTop: 13,
       fontSize: 17,
       color: "#fff5eb",

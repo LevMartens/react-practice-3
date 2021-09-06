@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { startProducingPath } from "../../domain/use_cases/start-producing-path";
 import { useSelector } from "react-redux";
+
 export default function StartRecordingButton() {
-  //TODO make coordinates in db the same as marker coordinates type
   const {
     rawLineData: {
       distance,
@@ -11,6 +11,8 @@ export default function StartRecordingButton() {
       finishCoordinates: { lat: pointBLat, lng: pointBLng },
     },
   } = useSelector((state) => state.selectedLineDraftHandler);
+
+  const positionWatcher = useSelector((state) => state.positionWatcherHandler);
 
   const pointA = {
     latitude: pointALat,
@@ -26,13 +28,13 @@ export default function StartRecordingButton() {
     <TouchableOpacity
       style={styles.button}
       onPress={() => {
+        positionWatcher.remove();
         startProducingPath(pointA, pointB, distance);
       }}
     >
       <Text style={styles.text}>{"Start Recording"}</Text>
     </TouchableOpacity>
   );
-  //}
 }
 
 const styles = StyleSheet.create({
@@ -64,5 +66,3 @@ const styles = StyleSheet.create({
     fontFamily: "Evolventa",
   },
 });
-
-//export default StartRecordingButton;

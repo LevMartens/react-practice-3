@@ -17,9 +17,11 @@ export async function createLineDraft(pointA, pointB, lineTitle) {
 
   const title = lineTitle;
 
-  const { latitude, longitude } = startingPoint;
+  const { latitude: startLatitude, longitude: startLongitude } = startingPoint;
 
-  const pluscode = await getPluscodeFromCoordinates(`${latitude},${longitude}`);
+  const pluscode = await getPluscodeFromCoordinates(
+    `${startLatitude},${startLongitude}`
+  );
 
   const completePluscode = pluscode.substring(0, 6);
 
@@ -47,18 +49,21 @@ export async function createLineDraft(pointA, pointB, lineTitle) {
 
   const creatorName = "N/A"; //TODO
 
+  const { latitude: endLatitude, longitude: endLongitude } = endPoint;
+  const { latitude: midLatitude, longitude: midLongitude } = midPoint;
+
   const startingPointCoordinatesTypeID = await createGraphQLCoordinateType(
-    startingPoint.latitude,
-    startingPoint.longitude
+    startLatitude,
+    startLongitude
   );
   const endPointCoordinatesTypeID = await createGraphQLCoordinateType(
-    endPoint.latitude,
-    endPoint.longitude
+    endLatitude,
+    endLongitude
   );
 
   const midPointCoordinatesTypeID = await createGraphQLCoordinateType(
-    midPoint.latitude,
-    midPoint.longitude
+    midLatitude,
+    midLongitude
   );
   const input = {
     parentId: "NOPARENTID",

@@ -1,51 +1,54 @@
 function degreesToRadians(degrees) {
-  var pi = Math.PI;
+  const pi = Math.PI;
   return degrees * (pi / 180);
 }
 
 function radiansToDegrees(radians) {
-  var pi = Math.PI;
+  const pi = Math.PI;
   return radians * (180 / pi);
 }
 
 export async function getCoordinatesBetween(pointA, pointB, atThisPoint) {
   // atThisPoint: 0.5 = middle, 0.25 = quarter of total distance etc...
+  const { latitude: pointALat, longitude: pointALng } = pointA;
+  const { latitude: pointBLat, longitude: pointBLng } = pointB;
+  const thisPoint = atThisPoint;
 
   // Convert degrees to radians
-  var latitudeRadian1 = degreesToRadians(pointA.latitude);
-  var longitudeRadian1 = degreesToRadians(pointA.longitude);
-  var latitudeRadian2 = degreesToRadians(pointB.latitude);
-  var longitudeRadian2 = degreesToRadians(pointB.longitude);
+  const latitudeRadian1 = degreesToRadians(pointALat);
+  const longitudeRadian1 = degreesToRadians(pointALng);
+  const latitudeRadian2 = degreesToRadians(pointBLat);
+  const longitudeRadian2 = degreesToRadians(pointBLng);
 
   // Calculate distance in longitude
-  var aLongitude = longitudeRadian2 - longitudeRadian1;
+  const aLongitude = longitudeRadian2 - longitudeRadian1;
 
   // Calculate common variables
-  var latRadSin1 = Math.sin(latitudeRadian1);
-  var latRadSin2 = Math.sin(latitudeRadian2);
-  var latRadCos1 = Math.cos(latitudeRadian1);
-  var latRadCos2 = Math.cos(latitudeRadian2);
-  var aLongitudeCos = Math.cos(aLongitude);
+  const latRadSin1 = Math.sin(latitudeRadian1);
+  const latRadSin2 = Math.sin(latitudeRadian2);
+  const latRadCos1 = Math.cos(latitudeRadian1);
+  const latRadCos2 = Math.cos(latitudeRadian2);
+  const aLongitudeCos = Math.cos(aLongitude);
 
   // Find distance from A to B
-  var distance = Math.acos(
+  const distance = Math.acos(
     latRadSin1 * latRadSin2 + latRadCos1 * latRadCos2 * aLongitudeCos
   );
 
   // Find bearing from A to B
-  var bearing = Math.atan2(
+  const bearing = Math.atan2(
     Math.sin(aLongitude) * latRadCos2,
     latRadCos1 * latRadSin2 - latRadSin1 * latRadCos2 * aLongitudeCos
   );
 
   // Find new point
-  var angularDistance = distance * atThisPoint;
-  var angDistSin = Math.sin(angularDistance);
-  var angDistCos = Math.cos(angularDistance);
-  var xlatRad = Math.asin(
+  const angularDistance = distance * thisPoint;
+  const angDistSin = Math.sin(angularDistance);
+  const angDistCos = Math.cos(angularDistance);
+  const xlatRad = Math.asin(
     latRadSin1 * angDistCos + latRadCos1 * angDistSin * Math.cos(bearing)
   );
-  var xlonRad =
+  const xlonRad =
     longitudeRadian1 +
     Math.atan2(
       Math.sin(bearing) * angDistSin * latRadCos1,
@@ -53,15 +56,17 @@ export async function getCoordinatesBetween(pointA, pointB, atThisPoint) {
     );
 
   // Convert radians to microdegrees
-
-  var xlat = radiansToDegrees(xlatRad);
-  var xlon = radiansToDegrees(xlonRad);
+  let xlat = radiansToDegrees(xlatRad);
+  let xlon = radiansToDegrees(xlonRad);
   if (xlat > 90) xlat = 90;
   if (xlat < -90) xlat = -90;
   while (xlon > 180) xlon -= 360;
   while (xlon <= -1800) xlon += 360;
-  return {
+
+  const newCoordinates = {
     latitude: xlat,
     longitude: xlon,
   };
+
+  return newCoordinates;
 }

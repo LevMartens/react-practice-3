@@ -9,19 +9,20 @@ export async function saveLineDraft(input) {
       })
     );
 
-    console.log(
-      "LOG: GraphQL Line successfully made, id: " +
-        JSON.stringify(response.data.createLineDrafts.id)
-    );
+    const {
+      data: {
+        createLineDrafts: { id },
+      },
+    } = response;
 
-    return response.data.createLineDrafts.id !== null
+    return id !== null
       ? {
           isNOTSaved: false,
-          data: response.data.createLineDrafts,
+          data: createLineDrafts,
         }
       : {
           isNOTSaved: true,
-          data: response.data.createLineDrafts,
+          data: createLineDrafts,
         };
   } catch (err) {
     console.log("ERROR: Error creating Line Draft:", err);

@@ -8,22 +8,23 @@ export async function saveLine(input) {
         input: input,
       })
     );
+    const {
+      data: {
+        createLines: { id },
+      },
+    } = response;
 
-    console.log(
-      "GraphQL Line successfully made, id:" +
-        JSON.stringify(response.data.createLines)
-    );
-    return response.data.createLines.id !== null
+    return id !== null
       ? {
           isNOTSaved: false,
-          data: response.data.createLines,
+          data: createLines,
         }
       : {
           isNOTSaved: true,
-          data: response.data.createLines,
+          data: createLines,
         };
   } catch (err) {
-    console.log("Error creating Line:", err);
+    console.log("ERROR: Error creating Line:", err);
     return { isNOTSaved: true };
   }
 }

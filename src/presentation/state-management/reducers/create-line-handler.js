@@ -8,7 +8,7 @@ const Carlton = {
   longitude: 144.973475,
 };
 
-export const mapPressHandlerFirstPin = (state = Melbourne, action) => {
+export const startMarkerHandler = (state = Melbourne, action) => {
   switch (action.type) {
     case "MAPPRESSFORFIRSTPIN":
       return action.newCoordinates;
@@ -17,7 +17,7 @@ export const mapPressHandlerFirstPin = (state = Melbourne, action) => {
   }
 };
 
-export const mapPressHandlerSecondPin = (state = Carlton, action) => {
+export const endMarkerHandler = (state = Carlton, action) => {
   switch (action.type) {
     case "MAPPRESSFORSECONDPIN":
       return action.newCoordinates;
@@ -26,10 +26,18 @@ export const mapPressHandlerSecondPin = (state = Carlton, action) => {
   }
 };
 
-export const mapPressHandlerThirdPin = (state = Melbourne, action) => {
+export const createLineStateHandler = (
+  state = "Set starting point",
+  action
+) => {
   switch (action.type) {
-    case "MAPPRESSFORTHIRDPIN":
-      return action.newCoordinates;
+    case "RESET":
+      return "Set starting point";
+    case "SETPINSTARTINGPOINT":
+      return "Set end point";
+    case "SETPINENDPOINT":
+      return "Done!";
+
     default:
       return state;
   }

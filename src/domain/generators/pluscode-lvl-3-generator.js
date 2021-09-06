@@ -1,19 +1,23 @@
+//* The pluscode generator generates the pluscodes that lay around a given pluscode
 // jumps = amount of squares next to the center square.
-// Every pair of symbols is one level, so in RQJ67X 7X is level 3, J6 is level 2 and RQ is level 1.
+// Every pair of characters is one level, so in RQJ67X, 7X is level 3, J6 is level 2 and RQ is level 1.
+// b stands for the first character in a character pair (level), a is the second character.
+//TODO beter naming
+
 export async function pluscodeGeneratorLevel3(pluscode, jumps) {
-  var level3a = pluscode.charAt(5);
-  var level3b = pluscode.charAt(4);
-  var level2a = pluscode.charAt(3);
-  var level2b = pluscode.charAt(2);
-  var level1a = pluscode.charAt(1);
-  var level1b = pluscode.charAt(0);
+  const level3a = pluscode.charAt(5);
+  const level3b = pluscode.charAt(4);
+  const level2a = pluscode.charAt(3);
+  const level2b = pluscode.charAt(2);
+  const level1a = pluscode.charAt(1);
+  const level1b = pluscode.charAt(0);
 
-  var newLevel2a = level2a;
-  var newLevel2b = level2b;
-  var newLevel1a = level1a;
-  var newLevel1b = level1b;
+  let newLevel2a = level2a;
+  let newLevel2b = level2b;
+  let newLevel1a = level1a;
+  let newLevel1b = level1b;
 
-  var t = [
+  let t = [
     "2",
     "3",
     "4",
@@ -37,7 +41,7 @@ export async function pluscodeGeneratorLevel3(pluscode, jumps) {
   ];
 
   // Always add +10 when using the neverOutOfRangeArray.
-  var neverOutOfRangeArray = [
+  let neverOutOfRangeArray = [
     "G",
     "H",
     "J",
@@ -79,7 +83,7 @@ export async function pluscodeGeneratorLevel3(pluscode, jumps) {
   ];
 
   // Level 1a has only 18 regions horizontally and level 1b 7 (3-9) vertically, (a levels = horizontal, b levels = vertical).
-  var tForLevel1a = [
+  let tForLevel1a = [
     "2",
     "3",
     "4",
@@ -100,7 +104,7 @@ export async function pluscodeGeneratorLevel3(pluscode, jumps) {
     "V",
   ];
   // Always add +10 when using the neverOutOfRangeArray.
-  var neverOutOfRangeArrayForLevel1a = [
+  let neverOutOfRangeArrayForLevel1a = [
     "G",
     "H",
     "J",
@@ -137,9 +141,9 @@ export async function pluscodeGeneratorLevel3(pluscode, jumps) {
     "9",
   ];
 
-  var tForLevel1b = ["3", "4", "5", "6", "7", "8", "9"];
+  let tForLevel1b = ["3", "4", "5", "6", "7", "8", "9"];
   // Always add +10 when using the neverOutOfRangeArray.
-  var neverOutOfRangeArrayForLevel1b = [
+  let neverOutOfRangeArrayForLevel1b = [
     "3",
     "4",
     "5",
@@ -166,29 +170,29 @@ export async function pluscodeGeneratorLevel3(pluscode, jumps) {
   // ALL THE A LEVELS:
 
   // To prevent an index out of range error
-  var useArrayTForLevel3a =
+  let useArrayTForLevel3a =
     t.indexOf(level3a) < jumps || t.indexOf(level3a) > 19 - jumps
       ? false
       : true;
-  var increaseLevel2a = t.indexOf(level3a) > 19 - jumps ? true : false;
+  increaseLevel2a = t.indexOf(level3a) > 19 - jumps ? true : false;
 
   // When useArrayT... == false, the previous level increases or decreases by 1, this means we are looking at vertical a border.
   // We only use 1 jump for the lower levels because we are measuring with 6 digits (3 levels).
   if (useArrayTForLevel3a == false) {
-    var useArrayTForLevel2a =
+    let useArrayTForLevel2a =
       t.indexOf(level2a) < 1 || t.indexOf(level2a) > 18 ? false : true;
 
     // Checking if we need to increase or decrease level 1 as wel.
-    var increaseLevel1a = t.indexOf(level2a) > 18 ? true : false;
+    let increaseLevel1a = t.indexOf(level2a) > 18 ? true : false;
 
     if (increaseLevel2a == true) {
       // Increase level2a by 1.
-      var level2aIndex = t.indexOf(level2a) + 10 + 1;
+      let level2aIndex = t.indexOf(level2a) + 10 + 1;
 
       newLevel2a = neverOutOfRangeArray[level2aIndex];
     } else {
       // Decrease level2a by 1.
-      var level2aIndex = t.indexOf(level2a) + 10 - 1;
+      let level2aIndex = t.indexOf(level2a) + 10 - 1;
 
       newLevel2a = neverOutOfRangeArray[level2aIndex];
     }
@@ -197,12 +201,12 @@ export async function pluscodeGeneratorLevel3(pluscode, jumps) {
     if (useArrayTForLevel2a == false) {
       if (increaseLevel1a == true) {
         // Increase level1a by 1
-        var level1aIndex = tForLevel1a.indexOf(level1a) + 8 + 1;
+        let level1aIndex = tForLevel1a.indexOf(level1a) + 8 + 1;
 
         newLevel1a = neverOutOfRangeArrayForLevel1a[level1aIndex];
       } else {
         // Decrease level1a by 1
-        var level1aIndex = tForLevel1a.indexOf(level1a) + 8 - 1;
+        let level1aIndex = tForLevel1a.indexOf(level1a) + 8 - 1;
 
         newLevel1a = neverOutOfRangeArrayForLevel1a[level1aIndex];
       }
@@ -212,29 +216,29 @@ export async function pluscodeGeneratorLevel3(pluscode, jumps) {
   // ALL THE B LEVELS:
 
   // To prevent an index out of range error
-  var useArrayTForLevel3b =
+  let useArrayTForLevel3b =
     t.indexOf(level3b) < jumps || t.indexOf(level3b) > 19 - jumps
       ? false
       : true;
-  var increaseLevel2b = t.indexOf(level3b) > 19 - jumps ? true : false;
+  let increaseLevel2b = t.indexOf(level3b) > 19 - jumps ? true : false;
 
   // When useArrayT... == false, the previous level increases or decreases by 1, this means we are looking at horizontal a border.
   // We only use 1 jump for the lower levels because we are measuring on level 3 basis, the levelbasis is based on zoom.
   if (useArrayTForLevel3b == false) {
-    var useArrayTForLevel2b =
+    let useArrayTForLevel2b =
       t.indexOf(level2b) < 1 || t.indexOf(level2b) > 18 ? false : true;
 
     // Checking if we need to increase or decrease level 1 as wel.
-    var increaseLevel1b = t.indexOf(level2b) > 18 ? true : false;
+    let increaseLevel1b = t.indexOf(level2b) > 18 ? true : false;
 
     if (increaseLevel2b == true) {
       // Increase level2b by 1.
-      var level2bIndex = t.indexOf(level2b) + 10 + 1;
+      let level2bIndex = t.indexOf(level2b) + 10 + 1;
 
       newLevel2b = neverOutOfRangeArray[level2bIndex];
     } else {
       // Decrease level2b by 1.
-      var level2bIndex = t.indexOf(level2b) + 10 - 1;
+      let level2bIndex = t.indexOf(level2b) + 10 - 1;
 
       newLevel2b = neverOutOfRangeArray[level2bIndex];
     }
@@ -243,59 +247,59 @@ export async function pluscodeGeneratorLevel3(pluscode, jumps) {
     if (useArrayTForLevel2b == false) {
       if (increaseLevel1b == true) {
         // Increase level1b by 1
-        var level1bIndex = tForLevel1b.indexOf(level1b) + 7 + 1;
+        let level1bIndex = tForLevel1b.indexOf(level1b) + 7 + 1;
 
         newLevel1b = neverOutOfRangeArrayForLevel1b[level1bIndex];
       } else {
         // Decrease level1b by 1
-        var level1bIndex = tForLevel1b.indexOf(level1b) + 7 - 1;
+        let level1bIndex = tForLevel1b.indexOf(level1b) + 7 - 1;
 
         newLevel1b = neverOutOfRangeArrayForLevel1b[level1bIndex];
       }
     }
   }
 
-  var pluscodesArray = [];
-  var indexOfA = t.indexOf(level3a) + 10;
-  var indexOfB = t.indexOf(level3b) + 10;
-  var newPlusCodeBase = `${level1b}${level1a}${level2b}${level2a}`;
-  var outOfRangePlusCodeBaseOnlyA = `${level1b}${newLevel1a}${level2b}${newLevel2a}`;
-  var outOfRangePlusCodeBaseOnlyB = `${newLevel1b}${level1a}${newLevel2b}${level2a}`;
-  var outOfRangePlusCodeBaseAandB = `${newLevel1b}${newLevel1a}${newLevel2b}${newLevel2a}`;
+  let pluscodesArray = [];
+  let indexOfA = t.indexOf(level3a) + 10;
+  let indexOfB = t.indexOf(level3b) + 10;
+  let newPlusCodeBase = `${level1b}${level1a}${level2b}${level2a}`;
+  let outOfRangePlusCodeBaseOnlyA = `${level1b}${newLevel1a}${level2b}${newLevel2a}`;
+  let outOfRangePlusCodeBaseOnlyB = `${newLevel1b}${level1a}${newLevel2b}${level2a}`;
+  let outOfRangePlusCodeBaseAandB = `${newLevel1b}${newLevel1a}${newLevel2b}${newLevel2a}`;
 
   for (let i = 1; i < 1 + jumps; i++) {
-    var outOfRangeToTheRight = t.indexOf(level3a) > 19 - i ? true : false;
-    var outOfRangeToTheLeft = t.indexOf(level3a) < i ? true : false;
-    var outOfRangeUp = t.indexOf(level3b) > 19 - i ? true : false;
-    var outOfRangeDown = t.indexOf(level3b) < i ? true : false;
+    let outOfRangeToTheRight = t.indexOf(level3a) > 19 - i ? true : false;
+    let outOfRangeToTheLeft = t.indexOf(level3a) < i ? true : false;
+    let outOfRangeUp = t.indexOf(level3b) > 19 - i ? true : false;
+    let outOfRangeDown = t.indexOf(level3b) < i ? true : false;
 
-    var left = neverOutOfRangeArray[indexOfA - i];
-    var right = neverOutOfRangeArray[indexOfA + i];
+    let left = neverOutOfRangeArray[indexOfA - i];
+    let right = neverOutOfRangeArray[indexOfA + i];
 
-    var down = neverOutOfRangeArray[indexOfB - i];
-    var up = neverOutOfRangeArray[indexOfB + i];
+    let down = neverOutOfRangeArray[indexOfB - i];
+    let up = neverOutOfRangeArray[indexOfB + i];
 
-    var newPlusCode1 =
+    let newPlusCode1 =
       outOfRangeToTheLeft == true
         ? outOfRangePlusCodeBaseOnlyA.concat(`${level3b}${left}`)
         : newPlusCodeBase.concat(`${level3b}${left}`);
-    var newPlusCode2 =
+    let newPlusCode2 =
       outOfRangeToTheRight == true
         ? outOfRangePlusCodeBaseOnlyA.concat(`${level3b}${right}`)
         : newPlusCodeBase.concat(`${level3b}${right}`);
-    var newPlusCode3 =
+    let newPlusCode3 =
       outOfRangeDown == true
         ? outOfRangePlusCodeBaseOnlyB.concat(`${down}${level3a}`)
         : newPlusCodeBase.concat(`${down}${level3a}`);
-    var newPlusCode4 =
+    let newPlusCode4 =
       outOfRangeUp == true
         ? outOfRangePlusCodeBaseOnlyB.concat(`${up}${level3a}`)
         : newPlusCodeBase.concat(`${up}${level3a}`);
 
-    var newPlusCode5 = newPlusCodeBase.concat(`${down}${left}`);
-    var newPlusCode6 = newPlusCodeBase.concat(`${up}${right}`);
-    var newPlusCode7 = newPlusCodeBase.concat(`${down}${right}`);
-    var newPlusCode8 = newPlusCodeBase.concat(`${up}${left}`);
+    let newPlusCode5 = newPlusCodeBase.concat(`${down}${left}`);
+    let newPlusCode6 = newPlusCodeBase.concat(`${up}${right}`);
+    let newPlusCode7 = newPlusCodeBase.concat(`${down}${right}`);
+    let newPlusCode8 = newPlusCodeBase.concat(`${up}${left}`);
 
     // When a is out of range.
     if (outOfRangeToTheLeft == true) {
@@ -345,25 +349,25 @@ export async function pluscodeGeneratorLevel3(pluscode, jumps) {
     if (i > 1) {
       for (let z = 1; z < i; z++) {
         //var x = i - 1;
-        var zoutOfRangeToTheRight = t.indexOf(level3a) > 19 - i ? true : false;
-        var zoutOfRangeToTheLeft = t.indexOf(level3a) < i ? true : false;
-        var zoutOfRangeUp = t.indexOf(level3b) > 19 - i ? true : false;
-        var zoutOfRangeDown = t.indexOf(level3b) < i ? true : false;
+        let zoutOfRangeToTheRight = t.indexOf(level3a) > 19 - i ? true : false;
+        let zoutOfRangeToTheLeft = t.indexOf(level3a) < i ? true : false;
+        let zoutOfRangeUp = t.indexOf(level3b) > 19 - i ? true : false;
+        let zoutOfRangeDown = t.indexOf(level3b) < i ? true : false;
 
-        var zDown = neverOutOfRangeArray[indexOfB - z];
-        var zUp = neverOutOfRangeArray[indexOfB + z];
-        var zLeft = neverOutOfRangeArray[indexOfA - z];
-        var zRight = neverOutOfRangeArray[indexOfA + z];
+        let zDown = neverOutOfRangeArray[indexOfB - z];
+        let zUp = neverOutOfRangeArray[indexOfB + z];
+        let zLeft = neverOutOfRangeArray[indexOfA - z];
+        let zRight = neverOutOfRangeArray[indexOfA + z];
 
-        var newPlusCode9 = newPlusCodeBase.concat(`${zDown}${left}`);
-        var newPlusCode10 = newPlusCodeBase.concat(`${zUp}${left}`);
-        var newPlusCode11 = newPlusCodeBase.concat(`${zDown}${right}`);
-        var newPlusCode12 = newPlusCodeBase.concat(`${zUp}${right}`);
+        let newPlusCode9 = newPlusCodeBase.concat(`${zDown}${left}`);
+        let newPlusCode10 = newPlusCodeBase.concat(`${zUp}${left}`);
+        let newPlusCode11 = newPlusCodeBase.concat(`${zDown}${right}`);
+        let newPlusCode12 = newPlusCodeBase.concat(`${zUp}${right}`);
 
-        var newPlusCode13 = newPlusCodeBase.concat(`${down}${zLeft}`);
-        var newPlusCode14 = newPlusCodeBase.concat(`${up}${zLeft}`);
-        var newPlusCode15 = newPlusCodeBase.concat(`${down}${zRight}`);
-        var newPlusCode16 = newPlusCodeBase.concat(`${up}${zRight}`);
+        let newPlusCode13 = newPlusCodeBase.concat(`${down}${zLeft}`);
+        let newPlusCode14 = newPlusCodeBase.concat(`${up}${zLeft}`);
+        let newPlusCode15 = newPlusCodeBase.concat(`${down}${zRight}`);
+        let newPlusCode16 = newPlusCodeBase.concat(`${up}${zRight}`);
 
         // When a is out of range.
         if (outOfRangeToTheLeft == true) {
