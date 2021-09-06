@@ -101,7 +101,7 @@ export async function getLineMarkers(currentRegion) {
   // Prepping line marker data to send to MapView
   const lineMarkers = await Promise.all(
     lineObjects.map(async (rawData) => {
-      const lineMarkerData = await packLineMarkerData(rawData);
+      const lineMarkerData = await packLineMarkerData(rawData); //TODO obsolete
       return lineMarkerData;
     })
   );

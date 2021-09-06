@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../screens/home";
 import DetailScreen from "../screens/detail";
-import GPSLiveScreen from "../screens/gpsLive";
+import GPSLiveScreen from "../screens/gps-live";
 import CreateLineScreen from "../screens/create-line-screen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { getTheme } from "../theme/themes";

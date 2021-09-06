@@ -1,12 +1,12 @@
 import React from "react";
-import GPSLiveMapView from "../components/GPSLiveMapView";
+import MapViewGPSLive from "../components/map-view-gps-live";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
-import StartRecordingButton from "../components/StartRecordingButton";
+import StartRecordingButton from "../components/start-recording-button";
 
 export default function GPSLiveScreen() {
   return (
     <View style={styles.container}>
-      <GPSLiveMapView> </GPSLiveMapView>
+      <MapViewGPSLive> </MapViewGPSLive>
       <StartRecordingButton> </StartRecordingButton>
     </View>
   );

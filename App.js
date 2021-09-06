@@ -16,6 +16,7 @@ import awsconfig from "./src/aws-exports";
 import { RootSiblingParent } from "react-native-root-siblings";
 import { getElevation } from "./src/domain/resources/api/get-elevation";
 import { LONGITUDE_DELTA } from "./src/domain/resources/environment/dimensions";
+import { followUserPosition } from "./src/domain/use_cases/follow-user-position";
 
 //TODO 3.4 Use property value shorthand. eslint: & 3.5 Group your shorthand properties at the beginning of your object declaration.
 //TODO create a new type draftLines and use it with @auth, add "where" to type line to query lines created by user
@@ -37,7 +38,9 @@ export default function App() {
     Evolventa: require("./assets/fonts/Evolventa-Regular.otf"),
   });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    //ollowUserPosition();
+  }, []);
 
   if (!fontsLoaded) {
     return (

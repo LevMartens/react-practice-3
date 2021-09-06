@@ -18,6 +18,7 @@ export async function mapElevationPoints(rawData) {
 
 export async function packLineData(rawData) {
   const { data } = rawData;
+
   const {
     id,
     startingCoordinates,
@@ -25,11 +26,13 @@ export async function packLineData(rawData) {
     latitudeDeltaFit,
     longitudeDeltaFit,
   } = data;
-  const { lat, lng } = startingCoordinates;
+
+  const { lat: startingLatitude, lng: startingLongitude } = startingCoordinates;
+  const { lat: midLineLatitude, lng: midLineLongitude } = midLineCoordinates;
 
   const markerCoordinates = {
-    latitude: parseFloat(lat),
-    longitude: parseFloat(lng),
+    latitude: startingLatitude,
+    longitude: startingLongitude,
   };
   const { latitude, longitude } = markerCoordinates;
 
@@ -41,8 +44,8 @@ export async function packLineData(rawData) {
   };
 
   const markerRegionZoomedIn = {
-    latitude: parseFloat(midLineCoordinates.lat),
-    longitude: parseFloat(midLineCoordinates.lng),
+    latitude: midLineLatitude,
+    longitude: midLineLongitude,
     latitudeDelta: latitudeDeltaFit,
     longitudeDelta: longitudeDeltaFit,
   };

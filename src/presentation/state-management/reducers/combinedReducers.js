@@ -18,8 +18,10 @@ import {
   selectedLineDraftHandler,
   lineTitleHandler,
 } from "./line-data-handlers";
+import { pathHandler } from "./live-line-recording-handler";
 
 export default combineReducers({
+  pathHandler: pathHandler,
   lineTitleHandler: lineTitleHandler,
   selectedLineDraftHandler: selectedLineDraftHandler,
   selectedMarkerHandler: selectedMarkerHandler,

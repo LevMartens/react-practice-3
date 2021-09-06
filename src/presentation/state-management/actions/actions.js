@@ -58,25 +58,32 @@ export const updateCurrentDirection = (event) => {
   };
 };
 
-export const updatePath = (
-  pointA,
-  pointB,
-  aMeter,
-  currentPosition,
-  measurePoint,
-  //pathColorsArray,
-  path,
-  isWithin20m
-) => {
+// export const updatePath = (
+//   pointA,
+//   pointB,
+//   aMeter,
+//   currentPosition,
+//   measurePoint,
+//   //pathColorsArray,
+//   path,
+//   isWithin20m
+// ) => {
+//   return {
+//     pointA: pointA,
+//     pointB: pointB,
+//     aMeter: aMeter,
+//     currentPosition: currentPosition,
+//     measurePoint: measurePoint,
+//     //pathColorsArray: pathColorsArray,
+//     path: path,
+//     isWithin20m: isWithin20m,
+//     type: "UPDATEPATH",
+//   };
+// };
+
+export const updatePath = (event) => {
   return {
-    pointA: pointA,
-    pointB: pointB,
-    aMeter: aMeter,
-    currentPosition: currentPosition,
-    measurePoint: measurePoint,
-    //pathColorsArray: pathColorsArray,
-    path: path,
-    isWithin20m: isWithin20m,
+    event: event,
     type: "UPDATEPATH",
   };
 };

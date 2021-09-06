@@ -2,21 +2,21 @@ import React, { Component } from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { SCREEN_WIDTH } from "../../domain/resources/environment/dimensions";
 
-export class StartButton extends Component {
-  render() {
-    const navigation = this.props.navigation;
+export default function StartButton({ navigation }) {
+  //render() {
+  //const navigation = this.props.navigation;
 
-    return (
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          navigation.navigate("GPSLive");
-        }}
-      >
-        <Text style={styles.text}>{"Directions to starting point"}</Text>
-      </TouchableOpacity>
-    );
-  }
+  return (
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() => {
+        navigation.navigate("GPSLive");
+      }}
+    >
+      <Text style={styles.text}>{"Start"}</Text>
+    </TouchableOpacity>
+  );
+  //}
 }
 
 const styles = StyleSheet.create({
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StartButton;
+//export default StartButton;

@@ -8,7 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import StartButton from "../components/StartButton";
+import StartButton from "../components/start-button";
 import { useSelector } from "react-redux";
 import {
   LineChart,
@@ -27,11 +27,21 @@ export default function DetailScreen({ navigation }) {
     (state) => state.selectedLineDraftHandler
   );
 
-  const { distance, elevationPoints } = rawLineData;
+  const { distance, elevationPoints, title } = rawLineData;
 
   return (
     <View style={themedStyles.container}>
-      <Text style={themedStyles.text}> {"Review"} </Text>
+      <Text style={themedStyles.text}> {"Line review"} </Text>
+      {isLoaded == true ? (
+        <Text style={themedStyles.text1}> {title} </Text>
+      ) : (
+        <ActivityIndicator
+          animating={true}
+          color={themedStyles.activityIndicator}
+          size={"large"}
+        />
+      )}
+
       <View style={themedStyles.mapView}>
         {isLoaded == true ? (
           <MapViewCreateLine initialRegion={markerRegionZoomedIn}>
@@ -74,7 +84,7 @@ export default function DetailScreen({ navigation }) {
       )}
 
       <TouchableOpacity style={themedStyles.button} onPress={() => {}}>
-        <Text style={themedStyles.text1}>{"Walk some other time"}</Text>
+        <Text style={themedStyles.text2}>{"Walk some other time"}</Text>
       </TouchableOpacity>
       <StartButton navigation={navigation}></StartButton>
     </View>
@@ -86,9 +96,7 @@ const styles = () => {
     chartLayout: {
       justifyContent: "center",
       alignItems: "center",
-
       marginHorizontal: 20,
-
       borderRadius: 16,
     },
     chartConfig: {
@@ -121,7 +129,6 @@ const styles = () => {
     button: {
       flexDirection: "row",
       justifyContent: "center",
-
       alignSelf: "center",
       //marginTop: 20,
       backgroundColor: "#c84b31",
@@ -162,11 +169,10 @@ const styles = () => {
       fontFamily: "Evolventa",
     },
     text2: {
-      marginLeft: 15,
-      marginTop: 40,
-      fontSize: 20,
+      marginTop: 10,
+      fontSize: 17,
       color: "#fff5eb",
-      textAlign: "left",
+      textAlign: "center",
       fontFamily: "Evolventa",
     },
     text3: {

@@ -1,4 +1,5 @@
 import * as SecureStore from "expo-secure-store";
+import { apiKey } from "../../../../api-key";
 
 async function getValueFor(key) {
   let result = await SecureStore.getItemAsync(key);
@@ -18,7 +19,8 @@ export async function getElevation(startingPoint, endPoint) {
   const startLong = startingPoint.longitude;
   const endLat = endPoint.latitude;
   const endLong = endPoint.longitude;
-  const apiKey = await getValueFor("google-API-key");
+  //const apiKey = await getValueFor("google-API-key");
+
   const response = await fetch(
     `https://maps.googleapis.com/maps/api/elevation/json?path=${startLat},${startLong}|${endLat},${endLong}&samples=10&key=${apiKey}`,
     {}

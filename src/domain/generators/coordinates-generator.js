@@ -1,5 +1,3 @@
-import React from "react";
-
 function degreesToRadians(degrees) {
   var pi = Math.PI;
   return degrees * (pi / 180);
@@ -66,8 +64,4 @@ export async function getCoordinatesBetween(pointA, pointB, atThisPoint) {
     latitude: xlat,
     longitude: xlon,
   };
-}
-
-export function setOneMeterApart(distance) {
-  return 1 / distance;
 }
